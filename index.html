@@ -1,165 +1,62 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Yuuka Calculator</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-
-<div class="background-grid"></div>
-
-<main class="calculator">
-
-    <!-- 上フレーム -->
-    <div class="frame-top">
-
-        <div class="frame-light"></div>
-
-        <div class="frame-left"></div>
-        <div class="frame-right"></div>
-
-    </div>
-
-    <!-- ブルーアーカイブの水色パーツ -->
-    <div class="sensor-block"></div>
-
-    <!-- 左上装飾 -->
-    <div class="top-decoration"></div>
-
-    <!-- 左下0ボタン -->
-    <button
-        class="zero-button"
-        data-number="0">
-    </button>
-
-    <!-- 表示 -->
-    <section class="display-area">
-
-        <div id="display">
-            0
+  <main class="page">
+    <section class="calculator" aria-label="電卓">
+      <div class="top-panel">
+        <div class="speaker-holes" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
+        <div class="display-wrap">
+          <div id="expression" class="expression" aria-live="polite"></div>
+          <output id="display" class="display">0</output>
+        </div>
+      </div>
+
+      <div class="keypad">
+        <button class="key utility" data-action="clear">AC</button>
+        <button class="key utility" data-action="delete">DEL</button>
+        <button class="key utility" data-action="percent">%</button>
+
+        <button class="key number" data-value="7">7</button>
+        <button class="key number" data-value="8">8</button>
+        <button class="key number" data-value="9">9</button>
+
+        <button class="key number" data-value="4">4</button>
+        <button class="key number" data-value="5">5</button>
+        <button class="key number" data-value="6">6</button>
+
+        <button class="key number" data-value="1">1</button>
+        <button class="key number" data-value="2">2</button>
+        <button class="key number" data-value="3">3</button>
+
+        <button class="key number zero" data-value="0">0</button>
+
+        <button class="key operator op-divide" data-operator="÷">÷</button>
+        <button class="key operator op-multiply" data-operator="×">×</button>
+        <button class="key operator op-minus" data-operator="−">−</button>
+        <button class="key operator op-plus" data-operator="+">＋</button>
+
+        <button class="key decimal" data-action="decimal">.</button>
+        <button class="key equals" data-action="equals">＝</button>
+      </div>
     </section>
+  </main>
 
-    <!-- 左上ボタン -->
-    <section class="top-buttons">
-
-        <button
-            data-action="clear">
-            C
-        </button>
-
-        <button
-            data-action="backspace">
-            ⌫
-        </button>
-
-        <button
-            data-action="percent">
-            %
-        </button>
-
-        <button
-            data-action="operator"
-            data-value="/">
-            ÷
-        </button>
-
-    </section>
-
-    <!-- 数字 -->
-    <section class="number-cluster">
-
-        <button class="num one" data-number="1">1</button>
-
-        <button class="num two" data-number="2">2</button>
-        <button class="num three" data-number="3">3</button>
-
-        <button class="num four" data-number="4">4</button>
-        <button class="num five" data-number="5">5</button>
-        <button class="num six" data-number="6">6</button>
-
-        <button class="num seven" data-number="7">7</button>
-        <button class="num eight" data-number="8">8</button>
-
-        <button class="num nine" data-number="9">9</button>
-
-    </section>
-
-    <!-- 演算 -->
-    <section class="operator-cluster">
-
-        <button
-            class="op add"
-            data-action="operator"
-            data-value="+">
-            +
-        </button>
-
-        <button
-            class="op multiply"
-            data-action="operator"
-            data-value="*">
-            ×
-        </button>
-
-        <button
-            class="op divide"
-            data-action="operator"
-            data-value="/">
-            ÷
-        </button>
-
-        <button
-            class="op minus"
-            data-action="operator"
-            data-value="-">
-            −
-        </button>
-
-        <button
-            class="op dot"
-            data-number=".">
-            .
-        </button>
-
-        <button
-            class="op equal"
-            data-action="equal">
-            =
-        </button>
-
-    </section>
-
-    <!-- 下フレーム -->
-    <div class="frame-bottom">
-
-        <div class="frame-light"></div>
-
-        <div class="frame-left"></div>
-        <div class="frame-right"></div>
-
-    </div>
-
-</main>
-
-<canvas id="particles"></canvas>
-
-<script src="script.js"></script>
-
+  <script src="script.js"></script>
 </body>
-
 </html>
