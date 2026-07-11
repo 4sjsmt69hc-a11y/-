@@ -1290,3 +1290,165 @@ body {
         scroll-behavior: auto !important;
     }
 }
+/* =====================================
+   配置調整 vNext
+   数字群を下げる＋演算キーを階段状にする
+===================================== */
+
+/* 数字部分を収める領域を少しだけ拡張 */
+
+.main-controls {
+    min-height: 465px;
+}
+
+/* 数字ボタン群を今より下へ移動 */
+
+.number-cluster {
+    top: 70px;
+}
+
+/* =====================================
+   右下6ボタンの階段配置
+===================================== */
+
+.operator-pad {
+    position: absolute;
+
+    right: 7px;
+    bottom: 5px;
+
+    display: block;
+
+    width: 130px;
+    height: 125px;
+}
+
+/* 各ボタンを絶対配置に変更 */
+
+.operator-key {
+    position: absolute;
+
+    width: 29px;
+    height: 29px;
+}
+
+/*
+              ÷
+          ×   −
+      ＋   .
+   =
+*/
+
+/* 一番上 */
+
+.operator-key:nth-child(1) {
+    top: 0;
+    right: 0;
+}
+
+/* 2段目 */
+
+.operator-key:nth-child(2) {
+    top: 31px;
+    right: 34px;
+}
+
+.operator-key:nth-child(3) {
+    top: 31px;
+    right: 0;
+}
+
+/* 3段目 */
+
+.operator-key:nth-child(4) {
+    top: 62px;
+    right: 68px;
+}
+
+.operator-key:nth-child(5) {
+    top: 62px;
+    right: 34px;
+}
+
+/* 一番下 */
+
+.operator-key:nth-child(6) {
+    top: 93px;
+    right: 102px;
+}
+
+/* =ボタンの白いデザインは維持 */
+
+.operator-key.equal-key {
+    color: #06141c;
+
+    border-color: var(--blue-soft);
+
+    background:
+        radial-gradient(
+            circle at 40% 35%,
+            #f3feff,
+            #31baff 72%
+        );
+
+    box-shadow:
+        inset 0 1px 3px rgba(255, 255, 255, 0.78),
+        0 3px 0 #00588f,
+        0 5px 7px rgba(0, 0, 0, 0.43),
+        0 0 12px rgba(0, 141, 255, 0.95);
+}
+
+/* 白い0ボタンは階段配置と釣り合う位置へ */
+
+.zero-key {
+    left: 14px;
+    bottom: 7px;
+}
+
+/* =====================================
+   スマホ用
+===================================== */
+
+@media (max-width: 520px) {
+    .main-controls {
+        min-height: 440px;
+    }
+
+    .number-cluster {
+        top: 48px;
+
+        transform:
+            translateX(-50%)
+            scale(0.84);
+
+        transform-origin: top center;
+    }
+
+    .operator-pad {
+        right: 1px;
+        bottom: 5px;
+
+        transform: scale(0.9);
+        transform-origin: bottom right;
+    }
+
+    .zero-key {
+        left: 5px;
+        bottom: 6px;
+    }
+}
+
+@media (max-width: 370px) {
+    .number-cluster {
+        top: 42px;
+
+        transform:
+            translateX(-50%)
+            scale(0.76);
+    }
+
+    .operator-pad {
+        transform: scale(0.82);
+        transform-origin: bottom right;
+    }
+}
