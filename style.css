@@ -846,49 +846,43 @@ button {
     }
 }
 /* =====================================
-   電卓本体をかなり縦長にする
+   本体の長さ・下部配置調整
 ===================================== */
 
-.calculator{
-    height:1080px;   /* ← 820pxから一気に1080pxへ */
+.calculator {
+    height: 860px;
 }
 
-/* 下フレーム */
-.frame-bottom{
-    bottom:-10px;
+/* 数字ボタン群 */
+.number-cluster {
+    top: 470px;
 }
 
-/* 数字ボタンをかなり下へ */
-.number-cluster{
-    top:650px;
+/* 左下の0ボタン */
+.zero-key {
+    bottom: 42px;
 }
 
-/* 左下0ボタン */
-.zero-key{
-    bottom:42px;
+/* 演算ボタン群 */
+.operator-cluster {
+    bottom: 34px;
 }
 
-/* 演算ボタン */
-.operator-cluster{
-    bottom:34px;
-}
-
-/* スマホ */
-@media (max-width:520px){
-
-    .calculator{
-        height:920px;
+/* 小さい画面 */
+@media (max-width: 520px) {
+    .calculator {
+        height: 790px;
     }
 
-    .number-cluster{
-        top:520px;
+    .number-cluster {
+        top: 420px;
     }
 
-    .zero-key{
-        bottom:34px;
+    .zero-key {
+        bottom: 34px;
     }
 
-    .operator-cluster{
-        bottom:26px;
+    .operator-cluster {
+        bottom: 28px;
     }
 }
