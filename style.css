@@ -1452,3 +1452,42 @@ body {
         transform-origin: bottom right;
     }
 }
+/* 数字ボタン群をさらに大きく下へ移動 */
+
+.number-cluster {
+    top: 135px;
+}
+
+/* 数字群を下げた分、操作領域も少し広げる */
+
+.main-controls {
+    min-height: 530px;
+}
+
+/* 0ボタンと演算ボタンも少し下へ */
+
+.zero-key {
+    bottom: 0;
+}
+
+.operator-pad {
+    bottom: 0;
+}
+
+/* スマホ調整 */
+
+@media (max-width: 520px) {
+    .main-controls {
+        min-height: 470px;
+    }
+
+    .number-cluster {
+        top: 92px;
+    }
+}
+
+@media (max-width: 370px) {
+    .number-cluster {
+        top: 78px;
+    }
+}
