@@ -4,19 +4,19 @@
     --bg-2: #0b2236;
 
     --panel-0: #07111d;
-    --panel-1: #0d1c2e;
-    --panel-2: #20354d;
+    --panel-1: #0d1d30;
+    --panel-2: #223951;
 
     --cyan: #37e7ff;
     --cyan-soft: #bafaff;
     --cyan-dark: #087f98;
 
-    --metal-light: #f4fdff;
-    --metal-mid: #bfd0d8;
-    --metal-dark: #758893;
+    --metal-light: #f5fdff;
+    --metal-mid: #c2d2da;
+    --metal-dark: #748893;
 
     --text: #dffcff;
-    --text-muted: #7899ab;
+    --text-muted: #7a9caf;
 
     --danger: #ff6b84;
 }
@@ -36,7 +36,10 @@ html {
 body {
     min-height: 100vh;
     margin: 0;
-    padding: 34px 18px;
+
+    padding:
+        42px
+        18px;
 
     display: flex;
     align-items: center;
@@ -58,7 +61,7 @@ body {
             transparent 34%
         ),
         radial-gradient(
-            circle at 16% 72%,
+            circle at 15% 73%,
             rgba(30, 114, 174, 0.18),
             transparent 36%
         ),
@@ -92,7 +95,9 @@ body {
             transparent 1px
         );
 
-    background-size: 46px 46px;
+    background-size:
+        46px
+        46px;
 
     mask-image:
         linear-gradient(
@@ -116,7 +121,8 @@ body {
             transparent 58%
         );
 
-    transform: translateX(-125%);
+    transform:
+        translateX(-125%);
 
     animation:
         backgroundSweep
@@ -126,7 +132,7 @@ body {
 }
 
 /* =====================================
-   外枠
+   アプリ枠
 ===================================== */
 
 .app-shell {
@@ -136,43 +142,63 @@ body {
     justify-content: center;
 }
 
+/* =====================================
+   電卓本体
+===================================== */
+
 .calculator {
     position: relative;
 
-    width: min(380px, 94vw);
-    min-height: 740px;
+    width:
+        min(
+            400px,
+            94vw
+        );
+
+    min-height: 760px;
 
     padding:
-        28px
-        24px
-        34px;
+        40px
+        26px
+        50px;
 
     isolation: isolate;
 
     border:
         1px solid
-        rgba(210, 249, 255, 0.23);
+        rgba(
+            210,
+            249,
+            255,
+            0.23
+        );
 
     border-radius:
-        27px
-        27px
-        23px
-        23px;
+        24px;
 
     background:
         linear-gradient(
             150deg,
-            rgba(37, 58, 82, 0.98),
-            rgba(13, 27, 45, 0.99) 43%,
+            rgba(38, 60, 85, 0.98),
+            rgba(14, 29, 48, 0.99) 42%,
             rgba(4, 12, 23, 0.99)
         );
 
     box-shadow:
-        0 42px 100px rgba(0, 0, 0, 0.64),
-        0 0 0 5px rgba(197, 248, 255, 0.035),
-        inset 0 1px 0 rgba(255, 255, 255, 0.14),
-        inset 0 -28px 42px rgba(0, 0, 0, 0.34),
-        0 0 32px rgba(55, 231, 255, 0.07);
+        0 42px 100px
+        rgba(0, 0, 0, 0.64),
+
+        0 0 0 5px
+        rgba(197, 248, 255, 0.035),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.14),
+
+        inset 0 -28px 42px
+        rgba(0, 0, 0, 0.34),
+
+        0 0 32px
+        rgba(55, 231, 255, 0.07);
 
     animation:
         calculatorEnter
@@ -181,19 +207,19 @@ body {
         both;
 }
 
-/* 上部の白い装甲 */
+/* =====================================
+   銀色装甲
+===================================== */
 
-.calculator::before,
-.calculator::after {
-    content: "";
-
+.armor {
     position: absolute;
-    top: -9px;
 
-    width: 88px;
-    height: 31px;
+    width: 96px;
+    height: 32px;
 
-    z-index: 10;
+    z-index: 20;
+
+    pointer-events: none;
 
     background:
         linear-gradient(
@@ -204,88 +230,126 @@ body {
         );
 
     box-shadow:
-        inset 0 2px 2px rgba(255, 255, 255, 0.88),
-        inset 0 -5px 8px rgba(35, 61, 74, 0.3),
-        0 5px 12px rgba(0, 0, 0, 0.48);
+        inset 0 2px 2px
+        rgba(255, 255, 255, 0.9),
+
+        inset 0 -5px 8px
+        rgba(35, 61, 74, 0.3),
+
+        0 5px 12px
+        rgba(0, 0, 0, 0.48);
 }
 
-.calculator::before {
-    left: -8px;
+/* 上左 */
+
+.armor-top-left {
+    top: -10px;
+    left: -9px;
 
     clip-path:
         polygon(
-            9% 0,
+            10% 0,
             100% 0,
-            88% 100%,
+            87% 100%,
             0 100%,
             0 35%
         );
 
-    border-radius: 12px 4px 8px 4px;
+    border-radius:
+        12px
+        4px
+        8px
+        4px;
 }
 
-.calculator::after {
-    right: -8px;
+/* 上右 */
+
+.armor-top-right {
+    top: -10px;
+    right: -9px;
 
     clip-path:
         polygon(
             0 0,
-            91% 0,
+            90% 0,
             100% 35%,
             100% 100%,
-            12% 100%
+            13% 100%
         );
 
-    border-radius: 4px 12px 4px 8px;
+    border-radius:
+        4px
+        12px
+        4px
+        8px;
 }
 
-/* ネジ装飾 */
+/* 下左 */
 
-.corner-screw {
-    position: absolute;
+.armor-bottom-left {
+    bottom: -10px;
+    left: -9px;
 
-    width: 9px;
-    height: 9px;
-
-    z-index: 8;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #ffffff,
-            #b8cbd3 48%,
-            #6c808b 100%
+    clip-path:
+        polygon(
+            0 0,
+            87% 0,
+            100% 100%,
+            10% 100%,
+            0 65%
         );
+
+    border-radius:
+        4px
+        8px
+        12px
+        4px;
 
     box-shadow:
-        inset 0 1px 1px rgba(255, 255, 255, 0.8),
-        0 1px 3px rgba(0, 0, 0, 0.55);
+        inset 0 5px 8px
+        rgba(35, 61, 74, 0.3),
+
+        inset 0 -2px 2px
+        rgba(255, 255, 255, 0.86),
+
+        0 -5px 12px
+        rgba(0, 0, 0, 0.42);
 }
 
-.screw-top-left {
-    top: 42px;
-    left: 14px;
-}
+/* 下右 */
 
-.screw-top-right {
-    top: 42px;
-    right: 14px;
-}
+.armor-bottom-right {
+    bottom: -10px;
+    right: -9px;
 
-.screw-bottom-left {
-    bottom: 18px;
-    left: 14px;
-}
+    clip-path:
+        polygon(
+            13% 0,
+            100% 0,
+            100% 65%,
+            90% 100%,
+            0 100%
+        );
 
-.screw-bottom-right {
-    bottom: 18px;
-    right: 14px;
+    border-radius:
+        8px
+        4px
+        4px
+        12px;
+
+    box-shadow:
+        inset 0 5px 8px
+        rgba(35, 61, 74, 0.3),
+
+        inset 0 -2px 2px
+        rgba(255, 255, 255, 0.86),
+
+        0 -5px 12px
+        rgba(0, 0, 0, 0.42);
 }
 
 /* =====================================
-   上下ライト
+   上下の発光ライン
 ===================================== */
 
 .top-light,
@@ -293,9 +357,11 @@ body {
     position: absolute;
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
     background:
         linear-gradient(
@@ -308,15 +374,22 @@ body {
         );
 
     box-shadow:
-        0 0 7px var(--cyan),
-        0 0 20px rgba(55, 231, 255, 0.75),
-        0 0 38px rgba(55, 231, 255, 0.3);
+        0 0 7px
+        var(--cyan),
+
+        0 0 20px
+        rgba(55, 231, 255, 0.75),
+
+        0 0 38px
+        rgba(55, 231, 255, 0.3);
+
+    pointer-events: none;
 }
 
 .top-light {
-    top: 3px;
+    top: 2px;
 
-    width: 66%;
+    width: 65%;
     height: 6px;
 
     animation:
@@ -327,81 +400,68 @@ body {
 }
 
 .bottom-light {
-    bottom: 4px;
+    bottom: 2px;
 
-    width: 62%;
+    width: 65%;
     height: 6px;
 
-    opacity: 0.82;
+    opacity: 0.84;
 }
 
 /* =====================================
-   ディスプレイ
+   数字表示部分
 ===================================== */
 
-.display-panel {
+.display-area {
     position: relative;
 
-    min-height: 135px;
+    min-height: 130px;
 
-    padding: 18px 19px 20px;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
+
+    padding:
+        8px
+        16px
+        10px;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    overflow: hidden;
+    background: transparent;
 
-    border:
-        1px solid
-        rgba(55, 231, 255, 0.23);
+    border: 0;
+    border-radius: 0;
 
-    border-radius: 17px;
-
-    background:
-        linear-gradient(
-            150deg,
-            rgba(2, 8, 16, 0.99),
-            rgba(10, 24, 40, 0.96)
-        );
-
-    box-shadow:
-        inset 0 0 30px rgba(0, 0, 0, 0.77),
-        inset 0 1px 0 rgba(255, 255, 255, 0.07),
-        0 0 22px rgba(55, 231, 255, 0.08);
+    box-shadow: none;
 }
 
-.display-panel::before {
+.display-area::after {
     content: "";
 
     position: absolute;
-    inset: 0;
+
+    left: 16px;
+    right: 16px;
+    bottom: 4px;
+
+    height: 1px;
+
+    opacity: 0.26;
 
     background:
         linear-gradient(
-            105deg,
-            transparent 0%,
-            transparent 34%,
-            rgba(127, 245, 255, 0.09) 49%,
-            transparent 62%
+            90deg,
+            transparent,
+            rgba(55, 231, 255, 0.78),
+            transparent
         );
-
-    transform: translateX(-140%);
-
-    animation:
-        displaySweep
-        6.4s
-        ease-in-out
-        infinite;
 }
 
 .display-header {
-    position: relative;
-    z-index: 2;
-
     display: flex;
     align-items: center;
+
     gap: 9px;
 }
 
@@ -411,79 +471,79 @@ body {
 
     border-radius: 50%;
 
-    background: var(--cyan);
+    background:
+        var(--cyan);
 
     box-shadow:
-        0 0 7px var(--cyan);
+        0 0 7px
+        var(--cyan);
 }
 
 .device-name {
-    color: var(--text-muted);
+    color:
+        var(--text-muted);
 
-    font-size: 0.61rem;
+    font-size:
+        0.62rem;
+
     font-weight: 600;
 
-    letter-spacing: 0.16em;
+    letter-spacing:
+        0.16em;
 }
 
 .display-value {
-    position: relative;
-    z-index: 2;
-
     width: 100%;
 
     overflow: hidden;
 
-    color: var(--cyan-soft);
+    color:
+        var(--cyan-soft);
 
     font-size:
         clamp(
-            2.2rem,
+            2.5rem,
             10vw,
-            3.35rem
+            3.8rem
         );
 
     font-weight: 600;
+
     line-height: 1;
-    letter-spacing: 0.035em;
+
+    letter-spacing:
+        0.035em;
 
     text-align: right;
+
     white-space: nowrap;
-    text-overflow: ellipsis;
+
+    text-overflow:
+        ellipsis;
 
     text-shadow:
-        0 0 5px rgba(186, 250, 255, 0.86),
-        0 0 16px rgba(55, 231, 255, 0.55),
-        0 0 34px rgba(55, 231, 255, 0.22);
-}
+        0 0 5px
+        rgba(186, 250, 255, 0.88),
 
-.display-line {
-    position: absolute;
+        0 0 16px
+        rgba(55, 231, 255, 0.57),
 
-    left: 19px;
-    right: 19px;
-    bottom: 11px;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(55, 231, 255, 0.62),
-            transparent
-        );
+        0 0 34px
+        rgba(55, 231, 255, 0.22);
 }
 
 /* =====================================
-   上部4ボタン
+   上側の4ボタン
 ===================================== */
 
 .utility-buttons {
     display: grid;
 
     grid-template-columns:
-        repeat(4, minmax(0, 1fr));
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
 
     gap: 17px;
 
@@ -492,7 +552,7 @@ body {
     margin:
         0
         auto
-        28px;
+        30px;
 }
 
 .utility-key {
@@ -527,10 +587,17 @@ body {
         );
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.86),
-        inset 0 -5px 7px rgba(28, 53, 66, 0.29),
-        0 5px 0 #617681,
-        0 8px 11px rgba(0, 0, 0, 0.43);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.86),
+
+        inset 0 -5px 7px
+        rgba(28, 53, 66, 0.29),
+
+        0 5px 0
+        #617681,
+
+        0 8px 11px
+        rgba(0, 0, 0, 0.43);
 
     transition:
         transform 100ms ease,
@@ -549,17 +616,23 @@ body {
 
     height: 2px;
 
-    border-radius: 999px;
+    border-radius:
+        999px;
 
-    background: var(--cyan);
+    background:
+        var(--cyan);
 
     box-shadow:
-        0 0 5px var(--cyan),
-        0 0 11px rgba(55, 231, 255, 0.82);
+        0 0 5px
+        var(--cyan),
+
+        0 0 11px
+        rgba(55, 231, 255, 0.82);
 }
 
 .utility-key:hover {
-    filter: brightness(1.1);
+    filter:
+        brightness(1.1);
 }
 
 .utility-key:active,
@@ -569,13 +642,19 @@ body {
         scale(0.98);
 
     box-shadow:
-        inset 0 5px 9px rgba(27, 52, 65, 0.38),
-        0 1px 0 #617681,
-        0 4px 7px rgba(0, 0, 0, 0.34);
+        inset 0 5px 9px
+        rgba(27, 52, 65, 0.38),
+
+        0 1px 0
+        #617681,
+
+        0 4px 7px
+        rgba(0, 0, 0, 0.34);
 }
 
 .utility-clear {
-    color: #651020;
+    color:
+        #651020;
 
     background:
         linear-gradient(
@@ -589,44 +668,50 @@ body {
 }
 
 .utility-clear::after {
-    background: var(--danger);
+    background:
+        var(--danger);
 
     box-shadow:
-        0 0 5px var(--danger),
-        0 0 11px rgba(255, 107, 132, 0.8);
+        0 0 5px
+        var(--danger),
+
+        0 0 11px
+        rgba(255, 107, 132, 0.8);
 }
 
 /* =====================================
-   操作エリア
+   メイン操作領域
 ===================================== */
 
 .main-controls {
     position: relative;
 
-    min-height: 430px;
+    min-height: 440px;
 }
 
 /* =====================================
-   数字ボタン配置
+   数字リング
 ===================================== */
 
 .number-cluster {
     position: relative;
 
-    width: 294px;
-    height: 332px;
+    width: 326px;
+    height: 350px;
 
-    margin: 0 auto;
+    margin:
+        0
+        auto;
 }
 
 /*
              1
 
-         2       3
+        2         3
 
-     4       5       6
+   4         5         6
 
-         7       8
+        7         8
 
              9
 */
@@ -634,13 +719,13 @@ body {
 .number-key {
     position: absolute;
 
-    width: 58px;
-    height: 58px;
+    width: 66px;
+    height: 66px;
 
     padding: 0;
 
     border:
-        4px solid
+        5px solid
         var(--cyan);
 
     border-radius: 50%;
@@ -652,11 +737,14 @@ body {
             186,
             250,
             255,
-            0.23
+            0.22
         );
 
     font: inherit;
-    font-size: 0.93rem;
+
+    font-size:
+        1rem;
+
     font-weight: 700;
 
     background:
@@ -667,12 +755,23 @@ body {
         );
 
     box-shadow:
-        inset 0 0 13px rgba(55, 231, 255, 0.13),
-        inset 0 1px 2px rgba(255, 255, 255, 0.06),
-        0 4px 0 #075269,
-        0 8px 12px rgba(0, 0, 0, 0.46),
-        0 0 7px var(--cyan),
-        0 0 18px rgba(55, 231, 255, 0.53);
+        inset 0 0 13px
+        rgba(55, 231, 255, 0.13),
+
+        inset 0 1px 2px
+        rgba(255, 255, 255, 0.06),
+
+        0 4px 0
+        #075269,
+
+        0 8px 12px
+        rgba(0, 0, 0, 0.46),
+
+        0 0 7px
+        var(--cyan),
+
+        0 0 18px
+        rgba(55, 231, 255, 0.53);
 
     text-shadow: none;
 
@@ -688,7 +787,7 @@ body {
     content: "";
 
     position: absolute;
-    inset: 7px;
+    inset: 8px;
 
     border:
         1px solid
@@ -697,7 +796,8 @@ body {
     border-radius: 50%;
 
     box-shadow:
-        inset 0 0 8px rgba(55, 231, 255, 0.11);
+        inset 0 0 8px
+        rgba(55, 231, 255, 0.11);
 }
 
 .number-key::after {
@@ -705,13 +805,14 @@ body {
 
     position: absolute;
 
-    top: 8px;
-    left: 14px;
+    top: 9px;
+    left: 16px;
 
-    width: 15px;
+    width: 17px;
     height: 5px;
 
-    border-radius: 50%;
+    border-radius:
+        50%;
 
     background:
         rgba(
@@ -721,7 +822,8 @@ body {
             0.42
         );
 
-    filter: blur(1px);
+    filter:
+        blur(1px);
 }
 
 .number-key span {
@@ -735,19 +837,15 @@ body {
             223,
             253,
             255,
-            0.58
+            0.6
         );
 
-    filter: brightness(1.2);
+    filter:
+        brightness(1.2);
 
     text-shadow:
         0 0 7px
-        rgba(
-            55,
-            231,
-            255,
-            0.62
-        );
+        rgba(55, 231, 255, 0.62);
 }
 
 .number-key:active,
@@ -758,66 +856,82 @@ body {
 
     color: #ffffff;
 
-    filter: brightness(1.42);
+    filter:
+        brightness(1.42);
 
     text-shadow:
         0 0 4px #ffffff,
-        0 0 10px var(--cyan),
-        0 0 22px rgba(55, 231, 255, 0.95);
+
+        0 0 10px
+        var(--cyan),
+
+        0 0 22px
+        rgba(55, 231, 255, 0.95);
 
     box-shadow:
-        inset 0 6px 14px rgba(0, 0, 0, 0.72),
-        inset 0 0 18px rgba(55, 231, 255, 0.26),
-        0 1px 0 #075269,
-        0 4px 8px rgba(0, 0, 0, 0.34),
-        0 0 20px rgba(55, 231, 255, 0.75);
+        inset 0 6px 14px
+        rgba(0, 0, 0, 0.72),
+
+        inset 0 0 18px
+        rgba(55, 231, 255, 0.26),
+
+        0 1px 0
+        #075269,
+
+        0 4px 8px
+        rgba(0, 0, 0, 0.34),
+
+        0 0 20px
+        rgba(55, 231, 255, 0.75);
 }
 
-/* 各数字の座標 */
+/* =====================================
+   数字ボタン座標
+===================================== */
 
 .key-1 {
     top: 0;
-    left: 118px;
+    left: 130px;
 }
 
 .key-2 {
-    top: 70px;
-    left: 58px;
+    top: 66px;
+    left: 64px;
 }
 
 .key-3 {
-    top: 70px;
-    right: 58px;
+    top: 66px;
+    right: 64px;
 }
 
 .key-4 {
-    top: 140px;
+    top: 132px;
     left: 0;
 }
 
 .key-5 {
-    top: 140px;
-    left: 118px;
+    top: 132px;
+    left: 130px;
 }
 
 .key-6 {
-    top: 140px;
+    top: 132px;
     right: 0;
 }
 
 .key-7 {
-    top: 210px;
-    left: 58px;
+    top: 198px;
+    left: 64px;
 }
 
 .key-8 {
-    top: 210px;
-    right: 58px;
+    top: 198px;
+    right: 64px;
 }
 
 .key-9 {
-    top: 280px;
-    left: 118px;
+    top: 264px;
+    left: 130px;
 }
 
 /* =====================================
@@ -827,11 +941,11 @@ body {
 .zero-key {
     position: absolute;
 
-    left: 16px;
-    bottom: 12px;
+    left: 14px;
+    bottom: 13px;
 
-    width: 30px;
-    height: 30px;
+    width: 31px;
+    height: 31px;
 
     padding: 0;
 
@@ -852,7 +966,10 @@ body {
         );
 
     font: inherit;
-    font-size: 0.55rem;
+
+    font-size:
+        0.55rem;
+
     font-weight: 700;
 
     background:
@@ -865,10 +982,17 @@ body {
         );
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.94),
-        inset 0 -4px 6px rgba(50, 76, 88, 0.25),
-        0 4px 0 #60757f,
-        0 7px 9px rgba(0, 0, 0, 0.4);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.94),
+
+        inset 0 -4px 6px
+        rgba(50, 76, 88, 0.25),
+
+        0 4px 0
+        #60757f,
+
+        0 7px 9px
+        rgba(0, 0, 0, 0.4);
 
     transition:
         transform 100ms ease,
@@ -899,7 +1023,8 @@ body {
 }
 
 .zero-key:hover {
-    filter: brightness(1.08);
+    filter:
+        brightness(1.08);
 }
 
 .zero-key:active,
@@ -909,26 +1034,36 @@ body {
         scale(0.95);
 
     box-shadow:
-        inset 0 5px 8px rgba(46, 69, 80, 0.33),
-        inset 0 1px 2px rgba(255, 255, 255, 0.62),
-        0 1px 0 #60757f,
-        0 3px 5px rgba(0, 0, 0, 0.31);
+        inset 0 5px 8px
+        rgba(46, 69, 80, 0.33),
+
+        inset 0 1px 2px
+        rgba(255, 255, 255, 0.62),
+
+        0 1px 0
+        #60757f,
+
+        0 3px 5px
+        rgba(0, 0, 0, 0.31);
 }
 
 /* =====================================
-   右下演算ボタン
+   演算ボタン
 ===================================== */
 
 .operator-pad {
     position: absolute;
 
     right: 10px;
-    bottom: 10px;
+    bottom: 11px;
 
     display: grid;
 
     grid-template-columns:
-        repeat(3, 29px);
+        repeat(
+            3,
+            29px
+        );
 
     gap: 7px;
 }
@@ -949,10 +1084,14 @@ body {
 
     cursor: pointer;
 
-    color: var(--cyan-soft);
+    color:
+        var(--cyan-soft);
 
     font: inherit;
-    font-size: 0.55rem;
+
+    font-size:
+        0.55rem;
+
     font-weight: 700;
 
     background:
@@ -963,19 +1102,21 @@ body {
         );
 
     box-shadow:
-        inset 0 0 7px rgba(55, 231, 255, 0.16),
-        0 3px 0 #075269,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 7px rgba(55, 231, 255, 0.78);
+        inset 0 0 7px
+        rgba(55, 231, 255, 0.16),
+
+        0 3px 0
+        #075269,
+
+        0 5px 7px
+        rgba(0, 0, 0, 0.43),
+
+        0 0 7px
+        rgba(55, 231, 255, 0.78);
 
     text-shadow:
         0 0 6px
-        rgba(
-            55,
-            231,
-            255,
-            0.76
-        );
+        rgba(55, 231, 255, 0.76);
 
     transition:
         transform 100ms ease,
@@ -1002,7 +1143,8 @@ body {
 }
 
 .operator-key:hover {
-    filter: brightness(1.3);
+    filter:
+        brightness(1.3);
 }
 
 .operator-key:active,
@@ -1012,16 +1154,25 @@ body {
         scale(0.92);
 
     box-shadow:
-        inset 0 5px 8px rgba(0, 0, 0, 0.6),
-        0 1px 0 #075269,
-        0 3px 5px rgba(0, 0, 0, 0.32),
-        0 0 9px rgba(55, 231, 255, 0.78);
+        inset 0 5px 8px
+        rgba(0, 0, 0, 0.6),
+
+        0 1px 0
+        #075269,
+
+        0 3px 5px
+        rgba(0, 0, 0, 0.32),
+
+        0 0 9px
+        rgba(55, 231, 255, 0.78);
 }
 
 .equal-key {
-    color: #06141c;
+    color:
+        #06141c;
 
-    border-color: var(--cyan-soft);
+    border-color:
+        var(--cyan-soft);
 
     background:
         radial-gradient(
@@ -1032,18 +1183,20 @@ body {
 
     text-shadow:
         0 1px 0
-        rgba(
-            255,
-            255,
-            255,
-            0.55
-        );
+        rgba(255, 255, 255, 0.55);
 
     box-shadow:
-        inset 0 1px 3px rgba(255, 255, 255, 0.78),
-        0 3px 0 #087087,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 11px rgba(55, 231, 255, 0.93);
+        inset 0 1px 3px
+        rgba(255, 255, 255, 0.78),
+
+        0 3px 0
+        #087087,
+
+        0 5px 7px
+        rgba(0, 0, 0, 0.43),
+
+        0 0 11px
+        rgba(55, 231, 255, 0.93);
 }
 
 /* =====================================
@@ -1074,7 +1227,8 @@ body {
             translateY(28px)
             scale(0.96);
 
-        filter: blur(7px);
+        filter:
+            blur(7px);
     }
 
     to {
@@ -1084,7 +1238,8 @@ body {
             translateY(0)
             scale(1);
 
-        filter: blur(0);
+        filter:
+            blur(0);
     }
 }
 
@@ -1107,25 +1262,15 @@ body {
     }
 }
 
-@keyframes displaySweep {
-    0%,
-    68% {
-        transform: translateX(-140%);
-    }
-
-    87%,
-    100% {
-        transform: translateX(140%);
-    }
-}
-
 @keyframes backgroundSweep {
     from {
-        transform: translateX(-125%);
+        transform:
+            translateX(-125%);
     }
 
     to {
-        transform: translateX(125%);
+        transform:
+            translateX(125%);
     }
 }
 
@@ -1138,73 +1283,75 @@ body {
         align-items: flex-start;
 
         padding:
-            24px
-            12px;
+            30px
+            10px;
     }
 
     .calculator {
         width: 100%;
-        min-height: 700px;
+
+        min-height: 720px;
 
         padding:
-            25px
-            16px
-            30px;
+            38px
+            14px
+            48px;
     }
 
-    .display-panel {
-        min-height: 116px;
-
-        margin-bottom: 24px;
+    .display-area {
+        min-height: 115px;
     }
 
     .utility-buttons {
-        width: 83%;
-        gap: 11px;
+        width: 84%;
+
+        gap: 10px;
     }
 
     .utility-key {
-        height: 38px;
+        height: 37px;
     }
 
     .main-controls {
-        min-height: 408px;
+        min-height: 415px;
     }
 
     .number-cluster {
-        transform: scale(0.91);
-        transform-origin: top center;
+        transform:
+            scale(0.9);
+
+        transform-origin:
+            top center;
     }
 
     .zero-key {
-        left: 9px;
-        bottom: 14px;
+        left: 8px;
+        bottom: 15px;
     }
 
     .operator-pad {
         right: 5px;
-        bottom: 11px;
+        bottom: 13px;
     }
 }
 
 @media (max-width: 370px) {
-    .calculator {
-        padding-left: 11px;
-        padding-right: 11px;
-    }
-
     .number-cluster {
-        transform: scale(0.84);
+        transform:
+            scale(0.82);
     }
 
     .utility-buttons {
-        width: 87%;
-        gap: 8px;
+        width: 88%;
+        gap: 7px;
     }
 
     .operator-pad {
-        transform: scale(0.92);
-        transform-origin: bottom right;
+        transform:
+            scale(0.92);
+
+        transform-origin:
+            bottom right;
     }
 }
 
@@ -1216,8 +1363,13 @@ body {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
     }
 }
