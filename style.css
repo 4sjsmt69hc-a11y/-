@@ -1325,3 +1325,195 @@ button {
             0.01ms !important;
     }
 }
+/* =========================================================
+   本体サイズ・ボタン配置 最終調整
+========================================================= */
+
+:root {
+    /* 画面の上下端に少し近づく長さ */
+    --calculator-height: 845px;
+
+    --display-top: 112px;
+    --utility-top: 220px;
+    --number-top: 425px;
+}
+
+body {
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+/* =========================================================
+   数字ボタン
+   正方形を45度回転したような均等なひし形
+========================================================= */
+
+.number-cluster {
+    top: var(--number-top);
+
+    width: 330px;
+    height: 315px;
+}
+
+/*
+                1
+
+          2           3
+
+     4          5          6
+
+          7           8
+
+                9
+*/
+
+.key-1 {
+    top: 0;
+    left: 124px;
+}
+
+.key-2 {
+    top: 58px;
+    left: 66px;
+}
+
+.key-3 {
+    top: 58px;
+    left: 182px;
+    right: auto;
+}
+
+.key-4 {
+    top: 116px;
+    left: 8px;
+}
+
+.key-5 {
+    top: 116px;
+    left: 124px;
+}
+
+.key-6 {
+    top: 116px;
+    left: 240px;
+    right: auto;
+}
+
+.key-7 {
+    top: 174px;
+    left: 66px;
+}
+
+.key-8 {
+    top: 174px;
+    left: 182px;
+    right: auto;
+}
+
+.key-9 {
+    top: 232px;
+    left: 124px;
+}
+
+/* =========================================================
+   演算ボタン
+          
+                 ÷
+           
+           ×     −
+    
+      ＋     .
+   
+   =
+========================================================= */
+
+.operator-cluster {
+    right: 18px;
+    bottom: 30px;
+
+    width: 170px;
+    height: 175px;
+}
+
+.operator-key {
+    width: 38px;
+    height: 38px;
+}
+
+/* 1段目 */
+.operator-divide {
+    top: 0;
+    left: 126px;
+    right: auto;
+}
+
+/* 2段目 */
+.operator-multiply {
+    top: 42px;
+    left: 84px;
+    right: auto;
+}
+
+.operator-minus {
+    top: 42px;
+    left: 126px;
+    right: auto;
+}
+
+/* 3段目 */
+.operator-plus {
+    top: 84px;
+    left: 42px;
+    right: auto;
+}
+
+.operator-decimal {
+    top: 84px;
+    left: 84px;
+    right: auto;
+}
+
+/* 4段目 */
+.operator-equal {
+    top: 126px;
+    left: 0;
+    right: auto;
+}
+
+/* 白い0ボタン */
+.zero-key {
+    left: 20px;
+    bottom: 38px;
+}
+
+/* =========================================================
+   スマホ
+========================================================= */
+
+@media (max-width: 520px) {
+    :root {
+        --calculator-height: 760px;
+        --number-top: 385px;
+    }
+
+    body {
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+
+    .number-cluster {
+        transform:
+            translateX(-50%)
+            scale(0.84);
+
+        transform-origin: top center;
+    }
+
+    .operator-cluster {
+        right: 7px;
+        bottom: 24px;
+
+        transform: scale(0.88);
+        transform-origin: bottom right;
+    }
+}
