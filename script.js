@@ -22,7 +22,9 @@ let shouldOverwrite = false;
 let particles = [];
 let animationFrameId = null;
 
-/* Canvas */
+/* =====================================
+   Canvas
+===================================== */
 
 function resizeCanvas() {
     const pixelRatio =
@@ -62,7 +64,9 @@ window.addEventListener(
 
 resizeCanvas();
 
-/* 表示 */
+/* =====================================
+   表示
+===================================== */
 
 function formatForDisplay(value) {
     if (value === "ERROR") {
@@ -93,10 +97,10 @@ function updateDisplay() {
         [
             {
                 transform:
-                    "scale(1.025)",
+                    "scale(1.02)",
 
                 filter:
-                    "brightness(1.6)"
+                    "brightness(1.55)"
             },
 
             {
@@ -114,7 +118,9 @@ function updateDisplay() {
     );
 }
 
-/* 数字入力 */
+/* =====================================
+   数字入力
+===================================== */
 
 function inputNumber(number) {
     if (
@@ -138,7 +144,9 @@ function inputNumber(number) {
     currentValue += number;
 }
 
-/* 小数点 */
+/* =====================================
+   小数
+===================================== */
 
 function inputDecimal() {
     if (
@@ -155,7 +163,9 @@ function inputDecimal() {
     }
 }
 
-/* 演算子 */
+/* =====================================
+   演算子
+===================================== */
 
 function chooseOperator(operator) {
     if (currentValue === "ERROR") {
@@ -170,17 +180,14 @@ function chooseOperator(operator) {
         calculate();
     }
 
-    previousValue =
-        currentValue;
-
-    currentOperator =
-        operator;
-
-    shouldOverwrite =
-        true;
+    previousValue = currentValue;
+    currentOperator = operator;
+    shouldOverwrite = true;
 }
 
-/* 計算 */
+/* =====================================
+   計算
+===================================== */
 
 function calculate() {
     if (
@@ -205,18 +212,15 @@ function calculate() {
 
     switch (currentOperator) {
         case "+":
-            result =
-                first + second;
+            result = first + second;
             break;
 
         case "-":
-            result =
-                first - second;
+            result = first - second;
             break;
 
         case "*":
-            result =
-                first * second;
+            result = first * second;
             break;
 
         case "/":
@@ -230,9 +234,7 @@ function calculate() {
             return;
     }
 
-    if (
-        typeof result === "number"
-    ) {
+    if (typeof result === "number") {
         result =
             Math.round(
                 result *
@@ -241,15 +243,16 @@ function calculate() {
             1_000_000_000_000;
     }
 
-    currentValue =
-        String(result);
+    currentValue = String(result);
 
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = true;
 }
 
-/* 補助機能 */
+/* =====================================
+   補助機能
+===================================== */
 
 function clearCalculator() {
     currentValue = "0";
@@ -309,7 +312,9 @@ function toggleSign() {
             : `-${currentValue}`;
 }
 
-/* ボタン演出 */
+/* =====================================
+   ボタン演出
+===================================== */
 
 function animateButton(button) {
     button.classList.add(
@@ -326,7 +331,9 @@ function animateButton(button) {
     );
 }
 
-/* パーティクル */
+/* =====================================
+   パーティクル
+===================================== */
 
 function createParticles(button) {
     if (
@@ -443,12 +450,12 @@ function startParticleAnimation() {
                 );
 
                 context.fillStyle =
-                    `rgba(75, 235, 255, ${particle.life})`;
+                    `rgba(0, 132, 255, ${particle.life})`;
 
                 context.shadowColor =
-                    "rgba(55, 231, 255, 0.9)";
+                    "rgba(0, 132, 255, 0.95)";
 
-                context.shadowBlur = 10;
+                context.shadowBlur = 11;
 
                 context.fill();
             }
@@ -479,7 +486,9 @@ function startParticleAnimation() {
         );
 }
 
-/* ボタン入力 */
+/* =====================================
+   ボタン処理
+===================================== */
 
 function handleButton(button) {
     const number =
@@ -545,7 +554,9 @@ buttons.forEach(
     }
 );
 
-/* キーボード */
+/* =====================================
+   キーボード
+===================================== */
 
 document.addEventListener(
     "keydown",
