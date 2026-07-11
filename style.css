@@ -1,1503 +1,385 @@
-:root {
-    --bg-0: #020810;
-    --bg-1: #061321;
-    --bg-2: #0b2236;
-
-    --panel-top: #263f5b;
-    --panel-middle: #10253d;
-    --panel-bottom: #040d19;
-
-    --blue: #008dff;
-    --blue-light: #30c9ff;
-    --blue-soft: #bff4ff;
-
-    --metal-white: #f8feff;
-    --metal-light: #dce9ed;
-    --metal-mid: #aebfc7;
-    --metal-dark: #657b86;
-
-    --text: #ddfbff;
-    --text-muted: #809fb0;
-}
-
-/* =====================================
-   基本
-===================================== */
-
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-html {
-    min-height: 100%;
+:root {
+  --body-bg-1: #f1d0dc;
+  --body-bg-2: #c99aaf;
+
+  --case-light: #f8dce7;
+  --case-mid: #e2afc2;
+  --case-dark: #ae748b;
+
+  --display-bg: #d8cabd;
+  --display-ink: #292526;
+
+  --silver-top: #f4f4f5;
+  --silver-mid: #c8c8cb;
+  --silver-dark: #8e8e92;
+
+  --pink-key: #d78da8;
+  --pink-key-dark: #a85d79;
+
+  --text-dark: #3d3035;
 }
 
 body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 60px 18px;
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(255, 255, 255, 0.7),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      var(--body-bg-1),
+      var(--body-bg-2)
+    );
 
-    overflow-x: hidden;
-
-    color: var(--text);
-
-    font-family:
-        "Orbitron",
-        "Segoe UI",
-        sans-serif;
-
-    background:
-        radial-gradient(
-            circle at 50% 8%,
-            rgba(25, 137, 220, 0.26),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 14% 72%,
-            rgba(22, 95, 170, 0.2),
-            transparent 38%
-        ),
-        linear-gradient(
-            145deg,
-            var(--bg-2),
-            var(--bg-1) 49%,
-            var(--bg-0)
-        );
+  color: var(--text-dark);
 }
 
-/* =====================================
-   背景
-===================================== */
-
-.background-grid {
-    position: fixed;
-    inset: 0;
-
-    z-index: -10;
-    pointer-events: none;
-
-    background-image:
-        linear-gradient(
-            rgba(45, 150, 215, 0.055) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(45, 150, 215, 0.055) 1px,
-            transparent 1px
-        );
-
-    background-size: 46px 46px;
+button {
+  font: inherit;
 }
 
-.background-grid::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            112deg,
-            transparent 0%,
-            rgba(54, 162, 224, 0.07) 47%,
-            transparent 58%
-        );
-
-    transform: translateX(-125%);
-
-    animation:
-        backgroundSweep
-        11s
-        linear
-        infinite;
-}
-
-/* =====================================
-   電卓本体
-===================================== */
-
-.app-shell {
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
 }
 
 .calculator {
-    position: relative;
-
-    width: min(430px, 94vw);
-    min-height: 780px;
-
-    padding:
-        54px
-        27px
-        58px;
-
-    isolation: isolate;
-
-    border:
-        1px solid
-        rgba(171, 225, 255, 0.24);
-
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            150deg,
-            var(--panel-top),
-            var(--panel-middle) 41%,
-            var(--panel-bottom)
-        );
-
-    box-shadow:
-        0 44px 105px
-        rgba(0, 0, 0, 0.66),
-
-        0 0 0 5px
-        rgba(170, 223, 255, 0.035),
-
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.12),
-
-        inset 0 -35px 48px
-        rgba(0, 0, 0, 0.34),
-
-        0 0 32px
-        rgba(0, 137, 255, 0.08);
-
-    animation:
-        calculatorEnter
-        800ms
-        cubic-bezier(0.16, 1, 0.3, 1)
-        both;
-}
-
-/* =====================================
-   銀フレーム
-===================================== */
-
-.device-frame {
-    position: absolute;
-    left: 50%;
-
-    width: calc(100% + 26px);
-    height: 24px;
-
-    transform: translateX(-50%);
-
-    z-index: 30;
-    pointer-events: none;
-
-    border:
-        1px solid
-        rgba(250, 255, 255, 0.82);
-
-    border-radius: 7px;
-
-    background:
-        linear-gradient(
-            180deg,
-            var(--metal-white),
-            var(--metal-light) 28%,
-            var(--metal-mid) 67%,
-            var(--metal-dark)
-        );
-
-    box-shadow:
-        inset 0 3px 3px
-        rgba(255, 255, 255, 0.93),
-
-        inset 0 -5px 7px
-        rgba(35, 62, 76, 0.31),
-
-        0 6px 14px
-        rgba(0, 0, 0, 0.5);
-}
-
-/* 両端を大きく張り出す */
-
-.device-frame::before,
-.device-frame::after {
-    content: "";
-
-    position: absolute;
-    top: -1px;
-
-    width: 116px;
-    height: 52px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff,
-            #dce9ed 28%,
-            #a9bbc4 67%,
-            #647985
-        );
-
-    box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.9),
-
-        inset 0 -7px 8px
-        rgba(34, 59, 72, 0.28);
-}
-
-.device-frame::before {
-    left: -1px;
-
-    clip-path:
-        polygon(
-            8% 0,
-            100% 0,
-            87% 46%,
-            77% 100%,
-            0 100%,
-            0 24%
-        );
-
-    border-radius:
-        10px
-        2px
-        8px
-        4px;
-}
-
-.device-frame::after {
-    right: -1px;
-
-    clip-path:
-        polygon(
-            0 0,
-            92% 0,
-            100% 24%,
-            100% 100%,
-            23% 100%,
-            13% 46%
-        );
-
-    border-radius:
-        2px
-        10px
-        4px
-        8px;
-}
-
-.frame-top {
-    top: -11px;
-}
-
-.frame-bottom {
-    bottom: -11px;
-
-    transform:
-        translateX(-50%)
-        rotate(180deg);
-}
-
-/* ライトをフレーム外側へ */
-
-.frame-top .frame-light {
-    top: -8px;
-}
-
-.frame-bottom .frame-light {
-    top: -8px;
-}
-
-.frame-light {
-    position: absolute;
-    left: 50%;
-
-    width: 52%;
-    height: 4px;
-
-    transform: translateX(-50%);
-
-    z-index: 4;
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--blue),
-            var(--blue-light),
-            var(--blue),
-            transparent
-        );
-
-    box-shadow:
-        0 0 7px var(--blue),
-        0 0 18px rgba(0, 141, 255, 0.88),
-        0 0 31px rgba(0, 141, 255, 0.38);
-
-    animation:
-        frameLightPulse
-        3s
-        ease-in-out
-        infinite;
-}
-
-/* =====================================
-   水色装飾
-===================================== */
-
-.cyan-module {
-    position: absolute;
-
-    top: 28px;
-    right: -12px;
-
-    width: 40px;
-    height: 28px;
-
-    z-index: 27;
-    pointer-events: none;
-
-    clip-path:
-        polygon(
-            0 14%,
-            74% 0,
-            100% 23%,
-            100% 80%,
-            77% 100%,
-            0 86%
-        );
-
-    border:
-        1px solid
-        rgba(207, 254, 255, 0.72);
-
-    background:
-        linear-gradient(
-            140deg,
-            #e5feff,
-            #8cf5fb 24%,
-            #44c9d8 62%,
-            #15758e
-        );
-
-    box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.78),
-
-        inset 0 -5px 7px
-        rgba(8, 76, 98, 0.34),
-
-        0 4px 8px
-        rgba(0, 0, 0, 0.42),
-
-        0 0 13px
-        rgba(53, 232, 255, 0.46);
-}
-
-/* =====================================
-   上側の白丸装飾
-===================================== */
-
-.top-white-dot {
-    position: absolute;
-
-    top: 77px;
-    left: 22px;
-
-    width: 33px;
-    height: 33px;
-
-    border:
-        1px solid
-        rgba(245, 254, 255, 0.92);
-
-    border-radius: 50%;
-
-    pointer-events: none;
-
-    background:
-        radial-gradient(
-            circle at 35% 28%,
-            #ffffff,
-            #eaf4f7 40%,
-            #a8bbc4 76%,
-            #6c808a
-        );
-
-    box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
-
-        inset 0 -4px 6px
-        rgba(50, 76, 88, 0.25),
-
-        0 4px 0
-        #60757f,
-
-        0 7px 9px
-        rgba(0, 0, 0, 0.4);
-}
-
-/* =====================================
-   表示部分
-===================================== */
-
-.display-area {
-    position: relative;
-
-    min-height: 92px;
-
-    margin:
-        84px
-        0
-        6px;
-
-    padding:
-        4px
-        38px
-        4px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.display-header {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-}
-
-.status-dot {
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background: var(--blue-light);
-
-    box-shadow:
-        0 0 7px
-        var(--blue);
-}
-
-.device-name {
-    color: var(--text-muted);
-
-    font-size: 0.58rem;
-    font-weight: 600;
-
-    letter-spacing: 0.15em;
-}
-
-.display-value {
-    width: 100%;
-
-    overflow: hidden;
-
-    color: var(--blue-soft);
-
-    font-size:
-        clamp(
-            1.75rem,
-            7vw,
-            2.35rem
-        );
-
-    font-weight: 600;
-
-    line-height: 1;
-    letter-spacing: 0.035em;
-
-    text-align: right;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-
-    text-shadow:
-        0 0 5px
-        rgba(191, 244, 255, 0.82),
-
-        0 0 14px
-        rgba(0, 141, 255, 0.58),
-
-        0 0 27px
-        rgba(0, 141, 255, 0.26);
-}
-
-/* =====================================
-   銀ボタン
-===================================== */
-
-.utility-buttons {
-    display: grid;
-
-    grid-template-columns:
-        40px
-        40px
-        66px
-        40px
-        40px;
-
-    grid-template-areas:
-        "a b gap c d";
-
-    align-items: center;
-    justify-content: center;
-
-    column-gap: 14px;
-
-    margin:
-        40px
-        auto
-        10px;
-}
-
-.utility-key-a {
-    grid-area: a;
-}
-
-.utility-key-b {
-    grid-area: b;
-}
-
-.utility-key-c {
-    grid-area: c;
-}
-
-.utility-key-d {
-    grid-area: d;
-}
-
-.utility-key {
-    position: relative;
-
-    width: 40px;
-    height: 78px;
-
-    padding: 0;
-
-    border:
-        1px solid
-        rgba(237, 252, 255, 0.75);
-
-    border-radius: 18px;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            25,
-            42,
-            52,
-            0.25
-        );
-
-    font: inherit;
-    font-size: 0.62rem;
-    font-weight: 700;
-
-    background:
-        linear-gradient(
-            90deg,
-            #71858f,
-            #edf9fc 22%,
-            #c5d3d8 50%,
-            #f5fdff 78%,
-            #6e838d
-        );
-
-    box-shadow:
-        inset 0 3px 4px
-        rgba(255, 255, 255, 0.9),
-
-        inset 0 -10px 11px
-        rgba(31, 57, 70, 0.27),
-
-        0 6px 0
-        #607580,
-
-        0 10px 13px
-        rgba(0, 0, 0, 0.44);
-
-    transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 100ms ease;
-}
-
-/* 上部の黒丸 */
-
-.utility-key::before {
-    content: "";
-
-    position: absolute;
-
-    top: 9px;
-    left: 50%;
-
-    width: 7px;
-    height: 7px;
-
-    transform: translateX(-50%);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #454545,
-            #111111 72%,
-            #000000
-        );
-
-    box-shadow:
-        inset 0 1px 2px
-        rgba(0, 0, 0, 0.9),
-
-        0 1px 1px
-        rgba(255, 255, 255, 0.35);
-}
-
-/* 青い発光は付けない */
-
-.utility-key::after {
-    content: none;
-}
-
-.utility-key:hover {
-    color:
-        rgba(
-            25,
-            42,
-            52,
-            0.48
-        );
-
-    filter: brightness(1.07);
-}
-
-.utility-key:active,
-.utility-key.is-pressed {
-    transform:
-        translateY(6px)
-        scaleY(0.95);
-
-    color:
-        rgba(
-            224,
-            250,
-            255,
-            0.96
-        );
-
-    text-shadow:
-        0 0 5px #ffffff,
-        0 0 10px rgba(0, 141, 255, 0.72);
-
-    box-shadow:
-        inset 0 8px 12px
-        rgba(27, 52, 65, 0.42),
-
-        0 1px 0
-        #607580,
-
-        0 4px 7px
-        rgba(0, 0, 0, 0.34);
-}
-
-/* =====================================
-   メイン操作領域
-===================================== */
-
-.main-controls {
-    position: relative;
-
-    min-height: 440px;
-}
-
-/* =====================================
-   数字ボタン
-===================================== */
-
-.number-cluster {
-    position: absolute;
-
-    top: 38px;
-    left: 50%;
-
-    width: 370px;
-    height: 380px;
-
-    transform:
-        translateX(-50%);
-}
-
-.number-key {
-    position: absolute;
-
-    width: 82px;
-    height: 82px;
-
-    padding: 0;
-
-    border:
-        6px solid
-        var(--blue);
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            188,
-            227,
-            255,
-            0.24
-        );
-
-    font: inherit;
-    font-size: 1.08rem;
-    font-weight: 700;
-
-    background:
-        radial-gradient(
-            circle at 43% 37%,
-            rgba(17, 42, 69, 0.98),
-            rgba(3, 9, 19, 0.99) 74%
-        );
-
-    box-shadow:
-        inset 0 0 15px
-        rgba(0, 119, 255, 0.15),
-
-        0 5px 0
-        #003d70,
-
-        0 10px 14px
-        rgba(0, 0, 0, 0.47),
-
-        0 0 9px
-        var(--blue),
-
-        0 0 24px
-        rgba(0, 116, 255, 0.78),
-
-        0 0 42px
-        rgba(0, 92, 220, 0.42);
-
-    text-shadow: none;
-
-    transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 100ms ease;
-}
-
-.number-key::before,
-.number-key::after {
-    content: none;
-}
-
-.number-key span {
-    position: relative;
-    z-index: 2;
-}
-
-.number-key:hover {
-    color:
-        rgba(
-            205,
-            239,
-            255,
-            0.68
-        );
-
-    filter: brightness(1.16);
-
-    text-shadow:
-        0 0 8px
-        rgba(0, 153, 255, 0.7);
-}
-
-.number-key:active,
-.number-key.is-pressed {
-    transform:
-        translateY(6px)
-        scale(0.93);
-
-    color: #ffffff;
-
-    filter: brightness(1.4);
-
-    text-shadow:
-        0 0 5px #ffffff,
-        0 0 12px var(--blue),
-        0 0 25px rgba(0, 133, 255, 0.98);
-
-    box-shadow:
-        inset 0 8px 15px
-        rgba(0, 0, 0, 0.75),
-
-        inset 0 0 20px
-        rgba(0, 116, 255, 0.28),
-
-        0 1px 0
-        #003d70,
-
-        0 5px 8px
-        rgba(0, 0, 0, 0.34),
-
-        0 0 25px
-        var(--blue),
-
-        0 0 48px
-        rgba(0, 116, 255, 0.9);
-}
-
-/* ひし形配置 */
-
-.key-1 {
-    top: 0;
-    left: 144px;
-}
-
-.key-2 {
-    top: 70px;
-    left: 72px;
-}
-
-.key-3 {
-    top: 70px;
-    right: 72px;
-}
-
-.key-4 {
-    top: 140px;
-    left: 0;
+  width: min(370px, 94vw);
+  padding: 22px 24px 26px;
+
+  border: 1px solid rgba(112, 62, 80, 0.25);
+  border-radius: 36px;
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(255, 255, 255, 0.75),
+      transparent 26%
+    ),
+    linear-gradient(
+      160deg,
+      var(--case-light),
+      var(--case-mid) 58%,
+      #c991a6
+    );
+
+  box-shadow:
+    0 24px 45px rgba(76, 34, 51, 0.28),
+    inset 0 2px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -8px 14px rgba(125, 72, 91, 0.16);
 }
 
-.key-5 {
-    top: 140px;
-    left: 144px;
+.top-panel {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 19px;
 }
 
-.key-6 {
-    top: 140px;
-    right: 0;
+.speaker-holes {
+  display: grid;
+  grid-template-columns: repeat(2, 14px);
+  justify-content: center;
+  gap: 10px 12px;
+  padding: 10px 5px;
 }
 
-.key-7 {
-    top: 210px;
-    left: 72px;
-}
+.speaker-holes span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
 
-.key-8 {
-    top: 210px;
-    right: 72px;
-}
+  background:
+    radial-gradient(
+      circle at 40% 35%,
+      #6f4354 0 25%,
+      #3b2630 28% 55%,
+      #a46e83 58% 100%
+    );
 
-.key-9 {
-    top: 280px;
-    left: 144px;
+  box-shadow:
+    inset 1px 1px 2px rgba(0, 0, 0, 0.65),
+    0 1px 1px rgba(255, 255, 255, 0.7);
 }
-
-/* =====================================
-   白い0ボタン
-===================================== */
-
-.zero-key {
-    position: absolute;
-
-    left: 14px;
-    bottom: 8px;
 
-    width: 33px;
-    height: 33px;
+.display-wrap {
+  min-height: 92px;
+  padding: 12px 14px 10px;
+  overflow: hidden;
 
-    padding: 0;
+  border-radius: 14px;
+  border: 3px solid #9f7683;
 
-    border:
-        1px solid
-        rgba(245, 254, 255, 0.92);
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            40,
-            59,
-            69,
-            0.58
-        );
-
-    font: inherit;
-    font-size: 0.57rem;
-    font-weight: 700;
-
-    background:
-        radial-gradient(
-            circle at 35% 28%,
-            #ffffff,
-            #eaf4f7 40%,
-            #a8bbc4 76%,
-            #6c808a
-        );
-
-    box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
-
-        inset 0 -4px 6px
-        rgba(50, 76, 88, 0.25),
-
-        0 4px 0
-        #60757f,
-
-        0 7px 9px
-        rgba(0, 0, 0, 0.4);
-
-    transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        box-shadow 100ms ease;
-}
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.35),
+      transparent 40%
+    ),
+    var(--display-bg);
 
-.zero-key:hover {
-    filter: brightness(1.08);
+  box-shadow:
+    inset 0 4px 9px rgba(47, 35, 31, 0.28),
+    0 2px 1px rgba(255, 255, 255, 0.72);
 }
 
-.zero-key:active,
-.zero-key.is-pressed {
-    transform:
-        translateY(4px)
-        scale(0.95);
+.expression {
+  height: 20px;
+  overflow: hidden;
 
-    box-shadow:
-        inset 0 5px 8px
-        rgba(46, 69, 80, 0.33),
+  text-align: right;
+  white-space: nowrap;
 
-        inset 0 1px 2px
-        rgba(255, 255, 255, 0.62),
-
-        0 1px 0
-        #60757f,
-
-        0 3px 5px
-        rgba(0, 0, 0, 0.31);
+  font-size: 13px;
+  color: rgba(41, 37, 38, 0.62);
 }
 
-/* =====================================
-   演算ボタン
-===================================== */
+.display {
+  display: block;
+  width: 100%;
+  overflow: hidden;
 
-.operator-pad {
-    position: absolute;
+  text-align: right;
+  white-space: nowrap;
+  text-overflow: clip;
 
-    right: 9px;
-    bottom: 8px;
+  font-family: "Courier New", monospace;
+  font-size: clamp(34px, 9vw, 47px);
+  line-height: 1.1;
+  letter-spacing: -2px;
 
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 29px);
-
-    gap: 7px;
+  color: var(--display-ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
-
-.operator-key {
-    position: relative;
-
-    width: 29px;
-    height: 29px;
-
-    padding: 0;
-
-    border:
-        2px solid
-        var(--blue);
-
-    border-radius: 50%;
-
-    cursor: pointer;
 
-    color: var(--blue-soft);
+.keypad {
+  position: relative;
 
-    font: inherit;
-    font-size: 0.55rem;
-    font-weight: 700;
-
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #163a5c,
-            #06111f 72%
-        );
-
-    box-shadow:
-        inset 0 0 7px
-        rgba(0, 116, 255, 0.18),
-
-        0 3px 0
-        #003d70,
-
-        0 5px 7px
-        rgba(0, 0, 0, 0.43),
-
-        0 0 8px
-        rgba(0, 126, 255, 0.82);
-
-    text-shadow:
-        0 0 6px
-        rgba(0, 141, 255, 0.8);
-
-    transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        box-shadow 100ms ease;
-}
-
-.operator-key:hover {
-    filter: brightness(1.3);
-}
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 54px);
 
-.operator-key:active,
-.operator-key.is-pressed {
-    transform:
-        translateY(3px)
-        scale(0.92);
+  gap: 18px 15px;
+  min-height: 342px;
 }
 
-.equal-key {
-    color: #06141c;
+.key {
+  min-width: 0;
 
-    border-color: var(--blue-soft);
+  border: 0;
+  border-radius: 18px;
 
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #f3feff,
-            #31baff 72%
-        );
+  cursor: pointer;
+  color: #3e3538;
 
-    box-shadow:
-        inset 0 1px 3px
-        rgba(255, 255, 255, 0.78),
+  background:
+    linear-gradient(
+      180deg,
+      var(--silver-top),
+      var(--silver-mid) 55%,
+      var(--silver-dark)
+    );
 
-        0 3px 0
-        #00588f,
+  box-shadow:
+    0 7px 0 #7f6970,
+    0 10px 12px rgba(55, 35, 43, 0.25),
+    inset 0 2px 2px rgba(255, 255, 255, 0.95);
 
-        0 5px 7px
-        rgba(0, 0, 0, 0.43),
+  font-size: 21px;
+  font-weight: 700;
 
-        0 0 12px
-        rgba(0, 141, 255, 0.95);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease,
+    filter 0.15s ease;
 }
 
-/* =====================================
-   Canvas
-===================================== */
-
-#particles {
-    position: fixed;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 100;
-
-    pointer-events: none;
+.key:hover {
+  filter: brightness(1.04);
 }
-
-/* =====================================
-   アニメーション
-===================================== */
 
-@keyframes calculatorEnter {
-    from {
-        opacity: 0;
+.key:active,
+.key.is-pressed {
+  transform: translateY(6px);
 
-        transform:
-            translateY(28px)
-            scale(0.96);
-
-        filter: blur(7px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-        filter: blur(0);
-    }
+  box-shadow:
+    0 1px 0 #7f6970,
+    0 3px 5px rgba(55, 35, 43, 0.2),
+    inset 0 2px 3px rgba(255, 255, 255, 0.75);
 }
-
-@keyframes frameLightPulse {
-    0%,
-    100% {
-        opacity: 0.72;
 
-        transform:
-            translateX(-50%)
-            scaleX(0.93);
-    }
-
-    50% {
-        opacity: 1;
-
-        transform:
-            translateX(-50%)
-            scaleX(1.04);
-    }
+.number,
+.utility {
+  height: 42px;
+  align-self: center;
+  border-radius: 19px;
 }
 
-@keyframes backgroundSweep {
-    from {
-        transform: translateX(-125%);
-    }
-
-    to {
-        transform: translateX(125%);
-    }
+.utility {
+  font-size: 14px;
 }
-
-/* =====================================
-   スマホ
-===================================== */
-
-@media (max-width: 520px) {
-    body {
-        align-items: flex-start;
-
-        padding:
-            44px
-            9px;
-    }
-
-    .calculator {
-        width: 100%;
-        min-height: 730px;
-
-        padding:
-            50px
-            11px
-            54px;
-    }
-
-    .device-frame {
-        width:
-            calc(100% + 14px);
-    }
-
-    .top-white-dot {
-        left: 13px;
-    }
 
-    .display-area {
-        margin-top: 70px;
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-
-    .utility-buttons {
-        grid-template-columns:
-            34px
-            34px
-            40px
-            34px
-            34px;
-
-        column-gap: 10px;
-    }
-
-    .utility-key {
-        width: 34px;
-        height: 68px;
-    }
-
-    .main-controls {
-        min-height: 410px;
-    }
-
-    .number-cluster {
-        top: 24px;
-
-        transform:
-            translateX(-50%)
-            scale(0.84);
-
-        transform-origin:
-            top center;
-    }
-
-    .zero-key {
-        left: 6px;
-        bottom: 6px;
-    }
-
-    .operator-pad {
-        right: 3px;
-        bottom: 6px;
-    }
+.utility[data-action="clear"] {
+  grid-column: 1;
+  grid-row: 1;
 }
-
-@media (max-width: 370px) {
-    .number-cluster {
-        transform:
-            translateX(-50%)
-            scale(0.76);
-    }
 
-    .utility-buttons {
-        grid-template-columns:
-            31px
-            31px
-            30px
-            31px
-            31px;
-
-        column-gap: 7px;
-    }
-
-    .utility-key {
-        width: 31px;
-        height: 63px;
-    }
+.utility[data-action="delete"] {
+  grid-column: 2;
+  grid-row: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-    }
+.utility[data-action="percent"] {
+  grid-column: 3;
+  grid-row: 1;
 }
-/* =====================================
-   配置調整 vNext
-   数字群を下げる＋演算キーを階段状にする
-===================================== */
 
-/* 数字部分を収める領域を少しだけ拡張 */
-
-.main-controls {
-    min-height: 465px;
+.number[data-value="7"] {
+  grid-column: 1;
+  grid-row: 2;
 }
 
-/* 数字ボタン群を今より下へ移動 */
-
-.number-cluster {
-    top: 70px;
+.number[data-value="8"] {
+  grid-column: 2;
+  grid-row: 2;
 }
-
-/* =====================================
-   右下6ボタンの階段配置
-===================================== */
 
-.operator-pad {
-    position: absolute;
-
-    right: 7px;
-    bottom: 5px;
-
-    display: block;
-
-    width: 130px;
-    height: 125px;
+.number[data-value="9"] {
+  grid-column: 3;
+  grid-row: 2;
 }
-
-/* 各ボタンを絶対配置に変更 */
-
-.operator-key {
-    position: absolute;
 
-    width: 29px;
-    height: 29px;
+.number[data-value="4"] {
+  grid-column: 1;
+  grid-row: 3;
 }
 
-/*
-              ÷
-          ×   −
-      ＋   .
-   =
-*/
-
-/* 一番上 */
-
-.operator-key:nth-child(1) {
-    top: 0;
-    right: 0;
+.number[data-value="5"] {
+  grid-column: 2;
+  grid-row: 3;
 }
 
-/* 2段目 */
-
-.operator-key:nth-child(2) {
-    top: 31px;
-    right: 34px;
+.number[data-value="6"] {
+  grid-column: 3;
+  grid-row: 3;
 }
 
-.operator-key:nth-child(3) {
-    top: 31px;
-    right: 0;
+.number[data-value="1"] {
+  grid-column: 1;
+  grid-row: 4;
 }
 
-/* 3段目 */
-
-.operator-key:nth-child(4) {
-    top: 62px;
-    right: 68px;
+.number[data-value="2"] {
+  grid-column: 2;
+  grid-row: 4;
 }
 
-.operator-key:nth-child(5) {
-    top: 62px;
-    right: 34px;
+.number[data-value="3"] {
+  grid-column: 3;
+  grid-row: 4;
 }
-
-/* 一番下 */
 
-.operator-key:nth-child(6) {
-    top: 93px;
-    right: 102px;
+.zero {
+  grid-column: 1 / span 2;
+  grid-row: 5;
 }
 
-/* =ボタンの白いデザインは維持 */
+.operator,
+.decimal,
+.equals {
+  width: 64px;
+  height: 58px;
 
-.operator-key.equal-key {
-    color: #06141c;
+  justify-self: center;
+  align-self: center;
 
-    border-color: var(--blue-soft);
+  border-radius: 22px;
+  color: white;
 
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #f3feff,
-            #31baff 72%
-        );
+  background:
+    linear-gradient(
+      180deg,
+      #efb0c6,
+      var(--pink-key) 55%,
+      var(--pink-key-dark)
+    );
 
-    box-shadow:
-        inset 0 1px 3px rgba(255, 255, 255, 0.78),
-        0 3px 0 #00588f,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 12px rgba(0, 141, 255, 0.95);
-}
-
-/* 白い0ボタンは階段配置と釣り合う位置へ */
+  box-shadow:
+    0 8px 0 #87485f,
+    0 11px 14px rgba(64, 35, 47, 0.28),
+    inset 0 2px 2px rgba(255, 255, 255, 0.65);
 
-.zero-key {
-    left: 14px;
-    bottom: 7px;
+  font-size: 28px;
 }
-
-/* =====================================
-   スマホ用
-===================================== */
-
-@media (max-width: 520px) {
-    .main-controls {
-        min-height: 440px;
-    }
-
-    .number-cluster {
-        top: 48px;
 
-        transform:
-            translateX(-50%)
-            scale(0.84);
-
-        transform-origin: top center;
-    }
-
-    .operator-pad {
-        right: 1px;
-        bottom: 5px;
-
-        transform: scale(0.9);
-        transform-origin: bottom right;
-    }
-
-    .zero-key {
-        left: 5px;
-        bottom: 6px;
-    }
+.op-divide {
+  grid-column: 4;
+  grid-row: 1;
 }
-
-@media (max-width: 370px) {
-    .number-cluster {
-        top: 42px;
 
-        transform:
-            translateX(-50%)
-            scale(0.76);
-    }
-
-    .operator-pad {
-        transform: scale(0.82);
-        transform-origin: bottom right;
-    }
+.op-multiply {
+  grid-column: 5;
+  grid-row: 1;
 }
-/* 数字ボタン群をさらに大きく下へ移動 */
 
-.number-cluster {
-    top: 135px;
+.op-minus {
+  grid-column: 4;
+  grid-row: 2;
 }
 
-/* 数字群を下げた分、操作領域も少し広げる */
-
-.main-controls {
-    min-height: 530px;
+.op-plus {
+  grid-column: 5;
+  grid-row: 2;
 }
-
-/* 0ボタンと演算ボタンも少し下へ */
 
-.zero-key {
-    bottom: 0;
+.decimal {
+  grid-column: 4;
+  grid-row: 4;
+  transform: translateY(7px);
 }
 
-.operator-pad {
-    bottom: 0;
+.decimal:active,
+.decimal.is-pressed {
+  transform: translateY(13px);
 }
 
-/* スマホ調整 */
-
-@media (max-width: 520px) {
-    .main-controls {
-        min-height: 470px;
-    }
-
-    .number-cluster {
-        top: 92px;
-    }
-}
+.equals {
+  grid-column: 5;
+  grid-row: 4 / span 2;
 
-@media (max-width: 370px) {
-    .number-cluster {
-        top: 78px;
-    }
+  height: 128px;
+  border-radius: 25px;
+  font-size: 30px;
 }
-.operator-key{
-    position:absolute;
 
-    width:38px;
-    height:38px;
+@media (max-width: 430px) {
+  .calculator {
+    padding-inline: 18px;
+  }
 
-    border-radius:999px;
+  .keypad {
+    gap: 16px 10px;
+  }
 
-    font-size:16px;
+  .operator,
+  .decimal,
+  .equals {
+    width: 58px;
+  }
 }
