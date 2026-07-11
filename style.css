@@ -1491,3 +1491,13 @@ body {
         top: 78px;
     }
 }
+.operator-key{
+    position:absolute;
+
+    width:38px;
+    height:38px;
+
+    border-radius:999px;
+
+    font-size:16px;
+}
