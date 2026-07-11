@@ -1107,3 +1107,222 @@ body {
         scroll-behavior: auto !important;
     }
 }
+/* ========================================
+   数字ボタン配置・調整 v2
+======================================== */
+
+.control-panel {
+    min-height: 500px;
+}
+
+.number-pad {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 58px);
+
+    grid-template-rows:
+        repeat(6, 58px);
+
+    column-gap: 8px;
+    row-gap: 9px;
+
+    width: max-content;
+    height: auto;
+
+    margin:
+        4px
+        auto
+        0;
+}
+
+/*
+        1
+      2   3
+    4   5   6
+      7   8
+        9
+
+        0
+*/
+
+.key-1 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.key-2 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.key-3 {
+    grid-column: 4;
+    grid-row: 2;
+}
+
+.key-4 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.key-5 {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.key-6 {
+    grid-column: 5;
+    grid-row: 3;
+}
+
+.key-7 {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+.key-8 {
+    grid-column: 4;
+    grid-row: 4;
+}
+
+.key-9 {
+    grid-column: 3;
+    grid-row: 5;
+}
+
+.key-0 {
+    grid-column: 3;
+    grid-row: 6;
+
+    width: 52px;
+    height: 52px;
+
+    justify-self: center;
+
+    opacity: 0.86;
+}
+
+/* 以前の絶対配置を解除 */
+
+.number-pad .ring-key {
+    position: relative;
+
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    width: 58px;
+    height: 58px;
+
+    align-self: center;
+    justify-self: center;
+}
+
+/* 通常時は数字を薄く表示 */
+
+.number-pad .ring-key {
+    color:
+        rgba(
+            185,
+            250,
+            255,
+            0.27
+        );
+
+    text-shadow: none;
+
+    transition:
+        transform 100ms ease,
+        filter 100ms ease,
+        box-shadow 100ms ease,
+        border-color 100ms ease,
+        color 120ms ease,
+        text-shadow 120ms ease;
+}
+
+/* マウスを合わせたときは少し見やすくする */
+
+.number-pad .ring-key:hover {
+    color:
+        rgba(
+            185,
+            250,
+            255,
+            0.65
+        );
+
+    text-shadow:
+        0 0 8px
+        rgba(
+            66,
+            232,
+            255,
+            0.7
+        );
+}
+
+/* 押した瞬間だけ数字が強く発光 */
+
+.number-pad .ring-key:active,
+.number-pad .ring-key.is-pressed {
+    color: #effeff;
+
+    text-shadow:
+        0 0 4px #ffffff,
+        0 0 10px var(--cyan),
+        0 0 22px
+        rgba(
+            66,
+            232,
+            255,
+            0.95
+        );
+
+    filter:
+        brightness(1.4);
+}
+
+/* 演算ボタンを少し整理 */
+
+.operator-pad {
+    right: 8px;
+    bottom: 8px;
+
+    grid-template-columns:
+        repeat(3, 34px);
+
+    gap: 9px;
+}
+
+.mini-key {
+    width: 34px;
+    height: 34px;
+}
+
+/* スマホ調整 */
+
+@media (max-width: 520px) {
+    .control-panel {
+        min-height: 465px;
+    }
+
+    .number-pad {
+        transform: scale(0.92);
+        transform-origin: top center;
+    }
+
+    .operator-pad {
+        right: 5px;
+        bottom: 10px;
+    }
+}
+
+@media (max-width: 365px) {
+    .number-pad {
+        transform: scale(0.83);
+    }
+}
