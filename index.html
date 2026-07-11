@@ -2,152 +2,313 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#071525"
+    >
 
     <title>yuuka_no_dentaku</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 </head>
 
 <body>
 
-<div class="background-grid"></div>
+    <div
+        class="background-grid"
+        aria-hidden="true"
+    ></div>
 
-<div class="calculator">
+    <main class="app-shell">
 
-    <div class="top-light"></div>
-
-    <div class="display-panel">
-
-        <div class="title">
-            yuuka_no_dentaku
-        </div>
-
-        <div id="display">
-            0
-        </div>
-
-    </div>
-
-<div class="control-panel">
-
-    <div class="utility-buttons">
-        <button class="utility-key" data-action="clear">C</button>
-        <button class="utility-key" data-action="backspace">⌫</button>
-        <button class="utility-key" data-action="percent">%</button>
-        <button class="utility-key" data-action="sign">±</button>
-    </div>
-
-    <div class="number-area">
-
-        <div class="number-pad">
-            <button class="ring-key key-1" data-number="1">1</button>
-
-            <button class="ring-key key-2" data-number="2">2</button>
-            <button class="ring-key key-3" data-number="3">3</button>
-
-            <button class="ring-key key-4" data-number="4">4</button>
-            <button class="ring-key key-5" data-number="5">5</button>
-            <button class="ring-key key-6" data-number="6">6</button>
-
-            <button class="ring-key key-7" data-number="7">7</button>
-            <button class="ring-key key-8" data-number="8">8</button>
-
-            <button class="ring-key key-9" data-number="9">9</button>
-        </div>
-
-        <button
-            class="zero-key"
-            data-number="0"
-            aria-label="0"
+        <section
+            class="calculator"
+            aria-label="yuuka_no_dentaku"
         >
-            0
-        </button>
 
-    </div>
+            <div
+                class="top-light"
+                aria-hidden="true"
+            ></div>
 
-    <div class="operator-pad">
-        <button
-            class="mini-key"
-            data-action="operator"
-            data-value="/"
-        >
-            ÷
-        </button>
+            <div
+                class="corner-screw screw-top-left"
+                aria-hidden="true"
+            ></div>
 
-        <button
-            class="mini-key"
-            data-action="operator"
-            data-value="*"
-        >
-            ×
-        </button>
+            <div
+                class="corner-screw screw-top-right"
+                aria-hidden="true"
+            ></div>
 
-        <button
-            class="mini-key"
-            data-action="operator"
-            data-value="-"
-        >
-            −
-        </button>
+            <div
+                class="corner-screw screw-bottom-left"
+                aria-hidden="true"
+            ></div>
 
-        <button
-            class="mini-key"
-            data-action="operator"
-            data-value="+"
-        >
-            ＋
-        </button>
+            <div
+                class="corner-screw screw-bottom-right"
+                aria-hidden="true"
+            ></div>
 
-        <button
-            class="mini-key"
-            data-number="."
-        >
-            .
-        </button>
+            <header class="display-panel">
 
-        <button
-            class="mini-key equal"
-            data-action="equal"
-        >
-            =
-        </button>
-    </div>
+                <div class="display-header">
 
-</div>
-    <div class="operator-pad">
-        <button class="mini-key" data-action="operator" data-value="/">÷</button>
-        <button class="mini-key" data-action="operator" data-value="*">×</button>
-        <button class="mini-key" data-action="operator" data-value="-">−</button>
+                    <span class="status-dot"></span>
 
-        <button class="mini-key" data-action="operator" data-value="+">＋</button>
-        <button class="mini-key" data-number=".">.</button>
-        <button class="mini-key equal" data-action="equal">=</button>
-    </div>
+                    <span class="device-name">
+                        YUUKA_NO_DENTAKU
+                    </span>
 
-</div>
-    <div class="operator-pad">
-        <button class="mini-key" data-action="operator" data-value="/">÷</button>
-        <button class="mini-key" data-action="operator" data-value="*">×</button>
-        <button class="mini-key" data-action="operator" data-value="-">−</button>
+                </div>
 
-        <button class="mini-key" data-action="operator" data-value="+">＋</button>
-        <button class="mini-key decimal-key" data-number=".">.</button>
-        <button class="mini-key equal" data-action="equal">=</button>
-    </div>
+                <div
+                    id="display"
+                    class="display-value"
+                    aria-live="polite"
+                >
+                    0
+                </div>
 
-</div>
+                <div
+                    class="display-line"
+                    aria-hidden="true"
+                ></div>
 
-</div>
+            </header>
 
-<canvas id="particles"></canvas>
+            <div class="utility-buttons">
 
-<script src="script.js"></script>
+                <button
+                    class="utility-key utility-clear"
+                    type="button"
+                    data-action="clear"
+                    aria-label="クリア"
+                >
+                    C
+                </button>
+
+                <button
+                    class="utility-key"
+                    type="button"
+                    data-action="backspace"
+                    aria-label="一文字削除"
+                >
+                    ⌫
+                </button>
+
+                <button
+                    class="utility-key"
+                    type="button"
+                    data-action="percent"
+                    aria-label="パーセント"
+                >
+                    %
+                </button>
+
+                <button
+                    class="utility-key"
+                    type="button"
+                    data-action="sign"
+                    aria-label="正負切り替え"
+                >
+                    ±
+                </button>
+
+            </div>
+
+            <div class="main-controls">
+
+                <div class="number-cluster">
+
+                    <button
+                        class="number-key key-1"
+                        type="button"
+                        data-number="1"
+                    >
+                        <span>1</span>
+                    </button>
+
+                    <button
+                        class="number-key key-2"
+                        type="button"
+                        data-number="2"
+                    >
+                        <span>2</span>
+                    </button>
+
+                    <button
+                        class="number-key key-3"
+                        type="button"
+                        data-number="3"
+                    >
+                        <span>3</span>
+                    </button>
+
+                    <button
+                        class="number-key key-4"
+                        type="button"
+                        data-number="4"
+                    >
+                        <span>4</span>
+                    </button>
+
+                    <button
+                        class="number-key key-5"
+                        type="button"
+                        data-number="5"
+                    >
+                        <span>5</span>
+                    </button>
+
+                    <button
+                        class="number-key key-6"
+                        type="button"
+                        data-number="6"
+                    >
+                        <span>6</span>
+                    </button>
+
+                    <button
+                        class="number-key key-7"
+                        type="button"
+                        data-number="7"
+                    >
+                        <span>7</span>
+                    </button>
+
+                    <button
+                        class="number-key key-8"
+                        type="button"
+                        data-number="8"
+                    >
+                        <span>8</span>
+                    </button>
+
+                    <button
+                        class="number-key key-9"
+                        type="button"
+                        data-number="9"
+                    >
+                        <span>9</span>
+                    </button>
+
+                </div>
+
+                <button
+                    class="zero-key"
+                    type="button"
+                    data-number="0"
+                    aria-label="0"
+                >
+                    <span>0</span>
+                </button>
+
+                <div class="operator-pad">
+
+                    <button
+                        class="operator-key"
+                        type="button"
+                        data-action="operator"
+                        data-value="/"
+                        aria-label="割り算"
+                    >
+                        ÷
+                    </button>
+
+                    <button
+                        class="operator-key"
+                        type="button"
+                        data-action="operator"
+                        data-value="*"
+                        aria-label="掛け算"
+                    >
+                        ×
+                    </button>
+
+                    <button
+                        class="operator-key"
+                        type="button"
+                        data-action="operator"
+                        data-value="-"
+                        aria-label="引き算"
+                    >
+                        −
+                    </button>
+
+                    <button
+                        class="operator-key"
+                        type="button"
+                        data-action="operator"
+                        data-value="+"
+                        aria-label="足し算"
+                    >
+                        ＋
+                    </button>
+
+                    <button
+                        class="operator-key"
+                        type="button"
+                        data-number="."
+                        aria-label="小数点"
+                    >
+                        .
+                    </button>
+
+                    <button
+                        class="operator-key equal-key"
+                        type="button"
+                        data-action="equal"
+                        aria-label="計算結果"
+                    >
+                        =
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                class="bottom-light"
+                aria-hidden="true"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <canvas
+        id="particles"
+        aria-hidden="true"
+    ></canvas>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
