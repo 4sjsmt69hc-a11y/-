@@ -31,9 +31,10 @@
         rel="stylesheet"
     >
 
+    <!-- キャッシュ回避 -->
     <link
         rel="stylesheet"
-        href="style.css"
+        href="style.css?v=20260711-1"
     >
 </head>
 
@@ -141,168 +142,47 @@
             <!-- 下半分の操作部分 -->
             <div class="main-controls">
 
-                <!-- 数字ボタン 1〜9 -->
+                <!-- 数字ボタン -->
                 <div
                     class="number-cluster"
                     aria-label="数字入力"
                 >
 
-                    <button
-                        class="number-key key-1"
-                        type="button"
-                        data-number="1"
-                        aria-label="1"
-                    >
-                        <span>1</span>
-                    </button>
-
-                    <button
-                        class="number-key key-2"
-                        type="button"
-                        data-number="2"
-                        aria-label="2"
-                    >
-                        <span>2</span>
-                    </button>
-
-                    <button
-                        class="number-key key-3"
-                        type="button"
-                        data-number="3"
-                        aria-label="3"
-                    >
-                        <span>3</span>
-                    </button>
-
-                    <button
-                        class="number-key key-4"
-                        type="button"
-                        data-number="4"
-                        aria-label="4"
-                    >
-                        <span>4</span>
-                    </button>
-
-                    <button
-                        class="number-key key-5"
-                        type="button"
-                        data-number="5"
-                        aria-label="5"
-                    >
-                        <span>5</span>
-                    </button>
-
-                    <button
-                        class="number-key key-6"
-                        type="button"
-                        data-number="6"
-                        aria-label="6"
-                    >
-                        <span>6</span>
-                    </button>
-
-                    <button
-                        class="number-key key-7"
-                        type="button"
-                        data-number="7"
-                        aria-label="7"
-                    >
-                        <span>7</span>
-                    </button>
-
-                    <button
-                        class="number-key key-8"
-                        type="button"
-                        data-number="8"
-                        aria-label="8"
-                    >
-                        <span>8</span>
-                    </button>
-
-                    <button
-                        class="number-key key-9"
-                        type="button"
-                        data-number="9"
-                        aria-label="9"
-                    >
-                        <span>9</span>
-                    </button>
+                    <button class="number-key key-1" type="button" data-number="1"><span>1</span></button>
+                    <button class="number-key key-2" type="button" data-number="2"><span>2</span></button>
+                    <button class="number-key key-3" type="button" data-number="3"><span>3</span></button>
+                    <button class="number-key key-4" type="button" data-number="4"><span>4</span></button>
+                    <button class="number-key key-5" type="button" data-number="5"><span>5</span></button>
+                    <button class="number-key key-6" type="button" data-number="6"><span>6</span></button>
+                    <button class="number-key key-7" type="button" data-number="7"><span>7</span></button>
+                    <button class="number-key key-8" type="button" data-number="8"><span>8</span></button>
+                    <button class="number-key key-9" type="button" data-number="9"><span>9</span></button>
 
                 </div>
 
-                <!-- 左下の白い0ボタン -->
+                <!-- 左下の0 -->
                 <button
                     class="zero-key"
                     type="button"
                     data-number="0"
-                    aria-label="0"
                 >
                     <span>0</span>
                 </button>
 
                 <!-- 演算ボタン -->
-                <div
-                    class="operator-cluster"
-                    aria-label="演算操作"
-                >
+                <div class="operator-cluster">
 
-                    <button
-                        class="operator-key operator-divide"
-                        type="button"
-                        data-action="operator"
-                        data-value="/"
-                        aria-label="割り算"
-                    >
-                        ÷
-                    </button>
+                    <button class="operator-key operator-divide" data-action="operator" data-value="/">÷</button>
 
-                    <button
-                        class="operator-key operator-multiply"
-                        type="button"
-                        data-action="operator"
-                        data-value="*"
-                        aria-label="掛け算"
-                    >
-                        ×
-                    </button>
+                    <button class="operator-key operator-multiply" data-action="operator" data-value="*">×</button>
 
-                    <button
-                        class="operator-key operator-minus"
-                        type="button"
-                        data-action="operator"
-                        data-value="-"
-                        aria-label="引き算"
-                    >
-                        −
-                    </button>
+                    <button class="operator-key operator-minus" data-action="operator" data-value="-">−</button>
 
-                    <button
-                        class="operator-key operator-plus"
-                        type="button"
-                        data-action="operator"
-                        data-value="+"
-                        aria-label="足し算"
-                    >
-                        ＋
-                    </button>
+                    <button class="operator-key operator-plus" data-action="operator" data-value="+">＋</button>
 
-                    <button
-                        class="operator-key operator-decimal"
-                        type="button"
-                        data-number="."
-                        aria-label="小数点"
-                    >
-                        .
-                    </button>
+                    <button class="operator-key operator-decimal" data-number=".">.</button>
 
-                    <button
-                        class="operator-key operator-equal"
-                        type="button"
-                        data-action="equal"
-                        aria-label="計算結果"
-                    >
-                        =
-                    </button>
+                    <button class="operator-key operator-equal" data-action="equal">=</button>
 
                 </div>
 
@@ -323,7 +203,6 @@
 
     </main>
 
-    <!-- パーティクル描画 -->
     <canvas
         id="particles"
         aria-hidden="true"
