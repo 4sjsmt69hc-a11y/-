@@ -1326,3 +1326,497 @@ body {
         transform: scale(0.83);
     }
 }
+/* ========================================
+   参考画像寄せレイアウト v3
+   9個の青リング + 左下の白い0ボタン
+======================================== */
+
+/* 本体の縦長感と余白を調整 */
+
+.calculator {
+    width: min(385px, 94vw);
+    min-height: 735px;
+
+    padding:
+        27px
+        25px
+        32px;
+}
+
+/* ディスプレイを少し縦長に */
+
+.display-panel {
+    min-height: 134px;
+    margin-bottom: 26px;
+}
+
+/* 操作部 */
+
+.control-panel {
+    min-height: 515px;
+    padding-top: 4px;
+}
+
+/* 上部4ボタンを少し細くする */
+
+.utility-buttons {
+    width: 76%;
+    gap: 17px;
+
+    margin:
+        2px
+        auto
+        29px;
+}
+
+.utility-key {
+    height: 39px;
+    font-size: 0.68rem;
+}
+
+/* 数字と0ボタンをまとめる領域 */
+
+.number-area {
+    position: relative;
+
+    width: 304px;
+    height: 382px;
+
+    margin:
+        0
+        auto;
+}
+
+/* 9個の数字リング */
+
+.number-pad {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 54px);
+
+    grid-template-rows:
+        repeat(5, 54px);
+
+    gap: 10px;
+
+    width: max-content;
+    height: max-content;
+
+    margin:
+        0
+        auto;
+
+    transform: none;
+}
+
+/*
+           1
+
+       2       3
+
+   4       5       6
+
+       7       8
+
+           9
+*/
+
+.number-pad .key-1 {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.number-pad .key-2 {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.number-pad .key-3 {
+    grid-column: 4;
+    grid-row: 2;
+}
+
+.number-pad .key-4 {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.number-pad .key-5 {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+.number-pad .key-6 {
+    grid-column: 5;
+    grid-row: 3;
+}
+
+.number-pad .key-7 {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+.number-pad .key-8 {
+    grid-column: 4;
+    grid-row: 4;
+}
+
+.number-pad .key-9 {
+    grid-column: 3;
+    grid-row: 5;
+}
+
+/* 過去の絶対配置指定を完全に解除 */
+
+.number-pad .ring-key {
+    position: relative;
+
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    width: 54px;
+    height: 54px;
+
+    align-self: center;
+    justify-self: center;
+
+    border-width: 4px;
+}
+
+/* 普段は数字を薄く表示 */
+
+.number-pad .ring-key {
+    color:
+        rgba(
+            185,
+            250,
+            255,
+            0.24
+        );
+
+    text-shadow: none;
+}
+
+/* ホバー時は少しだけ見やすく */
+
+.number-pad .ring-key:hover {
+    color:
+        rgba(
+            210,
+            252,
+            255,
+            0.58
+        );
+
+    text-shadow:
+        0 0 7px
+        rgba(
+            66,
+            232,
+            255,
+            0.6
+        );
+}
+
+/* 押した瞬間に数字が強く光る */
+
+.number-pad .ring-key:active,
+.number-pad .ring-key.is-pressed {
+    color: #ffffff;
+
+    text-shadow:
+        0 0 4px #ffffff,
+        0 0 10px var(--cyan),
+        0 0 22px
+        rgba(
+            66,
+            232,
+            255,
+            0.98
+        );
+
+    filter:
+        brightness(1.45);
+}
+
+/* ========================================
+   左下の白い0ボタン
+======================================== */
+
+.zero-key {
+    position: absolute;
+
+    left: 10px;
+    bottom: 5px;
+
+    width: 29px;
+    height: 29px;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(
+            235,
+            250,
+            255,
+            0.9
+        );
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    color:
+        rgba(
+            28,
+            48,
+            60,
+            0.62
+        );
+
+    font: inherit;
+    font-size: 0.56rem;
+    font-weight: 700;
+
+    background:
+        radial-gradient(
+            circle at 36% 28%,
+            #ffffff 0%,
+            #eaf5f8 38%,
+            #a8bcc5 76%,
+            #6f838d 100%
+        );
+
+    box-shadow:
+        inset 0 2px 3px
+        rgba(
+            255,
+            255,
+            255,
+            0.95
+        ),
+
+        inset 0 -4px 6px
+        rgba(
+            53,
+            79,
+            92,
+            0.26
+        ),
+
+        0 4px 0
+        #627985,
+
+        0 7px 10px
+        rgba(
+            0,
+            0,
+            0,
+            0.42
+        );
+
+    text-shadow:
+        0 1px 0
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
+
+    transition:
+        transform 100ms ease,
+        box-shadow 100ms ease,
+        filter 100ms ease;
+}
+
+/* 小さな装飾っぽい反射 */
+
+.zero-key::before {
+    content: "";
+
+    position: absolute;
+
+    top: 5px;
+    left: 7px;
+
+    width: 7px;
+    height: 4px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.82
+        );
+
+    filter: blur(0.4px);
+
+    pointer-events: none;
+}
+
+/* 発光はさせず、少し明るくなるだけ */
+
+.zero-key:hover {
+    filter: brightness(1.08);
+}
+
+/* 押すと物理的に沈む */
+
+.zero-key:active,
+.zero-key.is-pressed {
+    transform:
+        translateY(4px)
+        scale(0.96);
+
+    box-shadow:
+        inset 0 5px 8px
+        rgba(
+            43,
+            67,
+            79,
+            0.35
+        ),
+
+        inset 0 1px 2px
+        rgba(
+            255,
+            255,
+            255,
+            0.65
+        ),
+
+        0 1px 0
+        #627985,
+
+        0 3px 6px
+        rgba(
+            0,
+            0,
+            0,
+            0.34
+        );
+}
+
+/* ========================================
+   右下の演算ボタンを少し小型化
+======================================== */
+
+.operator-pad {
+    right: 7px;
+    bottom: 8px;
+
+    grid-template-columns:
+        repeat(3, 29px);
+
+    gap: 7px;
+}
+
+.mini-key {
+    width: 29px;
+    height: 29px;
+
+    border-width: 2px;
+    font-size: 0.56rem;
+}
+
+/* ========================================
+   下側に参考画像風の発光バーを追加
+======================================== */
+
+.control-panel::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -20px;
+
+    width: 58%;
+    height: 6px;
+
+    transform:
+        translateX(-50%);
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            var(--cyan-light),
+            var(--cyan),
+            transparent
+        );
+
+    box-shadow:
+        0 0 7px var(--cyan),
+        0 0 18px
+        rgba(
+            66,
+            232,
+            255,
+            0.72
+        ),
+
+        0 0 35px
+        rgba(
+            66,
+            232,
+            255,
+            0.25
+        );
+
+    opacity: 0.82;
+
+    pointer-events: none;
+}
+
+/* ========================================
+   スマホ調整
+======================================== */
+
+@media (max-width: 520px) {
+    .calculator {
+        min-height: 690px;
+    }
+
+    .control-panel {
+        min-height: 480px;
+    }
+
+    .number-area {
+        transform: scale(0.92);
+        transform-origin: top center;
+
+        margin-bottom: -25px;
+    }
+
+    .operator-pad {
+        right: 5px;
+        bottom: 11px;
+    }
+}
+
+@media (max-width: 365px) {
+    .number-area {
+        transform: scale(0.84);
+
+        margin-bottom: -55px;
+    }
+
+    .utility-buttons {
+        width: 84%;
+        gap: 10px;
+    }
+}
