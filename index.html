@@ -1,306 +1,165 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Yuuka Calculator</title>
 
-    <meta
-        name="theme-color"
-        content="#071525"
-    >
+    <link rel="stylesheet" href="style.css">
 
-    <title>yuuka_no_dentaku</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
 </head>
 
 <body>
 
-    <div
-        class="background-grid"
-        aria-hidden="true"
-    ></div>
+<div class="background-grid"></div>
 
-    <main class="app-shell">
+<main class="calculator">
 
-        <section
-            class="calculator"
-            aria-label="yuuka_no_dentaku"
-        >
+    <!-- 上フレーム -->
+    <div class="frame-top">
 
-            <!-- 上フレーム -->
-            <div
-                class="device-frame frame-top"
-                aria-hidden="true"
-            >
-                <div class="frame-light"></div>
-            </div>
+        <div class="frame-light"></div>
 
-            <!-- 右上の水色装飾 -->
-            <div
-                class="cyan-module"
-                aria-hidden="true"
-            ></div>
+        <div class="frame-left"></div>
+        <div class="frame-right"></div>
 
-            <!-- 上側の白い装飾丸 -->
-            <div
-                class="top-white-dot"
-                aria-hidden="true"
-            ></div>
+    </div>
 
-            <!-- 表示部分 -->
-            <header class="display-area">
+    <!-- ブルーアーカイブの水色パーツ -->
+    <div class="sensor-block"></div>
 
-                <div class="display-header">
+    <!-- 左上装飾 -->
+    <div class="top-decoration"></div>
 
-                    <span class="status-dot"></span>
+    <!-- 左下0ボタン -->
+    <button
+        class="zero-button"
+        data-number="0">
+    </button>
 
-                    <span class="device-name">
-                        YUUKA_NO_DENTAKU
-                    </span>
+    <!-- 表示 -->
+    <section class="display-area">
 
-                </div>
+        <div id="display">
+            0
+        </div>
 
-                <div
-                    id="display"
-                    class="display-value"
-                    aria-live="polite"
-                >
-                    0
-                </div>
+    </section>
 
-            </header>
+    <!-- 左上ボタン -->
+    <section class="top-buttons">
 
-            <!-- 銀ボタン -->
-            <div class="utility-buttons">
+        <button
+            data-action="clear">
+            C
+        </button>
 
-                <button
-                    class="utility-key utility-key-a"
-                    type="button"
-                    data-action="clear"
-                    aria-label="クリア"
-                >
-                    C
-                </button>
+        <button
+            data-action="backspace">
+            ⌫
+        </button>
 
-                <button
-                    class="utility-key utility-key-b"
-                    type="button"
-                    data-action="backspace"
-                    aria-label="一文字削除"
-                >
-                    ⌫
-                </button>
+        <button
+            data-action="percent">
+            %
+        </button>
 
-                <button
-                    class="utility-key utility-key-c"
-                    type="button"
-                    data-action="percent"
-                    aria-label="パーセント"
-                >
-                    %
-                </button>
+        <button
+            data-action="operator"
+            data-value="/">
+            ÷
+        </button>
 
-                <button
-                    class="utility-key utility-key-d"
-                    type="button"
-                    data-action="sign"
-                    aria-label="正負切り替え"
-                >
-                    ±
-                </button>
+    </section>
 
-            </div>
+    <!-- 数字 -->
+    <section class="number-cluster">
 
-            <!-- 操作部分 -->
-            <div class="main-controls">
+        <button class="num one" data-number="1">1</button>
 
-                <div class="number-cluster">
+        <button class="num two" data-number="2">2</button>
+        <button class="num three" data-number="3">3</button>
 
-                    <button
-                        class="number-key key-1"
-                        type="button"
-                        data-number="1"
-                    >
-                        <span>1</span>
-                    </button>
+        <button class="num four" data-number="4">4</button>
+        <button class="num five" data-number="5">5</button>
+        <button class="num six" data-number="6">6</button>
 
-                    <button
-                        class="number-key key-2"
-                        type="button"
-                        data-number="2"
-                    >
-                        <span>2</span>
-                    </button>
+        <button class="num seven" data-number="7">7</button>
+        <button class="num eight" data-number="8">8</button>
 
-                    <button
-                        class="number-key key-3"
-                        type="button"
-                        data-number="3"
-                    >
-                        <span>3</span>
-                    </button>
+        <button class="num nine" data-number="9">9</button>
 
-                    <button
-                        class="number-key key-4"
-                        type="button"
-                        data-number="4"
-                    >
-                        <span>4</span>
-                    </button>
+    </section>
 
-                    <button
-                        class="number-key key-5"
-                        type="button"
-                        data-number="5"
-                    >
-                        <span>5</span>
-                    </button>
+    <!-- 演算 -->
+    <section class="operator-cluster">
 
-                    <button
-                        class="number-key key-6"
-                        type="button"
-                        data-number="6"
-                    >
-                        <span>6</span>
-                    </button>
+        <button
+            class="op add"
+            data-action="operator"
+            data-value="+">
+            +
+        </button>
 
-                    <button
-                        class="number-key key-7"
-                        type="button"
-                        data-number="7"
-                    >
-                        <span>7</span>
-                    </button>
+        <button
+            class="op multiply"
+            data-action="operator"
+            data-value="*">
+            ×
+        </button>
 
-                    <button
-                        class="number-key key-8"
-                        type="button"
-                        data-number="8"
-                    >
-                        <span>8</span>
-                    </button>
+        <button
+            class="op divide"
+            data-action="operator"
+            data-value="/">
+            ÷
+        </button>
 
-                    <button
-                        class="number-key key-9"
-                        type="button"
-                        data-number="9"
-                    >
-                        <span>9</span>
-                    </button>
+        <button
+            class="op minus"
+            data-action="operator"
+            data-value="-">
+            −
+        </button>
 
-                </div>
+        <button
+            class="op dot"
+            data-number=".">
+            .
+        </button>
 
-                <!-- 左下の0ボタン -->
-                <button
-                    class="zero-key"
-                    type="button"
-                    data-number="0"
-                    aria-label="0"
-                >
-                    0
-                </button>
+        <button
+            class="op equal"
+            data-action="equal">
+            =
+        </button>
 
-                <!-- 右下の演算ボタン -->
-                <div class="operator-pad">
+    </section>
 
-                    <button
-                        class="operator-key"
-                        type="button"
-                        data-action="operator"
-                        data-value="/"
-                    >
-                        ÷
-                    </button>
+    <!-- 下フレーム -->
+    <div class="frame-bottom">
 
-                    <button
-                        class="operator-key"
-                        type="button"
-                        data-action="operator"
-                        data-value="*"
-                    >
-                        ×
-                    </button>
+        <div class="frame-light"></div>
 
-                    <button
-                        class="operator-key"
-                        type="button"
-                        data-action="operator"
-                        data-value="-"
-                    >
-                        −
-                    </button>
+        <div class="frame-left"></div>
+        <div class="frame-right"></div>
 
-                    <button
-                        class="operator-key"
-                        type="button"
-                        data-action="operator"
-                        data-value="+"
-                    >
-                        ＋
-                    </button>
+    </div>
 
-                    <button
-                        class="operator-key"
-                        type="button"
-                        data-number="."
-                    >
-                        .
-                    </button>
+</main>
 
-                    <button
-                        class="operator-key equal-key"
-                        type="button"
-                        data-action="equal"
-                    >
-                        =
-                    </button>
+<canvas id="particles"></canvas>
 
-                </div>
-
-            </div>
-
-            <!-- 下フレーム -->
-            <div
-                class="device-frame frame-bottom"
-                aria-hidden="true"
-            >
-                <div class="frame-light"></div>
-            </div>
-
-        </section>
-
-    </main>
-
-    <canvas
-        id="particles"
-        aria-hidden="true"
-    ></canvas>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
+
 </html>
