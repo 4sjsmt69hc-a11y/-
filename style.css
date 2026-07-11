@@ -1,28 +1,33 @@
+/* =========================================================
+   style.css Ver.4
+   Part1：基本・背景・本体・上下フレーム・表示部分
+   このコードを style.css の先頭に貼り付ける
+========================================================= */
+
 :root {
-    --bg-0: #020810;
-    --bg-1: #061321;
-    --bg-2: #0b2236;
+    --background-deep: #020811;
+    --background-middle: #061626;
+    --background-light: #0d2a43;
 
-    --panel-top: #263f5b;
-    --panel-middle: #10253d;
-    --panel-bottom: #040d19;
+    --body-top: #243d59;
+    --body-middle: #10243a;
+    --body-bottom: #040d18;
 
-    --blue: #008dff;
-    --blue-light: #30c9ff;
-    --blue-soft: #bff4ff;
+    --blue: #087fff;
+    --blue-bright: #2fb8ff;
+    --blue-soft: #bfeeff;
 
-    --metal-white: #f8feff;
-    --metal-light: #dce9ed;
-    --metal-mid: #aebfc7;
-    --metal-dark: #657b86;
+    --metal-white: #fbffff;
+    --metal-light: #dce9ee;
+    --metal-middle: #a9bcc5;
+    --metal-dark: #617782;
 
-    --text: #ddfbff;
-    --text-muted: #809fb0;
+    --text-light: #dff8ff;
 }
 
-/* =====================================
-   基本
-===================================== */
+/* =========================================================
+   リセット
+========================================================= */
 
 * {
     box-sizing: border-box;
@@ -35,7 +40,7 @@ html {
 body {
     min-height: 100vh;
     margin: 0;
-    padding: 60px 18px;
+    padding: 56px 18px;
 
     display: flex;
     align-items: center;
@@ -43,7 +48,7 @@ body {
 
     overflow-x: hidden;
 
-    color: var(--text);
+    color: var(--text-light);
 
     font-family:
         "Orbitron",
@@ -53,25 +58,29 @@ body {
     background:
         radial-gradient(
             circle at 50% 8%,
-            rgba(25, 137, 220, 0.26),
+            rgba(17, 126, 205, 0.27),
             transparent 35%
         ),
         radial-gradient(
-            circle at 14% 72%,
-            rgba(22, 95, 170, 0.2),
-            transparent 38%
+            circle at 13% 72%,
+            rgba(24, 95, 166, 0.2),
+            transparent 39%
         ),
         linear-gradient(
             145deg,
-            var(--bg-2),
-            var(--bg-1) 49%,
-            var(--bg-0)
+            var(--background-light),
+            var(--background-middle) 48%,
+            var(--background-deep)
         );
 }
 
-/* =====================================
-   背景
-===================================== */
+button {
+    font: inherit;
+}
+
+/* =========================================================
+   背景グリッド
+========================================================= */
 
 .background-grid {
     position: fixed;
@@ -82,12 +91,12 @@ body {
 
     background-image:
         linear-gradient(
-            rgba(45, 150, 215, 0.055) 1px,
+            rgba(55, 155, 218, 0.055) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(45, 150, 215, 0.055) 1px,
+            rgba(55, 155, 218, 0.055) 1px,
             transparent 1px
         );
 
@@ -104,7 +113,7 @@ body {
         linear-gradient(
             112deg,
             transparent 0%,
-            rgba(54, 162, 224, 0.07) 47%,
+            rgba(71, 180, 237, 0.07) 47%,
             transparent 58%
         );
 
@@ -112,154 +121,229 @@ body {
 
     animation:
         backgroundSweep
-        11s
+        12s
         linear
         infinite;
 }
 
-/* =====================================
-   電卓本体
-===================================== */
+.background-grid::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 38%,
+            rgba(0, 0, 0, 0.34) 100%
+        );
+}
+
+/* =========================================================
+   ページ中央配置
+========================================================= */
 
 .app-shell {
     width: 100%;
 
     display: flex;
+    align-items: center;
     justify-content: center;
 }
+
+/* =========================================================
+   電卓本体
+========================================================= */
 
 .calculator {
     position: relative;
 
     width: min(430px, 94vw);
-    min-height: 780px;
+    height: 710px;
 
     padding:
-        54px
-        27px
-        58px;
+        50px
+        26px
+        52px;
 
     isolation: isolate;
 
     border:
         1px solid
-        rgba(171, 225, 255, 0.24);
+        rgba(181, 228, 255, 0.24);
 
-    border-radius: 18px;
+    border-radius: 17px;
 
     background:
         linear-gradient(
             150deg,
-            var(--panel-top),
-            var(--panel-middle) 41%,
-            var(--panel-bottom)
+            var(--body-top) 0%,
+            var(--body-middle) 40%,
+            var(--body-bottom) 100%
         );
 
     box-shadow:
-        0 44px 105px
-        rgba(0, 0, 0, 0.66),
+        0 42px 100px
+        rgba(0, 0, 0, 0.68),
 
         0 0 0 5px
-        rgba(170, 223, 255, 0.035),
+        rgba(173, 225, 255, 0.035),
 
         inset 0 1px 0
-        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.13),
 
-        inset 0 -35px 48px
-        rgba(0, 0, 0, 0.34),
+        inset 0 -34px 48px
+        rgba(0, 0, 0, 0.35),
 
-        0 0 32px
-        rgba(0, 137, 255, 0.08);
+        0 0 30px
+        rgba(0, 126, 255, 0.08);
 
     animation:
         calculatorEnter
-        800ms
+        700ms
         cubic-bezier(0.16, 1, 0.3, 1)
         both;
 }
 
-/* =====================================
-   銀フレーム
-===================================== */
+/* 本体表面の薄い光沢 */
+
+.calculator::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: -1;
+    pointer-events: none;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            115deg,
+            rgba(255, 255, 255, 0.055),
+            transparent 24%,
+            transparent 70%,
+            rgba(0, 133, 255, 0.025)
+        );
+}
+
+/* 本体下側の影 */
+
+.calculator::after {
+    content: "";
+
+    position: absolute;
+
+    left: 7%;
+    right: 7%;
+    bottom: -24px;
+
+    height: 34px;
+
+    z-index: -2;
+    pointer-events: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(0, 0, 0, 0.48);
+
+    filter: blur(17px);
+}
+
+/* =========================================================
+   上下共通フレーム
+========================================================= */
 
 .device-frame {
     position: absolute;
     left: 50%;
 
-    width: calc(100% + 26px);
-    height: 24px;
+    width: calc(100% + 24px);
+    height: 22px;
 
     transform: translateX(-50%);
 
-    z-index: 30;
+    z-index: 40;
     pointer-events: none;
+}
+
+/* 中央の細い銀バー */
+
+.frame-center {
+    position: absolute;
+    inset: 0;
 
     border:
         1px solid
-        rgba(250, 255, 255, 0.82);
+        rgba(250, 255, 255, 0.8);
 
     border-radius: 7px;
 
     background:
         linear-gradient(
             180deg,
-            var(--metal-white),
-            var(--metal-light) 28%,
-            var(--metal-mid) 67%,
-            var(--metal-dark)
+            var(--metal-white) 0%,
+            var(--metal-light) 29%,
+            var(--metal-middle) 68%,
+            var(--metal-dark) 100%
         );
 
     box-shadow:
         inset 0 3px 3px
-        rgba(255, 255, 255, 0.93),
+        rgba(255, 255, 255, 0.92),
 
         inset 0 -5px 7px
-        rgba(35, 62, 76, 0.31),
+        rgba(35, 61, 74, 0.3),
 
-        0 6px 14px
+        0 6px 13px
         rgba(0, 0, 0, 0.5);
 }
 
-/* 両端を大きく張り出す */
+/* 左右の張り出しパーツ */
 
-.device-frame::before,
-.device-frame::after {
-    content: "";
-
+.frame-end {
     position: absolute;
     top: -1px;
 
-    width: 116px;
-    height: 52px;
+    width: 108px;
+    height: 47px;
+
+    z-index: 2;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff,
+            #ffffff 0%,
             #dce9ed 28%,
-            #a9bbc4 67%,
-            #647985
+            #a8bbc4 67%,
+            #647985 100%
         );
 
     box-shadow:
         inset 0 2px 3px
-        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.92),
 
         inset 0 -7px 8px
-        rgba(34, 59, 72, 0.28);
+        rgba(34, 59, 72, 0.28),
+
+        0 5px 10px
+        rgba(0, 0, 0, 0.3);
 }
 
-.device-frame::before {
+.frame-end-left {
     left: -1px;
 
     clip-path:
         polygon(
             8% 0,
             100% 0,
-            87% 46%,
+            88% 44%,
             77% 100%,
             0 100%,
-            0 24%
+            0 25%
         );
 
     border-radius:
@@ -269,17 +353,17 @@ body {
         4px;
 }
 
-.device-frame::after {
+.frame-end-right {
     right: -1px;
 
     clip-path:
         polygon(
             0 0,
             92% 0,
-            100% 24%,
+            100% 25%,
             100% 100%,
             23% 100%,
-            13% 46%
+            12% 44%
         );
 
     border-radius:
@@ -289,38 +373,35 @@ body {
         8px;
 }
 
+/* 上フレーム */
+
 .frame-top {
-    top: -11px;
+    top: -10px;
 }
 
+/* 下フレームは上下反転 */
+
 .frame-bottom {
-    bottom: -11px;
+    bottom: -10px;
 
     transform:
         translateX(-50%)
         rotate(180deg);
 }
 
-/* ライトをフレーム外側へ */
-
-.frame-top .frame-light {
-    top: -8px;
-}
-
-.frame-bottom .frame-light {
-    top: -8px;
-}
+/* フレーム外側の青いライト */
 
 .frame-light {
     position: absolute;
     left: 50%;
+    top: -8px;
 
-    width: 52%;
+    width: 51%;
     height: 4px;
 
     transform: translateX(-50%);
 
-    z-index: 4;
+    z-index: 5;
 
     border-radius: 999px;
 
@@ -329,15 +410,20 @@ body {
             90deg,
             transparent,
             var(--blue),
-            var(--blue-light),
+            var(--blue-bright),
             var(--blue),
             transparent
         );
 
     box-shadow:
-        0 0 7px var(--blue),
-        0 0 18px rgba(0, 141, 255, 0.88),
-        0 0 31px rgba(0, 141, 255, 0.38);
+        0 0 7px
+        var(--blue),
+
+        0 0 18px
+        rgba(8, 127, 255, 0.86),
+
+        0 0 31px
+        rgba(8, 127, 255, 0.35);
 
     animation:
         frameLightPulse
@@ -346,43 +432,43 @@ body {
         infinite;
 }
 
-/* =====================================
-   水色装飾
-===================================== */
+/* =========================================================
+   右上の水色装飾
+========================================================= */
 
 .cyan-module {
     position: absolute;
 
-    top: 28px;
+    top: 27px;
     right: -12px;
 
     width: 40px;
-    height: 28px;
+    height: 27px;
 
-    z-index: 27;
+    z-index: 35;
     pointer-events: none;
 
     clip-path:
         polygon(
             0 14%,
-            74% 0,
-            100% 23%,
+            73% 0,
+            100% 22%,
             100% 80%,
-            77% 100%,
+            76% 100%,
             0 86%
         );
 
     border:
         1px solid
-        rgba(207, 254, 255, 0.72);
+        rgba(207, 254, 255, 0.7);
 
     background:
         linear-gradient(
             140deg,
-            #e5feff,
-            #8cf5fb 24%,
-            #44c9d8 62%,
-            #15758e
+            #e5feff 0%,
+            #8cf5fb 23%,
+            #43c6d7 62%,
+            #15758e 100%
         );
 
     box-shadow:
@@ -396,18 +482,32 @@ body {
         rgba(0, 0, 0, 0.42),
 
         0 0 13px
-        rgba(53, 232, 255, 0.46);
+        rgba(53, 232, 255, 0.45);
 }
 
-/* =====================================
-   上側の白丸装飾
-===================================== */
+.cyan-module::after {
+    content: "";
 
-.top-white-dot {
     position: absolute;
 
-    top: 77px;
-    left: 22px;
+    top: 5px;
+    left: 7px;
+
+    width: 20px;
+    height: 3px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(240, 255, 255, 0.7);
+}
+
+/* =========================================================
+   左上の白丸装飾
+========================================================= */
+
+.white-decoration {
+    position: absolute;
 
     width: 33px;
     height: 33px;
@@ -443,61 +543,41 @@ body {
         rgba(0, 0, 0, 0.4);
 }
 
-/* =====================================
-   表示部分
-===================================== */
+.white-decoration-top {
+    top: 64px;
+    left: 20px;
+}
+
+/* =========================================================
+   計算結果表示
+========================================================= */
 
 .display-area {
     position: relative;
 
-    min-height: 92px;
+    width: 100%;
+    height: 86px;
 
     margin:
-        84px
+        92px
         0
-        6px;
+        12px;
 
     padding:
-        4px
-        38px
-        4px;
+        0
+        52px
+        8px;
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+    align-items: flex-end;
+    justify-content: flex-end;
 
-.display-header {
-    display: flex;
-    align-items: center;
-
-    gap: 9px;
-}
-
-.status-dot {
-    width: 5px;
-    height: 5px;
-
-    border-radius: 50%;
-
-    background: var(--blue-light);
-
-    box-shadow:
-        0 0 7px
-        var(--blue);
-}
-
-.device-name {
-    color: var(--text-muted);
-
-    font-size: 0.58rem;
-    font-weight: 600;
-
-    letter-spacing: 0.15em;
+    background: transparent;
 }
 
 .display-value {
     width: 100%;
+    max-width: 280px;
 
     overflow: hidden;
 
@@ -505,14 +585,14 @@ body {
 
     font-size:
         clamp(
-            1.75rem,
-            7vw,
-            2.35rem
+            1.55rem,
+            6vw,
+            2.1rem
         );
 
     font-weight: 600;
-
     line-height: 1;
+
     letter-spacing: 0.035em;
 
     text-align: right;
@@ -520,168 +600,301 @@ body {
     text-overflow: ellipsis;
 
     text-shadow:
-        0 0 5px
-        rgba(191, 244, 255, 0.82),
+        0 0 4px
+        rgba(191, 238, 255, 0.82),
 
-        0 0 14px
-        rgba(0, 141, 255, 0.58),
+        0 0 13px
+        rgba(0, 131, 255, 0.55),
 
-        0 0 27px
-        rgba(0, 141, 255, 0.26);
+        0 0 26px
+        rgba(0, 131, 255, 0.22);
 }
 
-/* =====================================
-   銀ボタン
-===================================== */
+/* =========================================================
+   Part1用アニメーション
+========================================================= */
+
+@keyframes calculatorEnter {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(24px)
+            scale(0.97);
+
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter: blur(0);
+    }
+}
+
+@keyframes frameLightPulse {
+    0%,
+    100% {
+        opacity: 0.68;
+
+        transform:
+            translateX(-50%)
+            scaleX(0.93);
+    }
+
+    50% {
+        opacity: 1;
+
+        transform:
+            translateX(-50%)
+            scaleX(1.04);
+    }
+}
+
+@keyframes backgroundSweep {
+    from {
+        transform:
+            translateX(-125%);
+    }
+
+    to {
+        transform:
+            translateX(125%);
+    }
+}
+/* =========================================================
+   style.css Ver.4
+   Part2：銀ボタン・数字ボタン
+   Part1の直後へ、そのまま続けて貼り付ける
+========================================================= */
+
+/* =========================================================
+   上部の銀ボタン
+========================================================= */
 
 .utility-buttons {
+    position: relative;
+
     display: grid;
 
     grid-template-columns:
-        40px
-        40px
-        66px
-        40px
-        40px;
+        38px
+        38px
+        72px
+        38px
+        38px;
 
     grid-template-areas:
-        "a b gap c d";
+        "clear backspace gap percent sign";
 
     align-items: center;
     justify-content: center;
 
-    column-gap: 14px;
+    column-gap: 16px;
+
+    width: 100%;
 
     margin:
-        40px
+        28px
         auto
-        10px;
+        0;
 }
 
-.utility-key-a {
-    grid-area: a;
+.utility-key-clear {
+    grid-area: clear;
 }
 
-.utility-key-b {
-    grid-area: b;
+.utility-key-backspace {
+    grid-area: backspace;
 }
 
-.utility-key-c {
-    grid-area: c;
+.utility-gap {
+    grid-area: gap;
+
+    width: 72px;
+    height: 1px;
+
+    pointer-events: none;
 }
 
-.utility-key-d {
-    grid-area: d;
+.utility-key-percent {
+    grid-area: percent;
+}
+
+.utility-key-sign {
+    grid-area: sign;
 }
 
 .utility-key {
     position: relative;
 
-    width: 40px;
-    height: 78px;
+    width: 38px;
+    height: 86px;
 
     padding: 0;
 
+    overflow: hidden;
+
     border:
         1px solid
-        rgba(237, 252, 255, 0.75);
+        rgba(240, 253, 255, 0.78);
 
-    border-radius: 18px;
+    border-radius:
+        19px;
 
     cursor: pointer;
 
     color:
         rgba(
-            25,
-            42,
-            52,
-            0.25
+            17,
+            34,
+            44,
+            0.24
         );
 
-    font: inherit;
-    font-size: 0.62rem;
+    font-size: 0.61rem;
     font-weight: 700;
 
     background:
         linear-gradient(
             90deg,
-            #71858f,
-            #edf9fc 22%,
-            #c5d3d8 50%,
-            #f5fdff 78%,
-            #6e838d
+            #6d828d 0%,
+            #c7d8de 10%,
+            #f4fcfe 25%,
+            #c3d2d8 49%,
+            #f7feff 72%,
+            #a9bbc4 88%,
+            #687d87 100%
         );
 
     box-shadow:
         inset 0 3px 4px
-        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.92),
 
-        inset 0 -10px 11px
-        rgba(31, 57, 70, 0.27),
+        inset 0 -10px 12px
+        rgba(33, 59, 72, 0.28),
+
+        inset 5px 0 7px
+        rgba(27, 50, 61, 0.13),
+
+        inset -4px 0 6px
+        rgba(255, 255, 255, 0.23),
 
         0 6px 0
-        #607580,
+        #566d78,
 
-        0 10px 13px
+        0 11px 14px
         rgba(0, 0, 0, 0.44);
 
+    text-shadow: none;
+
     transition:
-        transform 100ms ease,
-        filter 100ms ease,
+        transform 110ms ease,
+        filter 110ms ease,
         color 120ms ease,
         text-shadow 120ms ease,
-        box-shadow 100ms ease;
+        box-shadow 110ms ease;
 }
 
-/* 上部の黒丸 */
+/* 上側の黒い穴 */
 
 .utility-key::before {
     content: "";
 
     position: absolute;
 
-    top: 9px;
+    top: 10px;
     left: 50%;
 
-    width: 7px;
-    height: 7px;
+    width: 11px;
+    height: 11px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     border-radius: 50%;
 
     background:
         radial-gradient(
-            circle at 35% 30%,
-            #454545,
-            #111111 72%,
-            #000000
+            circle at 36% 30%,
+            #4e5558 0%,
+            #181b1d 38%,
+            #070809 74%,
+            #000000 100%
         );
 
     box-shadow:
-        inset 0 1px 2px
-        rgba(0, 0, 0, 0.9),
+        inset 0 2px 3px
+        rgba(0, 0, 0, 0.95),
+
+        inset 0 -1px 1px
+        rgba(255, 255, 255, 0.12),
 
         0 1px 1px
-        rgba(255, 255, 255, 0.35);
+        rgba(255, 255, 255, 0.38),
+
+        0 2px 3px
+        rgba(0, 0, 0, 0.35);
+
+    pointer-events: none;
 }
 
-/* 青い発光は付けない */
+/* 円柱表面の細い反射 */
 
 .utility-key::after {
-    content: none;
+    content: "";
+
+    position: absolute;
+
+    top: 25px;
+    bottom: 11px;
+    left: 6px;
+
+    width: 4px;
+
+    border-radius: 999px;
+
+    opacity: 0.62;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(58, 82, 93, 0.28),
+            rgba(255, 255, 255, 0.78)
+        );
+
+    pointer-events: none;
+}
+
+.utility-key span {
+    position: relative;
+    z-index: 2;
+
+    display: inline-block;
+
+    transform:
+        translateY(12px);
+
+    transition:
+        color 120ms ease,
+        text-shadow 120ms ease;
 }
 
 .utility-key:hover {
     color:
         rgba(
-            25,
-            42,
-            52,
+            18,
+            36,
+            46,
             0.48
         );
 
-    filter: brightness(1.07);
+    filter:
+        brightness(1.07);
 }
 
 .utility-key:active,
@@ -692,59 +905,91 @@ body {
 
     color:
         rgba(
-            224,
-            250,
+            223,
+            249,
             255,
-            0.96
+            0.97
+        );
+
+    box-shadow:
+        inset 0 9px 13px
+        rgba(24, 48, 61, 0.42),
+
+        inset 0 -3px 6px
+        rgba(255, 255, 255, 0.24),
+
+        0 1px 0
+        #566d78,
+
+        0 4px 7px
+        rgba(0, 0, 0, 0.35);
+}
+
+.utility-key:active span,
+.utility-key.is-pressed span {
+    color:
+        rgba(
+            229,
+            252,
+            255,
+            0.98
         );
 
     text-shadow:
-        0 0 5px #ffffff,
-        0 0 10px rgba(0, 141, 255, 0.72);
+        0 0 4px
+        #ffffff,
 
-    box-shadow:
-        inset 0 8px 12px
-        rgba(27, 52, 65, 0.42),
-
-        0 1px 0
-        #607580,
-
-        0 4px 7px
-        rgba(0, 0, 0, 0.34);
+        0 0 9px
+        rgba(8, 127, 255, 0.75);
 }
 
-/* =====================================
+/* キーボード操作時の視認性 */
+
+.utility-key:focus-visible {
+    outline:
+        2px solid
+        rgba(47, 184, 255, 0.8);
+
+    outline-offset: 4px;
+}
+
+/* =========================================================
    メイン操作領域
-===================================== */
+========================================================= */
 
 .main-controls {
     position: relative;
 
-    min-height: 440px;
+    width: 100%;
+    height: 382px;
+
+    margin-top: 8px;
 }
 
-/* =====================================
-   数字ボタン
-===================================== */
+/* =========================================================
+   数字ボタン群
+========================================================= */
 
 .number-cluster {
     position: absolute;
 
-    top: 38px;
+    top: 72px;
     left: 50%;
 
-    width: 370px;
-    height: 380px;
+    width: 374px;
+    height: 366px;
 
     transform:
         translateX(-50%);
 }
 
+/* 数字リング共通 */
+
 .number-key {
     position: absolute;
 
-    width: 82px;
-    height: 82px;
+    width: 84px;
+    height: 84px;
 
     padding: 0;
 
@@ -758,51 +1003,57 @@ body {
 
     color:
         rgba(
-            188,
-            227,
+            181,
+            220,
             255,
             0.24
         );
 
-    font: inherit;
-    font-size: 1.08rem;
+    font-size: 1.05rem;
     font-weight: 700;
 
     background:
         radial-gradient(
             circle at 43% 37%,
-            rgba(17, 42, 69, 0.98),
-            rgba(3, 9, 19, 0.99) 74%
+            rgba(18, 44, 72, 0.99) 0%,
+            rgba(7, 20, 37, 0.99) 47%,
+            rgba(2, 8, 17, 1) 76%
         );
 
     box-shadow:
-        inset 0 0 15px
-        rgba(0, 119, 255, 0.15),
+        inset 0 0 17px
+        rgba(0, 100, 255, 0.19),
+
+        inset 0 2px 2px
+        rgba(255, 255, 255, 0.045),
 
         0 5px 0
-        #003d70,
+        #003c72,
 
-        0 10px 14px
-        rgba(0, 0, 0, 0.47),
+        0 10px 15px
+        rgba(0, 0, 0, 0.5),
 
-        0 0 9px
-        var(--blue),
+        0 0 8px
+        rgba(0, 105, 255, 0.95),
 
-        0 0 24px
-        rgba(0, 116, 255, 0.78),
+        0 0 20px
+        rgba(0, 91, 255, 0.78),
 
-        0 0 42px
-        rgba(0, 92, 220, 0.42);
+        0 0 38px
+        rgba(0, 67, 210, 0.48);
 
     text-shadow: none;
 
     transition:
-        transform 100ms ease,
-        filter 100ms ease,
+        transform 105ms ease,
+        filter 105ms ease,
         color 120ms ease,
         text-shadow 120ms ease,
-        box-shadow 100ms ease;
+        border-color 120ms ease,
+        box-shadow 105ms ease;
 }
+
+/* 内側リングは付けない */
 
 .number-key::before,
 .number-key::after {
@@ -817,17 +1068,40 @@ body {
 .number-key:hover {
     color:
         rgba(
-            205,
-            239,
+            211,
+            240,
             255,
             0.68
         );
 
-    filter: brightness(1.16);
+    border-color:
+        #1c9bff;
+
+    filter:
+        brightness(1.14);
 
     text-shadow:
-        0 0 8px
-        rgba(0, 153, 255, 0.7);
+        0 0 7px
+        rgba(0, 137, 255, 0.82);
+
+    box-shadow:
+        inset 0 0 18px
+        rgba(0, 110, 255, 0.23),
+
+        0 5px 0
+        #003c72,
+
+        0 10px 15px
+        rgba(0, 0, 0, 0.5),
+
+        0 0 10px
+        rgba(0, 133, 255, 1),
+
+        0 0 25px
+        rgba(0, 102, 255, 0.88),
+
+        0 0 43px
+        rgba(0, 72, 220, 0.52);
 }
 
 .number-key:active,
@@ -838,38 +1112,67 @@ body {
 
     color: #ffffff;
 
-    filter: brightness(1.4);
+    border-color:
+        #29b2ff;
+
+    filter:
+        brightness(1.38);
 
     text-shadow:
-        0 0 5px #ffffff,
-        0 0 12px var(--blue),
-        0 0 25px rgba(0, 133, 255, 0.98);
+        0 0 5px
+        #ffffff,
 
-    box-shadow:
-        inset 0 8px 15px
-        rgba(0, 0, 0, 0.75),
-
-        inset 0 0 20px
-        rgba(0, 116, 255, 0.28),
-
-        0 1px 0
-        #003d70,
-
-        0 5px 8px
-        rgba(0, 0, 0, 0.34),
+        0 0 12px
+        #008dff,
 
         0 0 25px
-        var(--blue),
+        rgba(0, 119, 255, 1);
 
-        0 0 48px
-        rgba(0, 116, 255, 0.9);
+    box-shadow:
+        inset 0 9px 16px
+        rgba(0, 0, 0, 0.78),
+
+        inset 0 0 21px
+        rgba(0, 100, 255, 0.3),
+
+        0 1px 0
+        #003c72,
+
+        0 5px 8px
+        rgba(0, 0, 0, 0.35),
+
+        0 0 25px
+        #007dff,
+
+        0 0 50px
+        rgba(0, 93, 255, 0.92);
 }
 
-/* ひし形配置 */
+.number-key:focus-visible {
+    outline:
+        2px solid
+        rgba(47, 184, 255, 0.9);
+
+    outline-offset: 5px;
+}
+
+/* =========================================================
+   数字ボタンのひし形配置
+
+             1
+
+         2       3
+
+     4       5       6
+
+         7       8
+
+             9
+========================================================= */
 
 .key-1 {
     top: 0;
-    left: 144px;
+    left: 145px;
 }
 
 .key-2 {
@@ -889,7 +1192,7 @@ body {
 
 .key-5 {
     top: 140px;
-    left: 144px;
+    left: 145px;
 }
 
 .key-6 {
@@ -909,27 +1212,32 @@ body {
 
 .key-9 {
     top: 280px;
-    left: 144px;
+    left: 145px;
 }
+/* =========================================================
+   style.css Ver.4
+   Part3：0ボタン・演算ボタン・パーティクル・スマホ対応
+   Part2の直後へ、そのまま続けて貼り付ける
+========================================================= */
 
-/* =====================================
-   白い0ボタン
-===================================== */
+/* =========================================================
+   左下の白い0ボタン
+========================================================= */
 
 .zero-key {
     position: absolute;
 
-    left: 14px;
-    bottom: 8px;
+    left: -5px;
+    bottom: -33px;
 
-    width: 33px;
-    height: 33px;
+    width: 35px;
+    height: 35px;
 
     padding: 0;
 
     border:
         1px solid
-        rgba(245, 254, 255, 0.92);
+        rgba(246, 254, 255, 0.94);
 
     border-radius: 50%;
 
@@ -937,42 +1245,74 @@ body {
 
     color:
         rgba(
-            40,
-            59,
-            69,
-            0.58
+            38,
+            56,
+            67,
+            0.48
         );
 
-    font: inherit;
-    font-size: 0.57rem;
+    font-size: 0.58rem;
     font-weight: 700;
 
     background:
         radial-gradient(
-            circle at 35% 28%,
-            #ffffff,
-            #eaf4f7 40%,
-            #a8bbc4 76%,
-            #6c808a
+            circle at 35% 27%,
+            #ffffff 0%,
+            #eff8fa 32%,
+            #c5d4da 57%,
+            #91a6af 79%,
+            #617680 100%
         );
 
     box-shadow:
         inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
+        rgba(255, 255, 255, 0.97),
 
-        inset 0 -4px 6px
-        rgba(50, 76, 88, 0.25),
+        inset 0 -5px 7px
+        rgba(45, 69, 81, 0.27),
 
         0 4px 0
-        #60757f,
+        #536a75,
 
-        0 7px 9px
-        rgba(0, 0, 0, 0.4);
+        0 8px 10px
+        rgba(0, 0, 0, 0.43);
+
+    text-shadow:
+        0 1px 0
+        rgba(255, 255, 255, 0.72);
 
     transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        box-shadow 100ms ease;
+        transform 105ms ease,
+        filter 105ms ease,
+        box-shadow 105ms ease;
+}
+
+/* 白い表面の反射 */
+
+.zero-key::before {
+    content: "";
+
+    position: absolute;
+
+    top: 5px;
+    left: 7px;
+
+    width: 9px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.84);
+
+    filter: blur(0.4px);
+
+    pointer-events: none;
+}
+
+.zero-key span {
+    position: relative;
+    z-index: 2;
 }
 
 .zero-key:hover {
@@ -986,129 +1326,275 @@ body {
         scale(0.95);
 
     box-shadow:
-        inset 0 5px 8px
-        rgba(46, 69, 80, 0.33),
+        inset 0 6px 9px
+        rgba(42, 66, 78, 0.36),
 
         inset 0 1px 2px
-        rgba(255, 255, 255, 0.62),
+        rgba(255, 255, 255, 0.64),
 
         0 1px 0
-        #60757f,
+        #536a75,
 
-        0 3px 5px
-        rgba(0, 0, 0, 0.31);
+        0 3px 6px
+        rgba(0, 0, 0, 0.32);
 }
 
-/* =====================================
-   演算ボタン
-===================================== */
+.zero-key:focus-visible {
+    outline:
+        2px solid
+        rgba(191, 238, 255, 0.9);
 
-.operator-pad {
+    outline-offset: 4px;
+}
+
+/* =========================================================
+   演算ボタン全体
+
+                ÷
+
+           ×
+
+                −
+
+      ＋         .
+
+   =
+========================================================= */
+
+.operator-cluster {
     position: absolute;
 
-    right: 9px;
-    bottom: 8px;
+    right: -7px;
+    bottom: -35px;
 
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 29px);
-
-    gap: 7px;
+    width: 180px;
+    height: 210px;
 }
 
-.operator-key {
-    position: relative;
+/* 演算ボタン共通 */
 
-    width: 29px;
-    height: 29px;
+.operator-key {
+    position: absolute;
+
+    width: 40px;
+    height: 40px;
 
     padding: 0;
 
     border:
-        2px solid
+        3px solid
         var(--blue);
 
     border-radius: 50%;
 
     cursor: pointer;
 
-    color: var(--blue-soft);
+    color:
+        rgba(
+            191,
+            238,
+            255,
+            0.72
+        );
 
-    font: inherit;
-    font-size: 0.55rem;
+    font-size: 0.78rem;
     font-weight: 700;
 
     background:
         radial-gradient(
-            circle at 40% 35%,
-            #163a5c,
-            #06111f 72%
+            circle at 40% 34%,
+            rgba(24, 65, 103, 0.99) 0%,
+            rgba(7, 25, 44, 0.99) 56%,
+            rgba(2, 9, 18, 1) 100%
         );
 
     box-shadow:
-        inset 0 0 7px
-        rgba(0, 116, 255, 0.18),
+        inset 0 0 9px
+        rgba(0, 115, 255, 0.2),
 
         0 3px 0
-        #003d70,
+        #003b70,
 
-        0 5px 7px
-        rgba(0, 0, 0, 0.43),
+        0 6px 9px
+        rgba(0, 0, 0, 0.46),
 
         0 0 8px
-        rgba(0, 126, 255, 0.82);
+        rgba(0, 121, 255, 0.9),
+
+        0 0 17px
+        rgba(0, 94, 255, 0.58);
 
     text-shadow:
         0 0 6px
-        rgba(0, 141, 255, 0.8);
+        rgba(0, 141, 255, 0.78);
 
     transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        box-shadow 100ms ease;
+        transform 105ms ease,
+        filter 105ms ease,
+        color 120ms ease,
+        box-shadow 105ms ease,
+        text-shadow 120ms ease;
 }
 
 .operator-key:hover {
-    filter: brightness(1.3);
+    color: #ffffff;
+
+    filter: brightness(1.22);
+
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 10px
+        rgba(0, 141, 255, 0.9);
+
+    box-shadow:
+        inset 0 0 11px
+        rgba(0, 125, 255, 0.25),
+
+        0 3px 0
+        #003b70,
+
+        0 6px 9px
+        rgba(0, 0, 0, 0.46),
+
+        0 0 10px
+        rgba(0, 139, 255, 1),
+
+        0 0 22px
+        rgba(0, 103, 255, 0.76);
 }
 
 .operator-key:active,
 .operator-key.is-pressed {
     transform:
-        translateY(3px)
+        translateY(4px)
         scale(0.92);
+
+    color: #ffffff;
+
+    box-shadow:
+        inset 0 7px 10px
+        rgba(0, 0, 0, 0.67),
+
+        inset 0 0 12px
+        rgba(0, 114, 255, 0.25),
+
+        0 1px 0
+        #003b70,
+
+        0 3px 6px
+        rgba(0, 0, 0, 0.34),
+
+        0 0 13px
+        rgba(0, 126, 255, 0.92);
 }
 
-.equal-key {
-    color: #06141c;
+.operator-key:focus-visible {
+    outline:
+        2px solid
+        rgba(47, 184, 255, 0.9);
 
-    border-color: var(--blue-soft);
+    outline-offset: 4px;
+}
+
+/* =========================================================
+   演算ボタンの階段配置
+========================================================= */
+
+/* ÷：一番上 */
+
+.operator-divide {
+    top: 0;
+    right: 2px;
+}
+
+/* ×：左斜め下 */
+
+.operator-multiply {
+    top: 43px;
+    right: 51px;
+}
+
+/* −：×の斜め右下 */
+
+.operator-minus {
+    top: 86px;
+    right: 5px;
+}
+
+/* ＋：さらに左下 */
+
+.operator-plus {
+    top: 124px;
+    right: 102px;
+}
+
+/* 小数点：マイナスよりしっかり下 */
+
+.operator-decimal {
+    top: 132px;
+    right: 49px;
+}
+
+/* ＝：一番左下 */
+
+.operator-equal {
+    top: 168px;
+    right: 135px;
+
+    color:
+        #06131d;
+
+    border-color:
+        var(--blue-soft);
 
     background:
         radial-gradient(
-            circle at 40% 35%,
-            #f3feff,
-            #31baff 72%
+            circle at 38% 32%,
+            #f5feff 0%,
+            #bbecff 31%,
+            #42bfff 68%,
+            #0876bb 100%
         );
 
+    text-shadow:
+        0 1px 0
+        rgba(255, 255, 255, 0.62);
+
     box-shadow:
-        inset 0 1px 3px
-        rgba(255, 255, 255, 0.78),
+        inset 0 2px 4px
+        rgba(255, 255, 255, 0.82),
+
+        inset 0 -4px 6px
+        rgba(0, 74, 123, 0.23),
 
         0 3px 0
-        #00588f,
+        #00568d,
 
-        0 5px 7px
-        rgba(0, 0, 0, 0.43),
+        0 6px 9px
+        rgba(0, 0, 0, 0.45),
 
-        0 0 12px
-        rgba(0, 141, 255, 0.95);
+        0 0 11px
+        rgba(0, 141, 255, 0.95),
+
+        0 0 22px
+        rgba(0, 110, 255, 0.52);
 }
 
-/* =====================================
-   Canvas
-===================================== */
+.operator-equal:hover {
+    color:
+        #03101a;
+
+    filter:
+        brightness(1.14);
+
+    text-shadow:
+        0 1px 0
+        rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================================
+   パーティクルCanvas
+========================================================= */
 
 #particles {
     position: fixed;
@@ -1122,82 +1608,27 @@ body {
     pointer-events: none;
 }
 
-/* =====================================
-   アニメーション
-===================================== */
-
-@keyframes calculatorEnter {
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(28px)
-            scale(0.96);
-
-        filter: blur(7px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-        filter: blur(0);
-    }
-}
-
-@keyframes frameLightPulse {
-    0%,
-    100% {
-        opacity: 0.72;
-
-        transform:
-            translateX(-50%)
-            scaleX(0.93);
-    }
-
-    50% {
-        opacity: 1;
-
-        transform:
-            translateX(-50%)
-            scaleX(1.04);
-    }
-}
-
-@keyframes backgroundSweep {
-    from {
-        transform: translateX(-125%);
-    }
-
-    to {
-        transform: translateX(125%);
-    }
-}
-
-/* =====================================
-   スマホ
-===================================== */
+/* =========================================================
+   タブレット・小さめ画面
+========================================================= */
 
 @media (max-width: 520px) {
     body {
         align-items: flex-start;
 
         padding:
-            44px
-            9px;
+            42px
+            10px;
     }
 
     .calculator {
         width: 100%;
-        min-height: 730px;
+        height: 680px;
 
         padding:
-            50px
-            11px
-            54px;
+            48px
+            12px
+            48px;
     }
 
     .device-frame {
@@ -1205,38 +1636,85 @@ body {
             calc(100% + 14px);
     }
 
-    .top-white-dot {
-        left: 13px;
+    .frame-end {
+        width: 94px;
+        height: 42px;
+    }
+
+    .cyan-module {
+        right: -8px;
+
+        width: 34px;
+        height: 24px;
+    }
+
+    .white-decoration-top {
+        top: 58px;
+        left: 12px;
+
+        width: 30px;
+        height: 30px;
     }
 
     .display-area {
-        margin-top: 70px;
-        padding-left: 30px;
-        padding-right: 30px;
+        height: 78px;
+
+        margin-top: 78px;
+
+        padding:
+            0
+            36px
+            7px;
+    }
+
+    .display-value {
+        max-width: 250px;
+
+        font-size:
+            clamp(
+                1.4rem,
+                7vw,
+                1.9rem
+            );
     }
 
     .utility-buttons {
         grid-template-columns:
-            34px
-            34px
-            40px
-            34px
-            34px;
+            33px
+            33px
+            47px
+            33px
+            33px;
 
-        column-gap: 10px;
+        column-gap: 11px;
+
+        margin-top: 22px;
+    }
+
+    .utility-gap {
+        width: 47px;
     }
 
     .utility-key {
-        width: 34px;
-        height: 68px;
+        width: 33px;
+        height: 76px;
+
+        border-radius: 17px;
+    }
+
+    .utility-key::before {
+        width: 10px;
+        height: 10px;
     }
 
     .main-controls {
-        min-height: 410px;
+        height: 360px;
+
+        margin-top: 5px;
     }
 
     .number-cluster {
-        top: 24px;
+        top: 72px;
 
         transform:
             translateX(-50%)
@@ -1247,757 +1725,112 @@ body {
     }
 
     .zero-key {
-        left: 6px;
-        bottom: 6px;
+        left: -1px;
+        bottom: -28px;
     }
 
-    .operator-pad {
-        right: 3px;
-        bottom: 6px;
+    .operator-cluster {
+        right: -4px;
+        bottom: -30px;
+
+        transform:
+            scale(0.87);
+
+        transform-origin:
+            bottom right;
     }
 }
 
+/* =========================================================
+   かなり幅の狭いスマホ
+========================================================= */
+
 @media (max-width: 370px) {
-    .number-cluster {
-        transform:
-            translateX(-50%)
-            scale(0.76);
+    body {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .calculator {
+        height: 650px;
+
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .display-area {
+        padding-left: 29px;
+        padding-right: 29px;
     }
 
     .utility-buttons {
         grid-template-columns:
-            31px
-            31px
-            30px
-            31px
-            31px;
+            29px
+            29px
+            33px
+            29px
+            29px;
 
-        column-gap: 7px;
+        column-gap: 8px;
+    }
+
+    .utility-gap {
+        width: 33px;
     }
 
     .utility-key {
-        width: 31px;
-        height: 63px;
+        width: 29px;
+        height: 69px;
+    }
+
+    .utility-key::before {
+        width: 9px;
+        height: 9px;
+    }
+
+    .number-cluster {
+        top: 66px;
+
+        transform:
+            translateX(-50%)
+            scale(0.75);
+    }
+
+    .zero-key {
+        transform:
+            scale(0.92);
+
+        transform-origin:
+            bottom left;
+    }
+
+    .operator-cluster {
+        transform:
+            scale(0.77);
+
+        transform-origin:
+            bottom right;
     }
 }
+
+/* =========================================================
+   ユーザーが「動きを減らす」を設定している場合
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-    }
-}
-/* =====================================
-   Ver.2 corrective override
-   現在のHTML構造に合わせた修正版
-===================================== */
+        animation-duration:
+            0.01ms !important;
 
-/* 本体を少し短くする */
+        animation-iteration-count:
+            1 !important;
 
-.calculator {
-    width: min(430px, 94vw);
-    min-height: 700px;
-    padding: 48px 24px 50px;
-}
+        transition-duration:
+            0.01ms !important;
 
-/* =====================================
-   上下フレーム
-===================================== */
-
-.frame-top,
-.frame-bottom {
-    position: absolute;
-    left: 50%;
-
-    width: calc(100% + 24px);
-    height: 24px;
-
-    transform: translateX(-50%);
-
-    z-index: 30;
-    pointer-events: none;
-
-    border: 1px solid rgba(250, 255, 255, 0.82);
-    border-radius: 8px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #dce9ed 28%,
-            #a9bbc4 67%,
-            #647985 100%
-        );
-
-    box-shadow:
-        inset 0 3px 3px rgba(255, 255, 255, 0.93),
-        inset 0 -5px 7px rgba(35, 62, 76, 0.31),
-        0 6px 14px rgba(0, 0, 0, 0.5);
-}
-
-.frame-top {
-    top: -11px;
-}
-
-.frame-bottom {
-    bottom: -11px;
-    transform:
-        translateX(-50%)
-        rotate(180deg);
-}
-
-/* 左右端を下へ明確に張り出す */
-
-.frame-left,
-.frame-right {
-    position: absolute;
-    top: -1px;
-
-    width: 116px;
-    height: 52px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #dce9ed 28%,
-            #a9bbc4 67%,
-            #647985 100%
-        );
-
-    box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.9),
-        inset 0 -7px 8px rgba(34, 59, 72, 0.28);
-}
-
-.frame-left {
-    left: -1px;
-
-    clip-path:
-        polygon(
-            8% 0,
-            100% 0,
-            87% 46%,
-            77% 100%,
-            0 100%,
-            0 24%
-        );
-
-    border-radius:
-        10px 2px 8px 4px;
-}
-
-.frame-right {
-    right: -1px;
-
-    clip-path:
-        polygon(
-            0 0,
-            92% 0,
-            100% 24%,
-            100% 100%,
-            23% 100%,
-            13% 46%
-        );
-
-    border-radius:
-        2px 10px 4px 8px;
-}
-
-/* 発光をフレーム外側へ */
-
-.frame-top .frame-light,
-.frame-bottom .frame-light {
-    position: absolute;
-    left: 50%;
-    top: -8px;
-
-    width: 52%;
-    height: 4px;
-
-    transform: translateX(-50%);
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #008dff,
-            #30c9ff,
-            #008dff,
-            transparent
-        );
-
-    box-shadow:
-        0 0 7px #008dff,
-        0 0 18px rgba(0, 141, 255, 0.88),
-        0 0 31px rgba(0, 141, 255, 0.38);
-}
-
-/* =====================================
-   右上水色パーツ
-===================================== */
-
-.sensor-block {
-    position: absolute;
-
-    top: 28px;
-    right: -12px;
-
-    width: 40px;
-    height: 28px;
-
-    z-index: 27;
-    pointer-events: none;
-
-    clip-path:
-        polygon(
-            0 14%,
-            74% 0,
-            100% 23%,
-            100% 80%,
-            77% 100%,
-            0 86%
-        );
-
-    background:
-        linear-gradient(
-            140deg,
-            #e5feff 0%,
-            #8cf5fb 24%,
-            #44c9d8 62%,
-            #15758e 100%
-        );
-
-    box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.78),
-        inset 0 -5px 7px rgba(8, 76, 98, 0.34),
-        0 4px 8px rgba(0, 0, 0, 0.42),
-        0 0 13px rgba(53, 232, 255, 0.46);
-}
-
-/* =====================================
-   上側白丸装飾
-===================================== */
-
-.top-decoration {
-    position: absolute;
-
-    top: 68px;
-    left: 18px;
-
-    width: 33px;
-    height: 33px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 28%,
-            #ffffff,
-            #eaf4f7 40%,
-            #a8bbc4 76%,
-            #6c808a
-        );
-
-    box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.94),
-        inset 0 -4px 6px rgba(50, 76, 88, 0.25),
-        0 4px 0 #60757f,
-        0 7px 9px rgba(0, 0, 0, 0.4);
-}
-
-/* =====================================
-   表示
-===================================== */
-
-.display-area {
-    position: relative;
-
-    min-height: 70px;
-
-    margin:
-        92px
-        0
-        8px;
-
-    padding:
-        0
-        54px;
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-}
-
-#display {
-    width: 100%;
-
-    color: #bff4ff;
-
-    font-size:
-        clamp(
-            1.45rem,
-            6vw,
-            2rem
-        );
-
-    font-weight: 600;
-    letter-spacing: 0.04em;
-
-    text-align: right;
-
-    text-shadow:
-        0 0 5px rgba(191, 244, 255, 0.82),
-        0 0 14px rgba(0, 141, 255, 0.58),
-        0 0 27px rgba(0, 141, 255, 0.26);
-}
-
-/* =====================================
-   銀ボタン
-===================================== */
-
-.top-buttons {
-    display: grid;
-
-    grid-template-columns:
-        34px
-        34px
-        72px
-        34px
-        34px;
-
-    grid-template-areas:
-        "a b gap c d";
-
-    justify-content: center;
-    align-items: center;
-
-    column-gap: 16px;
-
-    margin:
-        34px
-        auto
-        8px;
-}
-
-.top-buttons button:nth-child(1) {
-    grid-area: a;
-}
-
-.top-buttons button:nth-child(2) {
-    grid-area: b;
-}
-
-.top-buttons button:nth-child(3) {
-    grid-area: c;
-}
-
-.top-buttons button:nth-child(4) {
-    grid-area: d;
-}
-
-.top-buttons button {
-    position: relative;
-
-    width: 34px;
-    height: 88px;
-
-    padding: 0;
-
-    border:
-        1px solid
-        rgba(237, 252, 255, 0.75);
-
-    border-radius: 17px;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            25,
-            42,
-            52,
-            0.24
-        );
-
-    font: inherit;
-    font-size: 0.58rem;
-    font-weight: 700;
-
-    background:
-        linear-gradient(
-            90deg,
-            #71858f 0%,
-            #edf9fc 22%,
-            #c5d3d8 50%,
-            #f5fdff 78%,
-            #6e838d 100%
-        );
-
-    box-shadow:
-        inset 0 3px 4px rgba(255, 255, 255, 0.9),
-        inset 0 -10px 11px rgba(31, 57, 70, 0.27),
-        0 6px 0 #607580,
-        0 10px 13px rgba(0, 0, 0, 0.44);
-
-    transition:
-        transform 100ms ease,
-        filter 100ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 100ms ease;
-}
-
-/* 黒い穴を大きく */
-
-.top-buttons button::before {
-    content: "";
-
-    position: absolute;
-
-    top: 9px;
-    left: 50%;
-
-    width: 10px;
-    height: 10px;
-
-    transform: translateX(-50%);
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #454545,
-            #111111 72%,
-            #000000
-        );
-
-    box-shadow:
-        inset 0 1px 2px rgba(0, 0, 0, 0.9),
-        0 1px 1px rgba(255, 255, 255, 0.35);
-}
-
-.top-buttons button:hover {
-    color:
-        rgba(
-            25,
-            42,
-            52,
-            0.48
-        );
-
-    filter: brightness(1.07);
-}
-
-.top-buttons button:active,
-.top-buttons button.is-pressed {
-    transform:
-        translateY(6px)
-        scaleY(0.95);
-
-    color:
-        rgba(
-            224,
-            250,
-            255,
-            0.96
-        );
-
-    text-shadow:
-        0 0 5px #ffffff,
-        0 0 10px rgba(0, 141, 255, 0.72);
-}
-
-/* =====================================
-   数字ボタン
-===================================== */
-
-.number-cluster {
-    position: absolute;
-
-    left: 50%;
-    top: 410px;
-
-    width: 370px;
-    height: 380px;
-
-    transform: translateX(-50%);
-}
-
-.num {
-    position: absolute;
-
-    width: 82px;
-    height: 82px;
-
-    border:
-        6px solid
-        #008dff;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            188,
-            227,
-            255,
-            0.24
-        );
-
-    font: inherit;
-    font-size: 1.08rem;
-    font-weight: 700;
-
-    background:
-        radial-gradient(
-            circle at 43% 37%,
-            rgba(17, 42, 69, 0.98),
-            rgba(3, 9, 19, 0.99) 74%
-        );
-
-    box-shadow:
-        inset 0 0 15px rgba(0, 119, 255, 0.15),
-        0 5px 0 #003d70,
-        0 10px 14px rgba(0, 0, 0, 0.47),
-        0 0 9px #008dff,
-        0 0 24px rgba(0, 116, 255, 0.78),
-        0 0 42px rgba(0, 92, 220, 0.42);
-}
-
-.one {
-    top: 0;
-    left: 144px;
-}
-
-.two {
-    top: 70px;
-    left: 72px;
-}
-
-.three {
-    top: 70px;
-    right: 72px;
-}
-
-.four {
-    top: 140px;
-    left: 0;
-}
-
-.five {
-    top: 140px;
-    left: 144px;
-}
-
-.six {
-    top: 140px;
-    right: 0;
-}
-
-.seven {
-    top: 210px;
-    left: 72px;
-}
-
-.eight {
-    top: 210px;
-    right: 72px;
-}
-
-.nine {
-    top: 280px;
-    left: 144px;
-}
-
-/* =====================================
-   0ボタン
-===================================== */
-
-.zero-button {
-    position: absolute;
-
-    left: 14px;
-    bottom: 15px;
-
-    width: 33px;
-    height: 33px;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    background:
-        radial-gradient(
-            circle at 35% 28%,
-            #ffffff,
-            #eaf4f7 40%,
-            #a8bbc4 76%,
-            #6c808a
-        );
-
-    box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.94),
-        inset 0 -4px 6px rgba(50, 76, 88, 0.25),
-        0 4px 0 #60757f,
-        0 7px 9px rgba(0, 0, 0, 0.4);
-}
-
-/* =====================================
-   演算ボタン：階段配置
-===================================== */
-
-.operator-cluster {
-    position: absolute;
-
-    right: 8px;
-    bottom: 10px;
-
-    width: 170px;
-    height: 210px;
-}
-
-.op {
-    position: absolute;
-
-    width: 38px;
-    height: 38px;
-
-    border:
-        3px solid
-        #008dff;
-
-    border-radius: 50%;
-
-    color: #bff4ff;
-
-    font: inherit;
-    font-size: 0.75rem;
-    font-weight: 700;
-
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #163a5c,
-            #06111f 72%
-        );
-
-    box-shadow:
-        0 3px 0 #003d70,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 9px rgba(0, 126, 255, 0.82);
-}
-
-/* 
-          ÷
-       ×
-          −
-    ＋
-       .
- = 
-*/
-
-.divide {
-    top: 0;
-    right: 0;
-}
-
-.multiply {
-    top: 42px;
-    right: 52px;
-}
-
-.minus {
-    top: 88px;
-    right: 4px;
-}
-
-.add {
-    top: 128px;
-    right: 102px;
-}
-
-.dot {
-    top: 148px;
-    right: 50px;
-}
-
-.equal {
-    top: 168px;
-    right: 118px;
-
-    color: #06141c;
-
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #f3feff,
-            #31baff 72%
-        );
-}
-
-/* =====================================
-   スマホ
-===================================== */
-
-@media (max-width: 520px) {
-    .calculator {
-        min-height: 650px;
-        padding:
-            46px
-            10px
-            48px;
-    }
-
-    .display-area {
-        margin-top: 74px;
-        padding:
-            0
-            34px;
-    }
-
-    .top-buttons {
-        grid-template-columns:
-            30px
-            30px
-            46px
-            30px
-            30px;
-
-        column-gap: 10px;
-    }
-
-    .top-buttons button {
-        width: 30px;
-        height: 76px;
-    }
-
-    .number-cluster {
-        top: 350px;
-
-        transform:
-            translateX(-50%)
-            scale(0.84);
-
-        transform-origin:
-            top center;
-    }
-
-    .operator-cluster {
-        right: 2px;
-        bottom: 8px;
-
-        transform:
-            scale(0.86);
-
-        transform-origin:
-            bottom right;
+        scroll-behavior:
+            auto !important;
     }
 }
