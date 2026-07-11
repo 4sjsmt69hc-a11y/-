@@ -850,7 +850,11 @@ button {
 ===================================== */
 
 .calculator{
-    height:760px;
+    width:min(430px,94vw);
+
+    height:910px;   /* ← 880くらいなら910へ */
+
+    padding:54px 27px 58px;
 }
 
 .number-cluster{
