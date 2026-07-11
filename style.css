@@ -7,9 +7,9 @@
     --panel-middle: #10253d;
     --panel-bottom: #040d19;
 
-    --cyan: #35e8ff;
-    --cyan-soft: #c5fbff;
-    --cyan-dark: #087a94;
+    --blue: #008dff;
+    --blue-light: #30c9ff;
+    --blue-soft: #bff4ff;
 
     --metal-white: #f8feff;
     --metal-light: #dce9ed;
@@ -21,7 +21,7 @@
 }
 
 /* =====================================
-   基本設定
+   基本
 ===================================== */
 
 * {
@@ -35,7 +35,7 @@ html {
 body {
     min-height: 100vh;
     margin: 0;
-    padding: 54px 18px;
+    padding: 60px 18px;
 
     display: flex;
     align-items: center;
@@ -53,12 +53,12 @@ body {
     background:
         radial-gradient(
             circle at 50% 8%,
-            rgba(45, 181, 236, 0.24),
+            rgba(25, 137, 220, 0.26),
             transparent 35%
         ),
         radial-gradient(
             circle at 14% 72%,
-            rgba(31, 118, 178, 0.18),
+            rgba(22, 95, 170, 0.2),
             transparent 38%
         ),
         linear-gradient(
@@ -82,23 +82,16 @@ body {
 
     background-image:
         linear-gradient(
-            rgba(68, 218, 255, 0.05) 1px,
+            rgba(45, 150, 215, 0.055) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(68, 218, 255, 0.05) 1px,
+            rgba(45, 150, 215, 0.055) 1px,
             transparent 1px
         );
 
     background-size: 46px 46px;
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent 96%
-        );
 }
 
 .background-grid::before {
@@ -111,7 +104,7 @@ body {
         linear-gradient(
             112deg,
             transparent 0%,
-            rgba(96, 232, 255, 0.07) 47%,
+            rgba(54, 162, 224, 0.07) 47%,
             transparent 58%
         );
 
@@ -125,7 +118,7 @@ body {
 }
 
 /* =====================================
-   本体
+   電卓本体
 ===================================== */
 
 .app-shell {
@@ -139,18 +132,18 @@ body {
     position: relative;
 
     width: min(430px, 94vw);
-    min-height: 760px;
+    min-height: 780px;
 
     padding:
-        52px
+        54px
         27px
-        54px;
+        58px;
 
     isolation: isolate;
 
     border:
         1px solid
-        rgba(197, 244, 255, 0.23);
+        rgba(171, 225, 255, 0.24);
 
     border-radius: 18px;
 
@@ -158,16 +151,25 @@ body {
         linear-gradient(
             150deg,
             var(--panel-top),
-            var(--panel-middle) 40%,
-            var(--panel-bottom) 100%
+            var(--panel-middle) 41%,
+            var(--panel-bottom)
         );
 
     box-shadow:
-        0 44px 105px rgba(0, 0, 0, 0.66),
-        0 0 0 5px rgba(196, 248, 255, 0.035),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -35px 48px rgba(0, 0, 0, 0.34),
-        0 0 32px rgba(53, 232, 255, 0.07);
+        0 44px 105px
+        rgba(0, 0, 0, 0.66),
+
+        0 0 0 5px
+        rgba(170, 223, 255, 0.035),
+
+        inset 0 1px 0
+        rgba(255, 255, 255, 0.12),
+
+        inset 0 -35px 48px
+        rgba(0, 0, 0, 0.34),
+
+        0 0 32px
+        rgba(0, 137, 255, 0.08);
 
     animation:
         calculatorEnter
@@ -177,15 +179,15 @@ body {
 }
 
 /* =====================================
-   上下の銀フレーム
+   銀フレーム
 ===================================== */
 
 .device-frame {
     position: absolute;
     left: 50%;
 
-    width: calc(100% + 24px);
-    height: 27px;
+    width: calc(100% + 26px);
+    height: 24px;
 
     transform: translateX(-50%);
 
@@ -196,27 +198,29 @@ body {
         1px solid
         rgba(250, 255, 255, 0.82);
 
-    border-radius: 8px 8px 3px 3px;
+    border-radius: 7px;
 
     background:
         linear-gradient(
             180deg,
-            var(--metal-white) 0%,
-            var(--metal-light) 25%,
-            var(--metal-mid) 65%,
-            var(--metal-dark) 100%
+            var(--metal-white),
+            var(--metal-light) 28%,
+            var(--metal-mid) 67%,
+            var(--metal-dark)
         );
 
     box-shadow:
-        inset 0 3px 3px rgba(255, 255, 255, 0.93),
-        inset 0 -6px 8px rgba(35, 62, 76, 0.31),
-        0 6px 14px rgba(0, 0, 0, 0.5);
+        inset 0 3px 3px
+        rgba(255, 255, 255, 0.93),
+
+        inset 0 -5px 7px
+        rgba(35, 62, 76, 0.31),
+
+        0 6px 14px
+        rgba(0, 0, 0, 0.5);
 }
 
-/*
-   中央は細い横棒。
-   左右の装甲だけが下方向へ大きく張り出す。
-*/
+/* 両端を大きく張り出す */
 
 .device-frame::before,
 .device-frame::after {
@@ -225,21 +229,24 @@ body {
     position: absolute;
     top: -1px;
 
-    width: 92px;
-    height: 45px;
+    width: 116px;
+    height: 52px;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff 0%,
-            #dce9ed 25%,
-            #a9bbc4 64%,
-            #647985 100%
+            #ffffff,
+            #dce9ed 28%,
+            #a9bbc4 67%,
+            #647985
         );
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.9),
-        inset 0 -7px 8px rgba(34, 59, 72, 0.28);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.9),
+
+        inset 0 -7px 8px
+        rgba(34, 59, 72, 0.28);
 }
 
 .device-frame::before {
@@ -247,18 +254,18 @@ body {
 
     clip-path:
         polygon(
-            9% 0,
+            8% 0,
             100% 0,
-            90% 54%,
-            80% 100%,
+            87% 46%,
+            77% 100%,
             0 100%,
-            0 28%
+            0 24%
         );
 
     border-radius:
         10px
         2px
-        7px
+        8px
         4px;
 }
 
@@ -268,18 +275,18 @@ body {
     clip-path:
         polygon(
             0 0,
-            91% 0,
-            100% 28%,
+            92% 0,
+            100% 24%,
             100% 100%,
-            20% 100%,
-            10% 54%
+            23% 100%,
+            13% 46%
         );
 
     border-radius:
         2px
         10px
         4px
-        7px;
+        8px;
 }
 
 .frame-top {
@@ -294,15 +301,21 @@ body {
         rotate(180deg);
 }
 
-/* フレーム中央のライト */
+/* ライトをフレーム外側へ */
+
+.frame-top .frame-light {
+    top: -8px;
+}
+
+.frame-bottom .frame-light {
+    top: -8px;
+}
 
 .frame-light {
     position: absolute;
-
     left: 50%;
-    bottom: 4px;
 
-    width: 53%;
+    width: 52%;
     height: 4px;
 
     transform: translateX(-50%);
@@ -315,16 +328,16 @@ body {
         linear-gradient(
             90deg,
             transparent,
-            var(--cyan),
-            var(--cyan-soft),
-            var(--cyan),
+            var(--blue),
+            var(--blue-light),
+            var(--blue),
             transparent
         );
 
     box-shadow:
-        0 0 6px var(--cyan),
-        0 0 16px rgba(53, 232, 255, 0.82),
-        0 0 28px rgba(53, 232, 255, 0.28);
+        0 0 7px var(--blue),
+        0 0 18px rgba(0, 141, 255, 0.88),
+        0 0 31px rgba(0, 141, 255, 0.38);
 
     animation:
         frameLightPulse
@@ -334,7 +347,7 @@ body {
 }
 
 /* =====================================
-   右上の水色部品
+   水色装飾
 ===================================== */
 
 .cyan-module {
@@ -343,8 +356,8 @@ body {
     top: 28px;
     right: -12px;
 
-    width: 39px;
-    height: 27px;
+    width: 40px;
+    height: 28px;
 
     z-index: 27;
     pointer-events: none;
@@ -366,34 +379,68 @@ body {
     background:
         linear-gradient(
             140deg,
-            #e5feff 0%,
-            #8cf5fb 22%,
-            #44c9d8 60%,
-            #15758e 100%
+            #e5feff,
+            #8cf5fb 24%,
+            #44c9d8 62%,
+            #15758e
         );
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.78),
-        inset 0 -5px 7px rgba(8, 76, 98, 0.34),
-        0 4px 8px rgba(0, 0, 0, 0.42),
-        0 0 13px rgba(53, 232, 255, 0.46);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.78),
+
+        inset 0 -5px 7px
+        rgba(8, 76, 98, 0.34),
+
+        0 4px 8px
+        rgba(0, 0, 0, 0.42),
+
+        0 0 13px
+        rgba(53, 232, 255, 0.46);
 }
 
-.cyan-module::after {
-    content: "";
+/* =====================================
+   上側の白丸装飾
+===================================== */
 
+.top-white-dot {
     position: absolute;
 
-    top: 5px;
-    left: 7px;
+    top: 77px;
+    left: 22px;
 
-    width: 20px;
-    height: 3px;
+    width: 33px;
+    height: 33px;
 
-    border-radius: 999px;
+    border:
+        1px solid
+        rgba(245, 254, 255, 0.92);
+
+    border-radius: 50%;
+
+    pointer-events: none;
 
     background:
-        rgba(240, 255, 255, 0.74);
+        radial-gradient(
+            circle at 35% 28%,
+            #ffffff,
+            #eaf4f7 40%,
+            #a8bbc4 76%,
+            #6c808a
+        );
+
+    box-shadow:
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.94),
+
+        inset 0 -4px 6px
+        rgba(50, 76, 88, 0.25),
+
+        0 4px 0
+        #60757f,
+
+        0 7px 9px
+        rgba(0, 0, 0, 0.4);
 }
 
 /* =====================================
@@ -403,16 +450,16 @@ body {
 .display-area {
     position: relative;
 
-    min-height: 94px;
+    min-height: 92px;
 
     margin:
-        20px
+        84px
         0
-        12px;
+        6px;
 
     padding:
-        6px
-        18px
+        4px
+        38px
         4px;
 
     display: flex;
@@ -423,6 +470,7 @@ body {
 .display-header {
     display: flex;
     align-items: center;
+
     gap: 9px;
 }
 
@@ -432,19 +480,20 @@ body {
 
     border-radius: 50%;
 
-    background: var(--cyan);
+    background: var(--blue-light);
 
     box-shadow:
-        0 0 7px var(--cyan);
+        0 0 7px
+        var(--blue);
 }
 
 .device-name {
     color: var(--text-muted);
 
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 600;
 
-    letter-spacing: 0.16em;
+    letter-spacing: 0.15em;
 }
 
 .display-value {
@@ -452,13 +501,13 @@ body {
 
     overflow: hidden;
 
-    color: var(--cyan-soft);
+    color: var(--blue-soft);
 
     font-size:
         clamp(
-            2.4rem,
-            10vw,
-            3.7rem
+            1.75rem,
+            7vw,
+            2.35rem
         );
 
     font-weight: 600;
@@ -471,24 +520,29 @@ body {
     text-overflow: ellipsis;
 
     text-shadow:
-        0 0 5px rgba(197, 251, 255, 0.9),
-        0 0 17px rgba(53, 232, 255, 0.58),
-        0 0 35px rgba(53, 232, 255, 0.23);
+        0 0 5px
+        rgba(191, 244, 255, 0.82),
+
+        0 0 14px
+        rgba(0, 141, 255, 0.58),
+
+        0 0 27px
+        rgba(0, 141, 255, 0.26);
 }
 
 /* =====================================
-   細長い銀スイッチ
+   銀ボタン
 ===================================== */
 
 .utility-buttons {
     display: grid;
 
     grid-template-columns:
-        27px
-        27px
-        34px
-        27px
-        27px;
+        40px
+        40px
+        66px
+        40px
+        40px;
 
     grid-template-areas:
         "a b gap c d";
@@ -496,12 +550,12 @@ body {
     align-items: center;
     justify-content: center;
 
-    column-gap: 10px;
+    column-gap: 14px;
 
     margin:
-        18px
+        40px
         auto
-        18px;
+        10px;
 }
 
 .utility-key-a {
@@ -523,8 +577,8 @@ body {
 .utility-key {
     position: relative;
 
-    width: 27px;
-    height: 62px;
+    width: 40px;
+    height: 78px;
 
     padding: 0;
 
@@ -532,39 +586,44 @@ body {
         1px solid
         rgba(237, 252, 255, 0.75);
 
-    border-radius: 13px;
+    border-radius: 18px;
 
     cursor: pointer;
 
     color:
         rgba(
-            27,
-            47,
-            58,
-            0.24
+            25,
+            42,
+            52,
+            0.25
         );
 
     font: inherit;
-    font-size: 0.54rem;
+    font-size: 0.62rem;
     font-weight: 700;
 
     background:
         linear-gradient(
             90deg,
-            #738892 0%,
+            #71858f,
             #edf9fc 22%,
             #c5d3d8 50%,
             #f5fdff 78%,
-            #70858f 100%
+            #6e838d
         );
 
     box-shadow:
-        inset 0 3px 4px rgba(255, 255, 255, 0.9),
-        inset 0 -8px 9px rgba(31, 57, 70, 0.27),
-        0 5px 0 #607580,
-        0 9px 12px rgba(0, 0, 0, 0.44);
+        inset 0 3px 4px
+        rgba(255, 255, 255, 0.9),
 
-    text-shadow: none;
+        inset 0 -10px 11px
+        rgba(31, 57, 70, 0.27),
+
+        0 6px 0
+        #607580,
+
+        0 10px 13px
+        rgba(0, 0, 0, 0.44);
 
     transition:
         transform 100ms ease,
@@ -574,32 +633,40 @@ body {
         box-shadow 100ms ease;
 }
 
-/* 円柱状の縦反射 */
+/* 上部の黒丸 */
 
 .utility-key::before {
     content: "";
 
     position: absolute;
 
-    top: 8px;
-    bottom: 9px;
-    left: 4px;
+    top: 9px;
+    left: 50%;
 
-    width: 4px;
+    width: 7px;
+    height: 7px;
 
-    border-radius: 999px;
+    transform: translateX(-50%);
+
+    border-radius: 50%;
 
     background:
-        linear-gradient(
-            to right,
-            rgba(69, 94, 106, 0.28),
-            rgba(255, 255, 255, 0.62)
+        radial-gradient(
+            circle at 35% 30%,
+            #454545,
+            #111111 72%,
+            #000000
         );
 
-    pointer-events: none;
+    box-shadow:
+        inset 0 1px 2px
+        rgba(0, 0, 0, 0.9),
+
+        0 1px 1px
+        rgba(255, 255, 255, 0.35);
 }
 
-/* 青いランプはなし */
+/* 青い発光は付けない */
 
 .utility-key::after {
     content: none;
@@ -608,47 +675,52 @@ body {
 .utility-key:hover {
     color:
         rgba(
-            27,
-            47,
-            58,
-            0.42
+            25,
+            42,
+            52,
+            0.48
         );
 
-    filter: brightness(1.06);
+    filter: brightness(1.07);
 }
 
 .utility-key:active,
 .utility-key.is-pressed {
     transform:
-        translateY(5px)
+        translateY(6px)
         scaleY(0.95);
 
     color:
         rgba(
-            223,
-            253,
+            224,
+            250,
             255,
             0.96
         );
 
     text-shadow:
-        0 0 4px #ffffff,
-        0 0 9px rgba(53, 232, 255, 0.65);
+        0 0 5px #ffffff,
+        0 0 10px rgba(0, 141, 255, 0.72);
 
     box-shadow:
-        inset 0 7px 11px rgba(27, 52, 65, 0.4),
-        0 1px 0 #607580,
-        0 4px 7px rgba(0, 0, 0, 0.34);
+        inset 0 8px 12px
+        rgba(27, 52, 65, 0.42),
+
+        0 1px 0
+        #607580,
+
+        0 4px 7px
+        rgba(0, 0, 0, 0.34);
 }
 
 /* =====================================
-   下半分の操作領域
+   メイン操作領域
 ===================================== */
 
 .main-controls {
     position: relative;
 
-    min-height: 470px;
+    min-height: 440px;
 }
 
 /* =====================================
@@ -658,13 +730,14 @@ body {
 .number-cluster {
     position: absolute;
 
-    top: 70px;
+    top: 38px;
     left: 50%;
 
     width: 370px;
     height: 380px;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 }
 
 .number-key {
@@ -677,7 +750,7 @@ body {
 
     border:
         6px solid
-        var(--cyan);
+        var(--blue);
 
     border-radius: 50%;
 
@@ -685,10 +758,10 @@ body {
 
     color:
         rgba(
-            197,
-            251,
+            188,
+            227,
             255,
-            0.21
+            0.24
         );
 
     font: inherit;
@@ -698,16 +771,28 @@ body {
     background:
         radial-gradient(
             circle at 43% 37%,
-            rgba(26, 51, 72, 0.98),
-            rgba(4, 12, 22, 0.99) 74%
+            rgba(17, 42, 69, 0.98),
+            rgba(3, 9, 19, 0.99) 74%
         );
 
     box-shadow:
-        inset 0 0 15px rgba(53, 232, 255, 0.11),
-        0 5px 0 #075269,
-        0 10px 14px rgba(0, 0, 0, 0.47),
-        0 0 8px var(--cyan),
-        0 0 21px rgba(53, 232, 255, 0.59);
+        inset 0 0 15px
+        rgba(0, 119, 255, 0.15),
+
+        0 5px 0
+        #003d70,
+
+        0 10px 14px
+        rgba(0, 0, 0, 0.47),
+
+        0 0 9px
+        var(--blue),
+
+        0 0 24px
+        rgba(0, 116, 255, 0.78),
+
+        0 0 42px
+        rgba(0, 92, 220, 0.42);
 
     text-shadow: none;
 
@@ -732,17 +817,17 @@ body {
 .number-key:hover {
     color:
         rgba(
-            225,
-            254,
+            205,
+            239,
             255,
-            0.62
+            0.68
         );
 
-    filter: brightness(1.2);
+    filter: brightness(1.16);
 
     text-shadow:
         0 0 8px
-        rgba(53, 232, 255, 0.68);
+        rgba(0, 153, 255, 0.7);
 }
 
 .number-key:active,
@@ -753,19 +838,31 @@ body {
 
     color: #ffffff;
 
-    filter: brightness(1.45);
+    filter: brightness(1.4);
 
     text-shadow:
         0 0 5px #ffffff,
-        0 0 11px var(--cyan),
-        0 0 24px rgba(53, 232, 255, 0.96);
+        0 0 12px var(--blue),
+        0 0 25px rgba(0, 133, 255, 0.98);
 
     box-shadow:
-        inset 0 7px 15px rgba(0, 0, 0, 0.74),
-        inset 0 0 18px rgba(53, 232, 255, 0.2),
-        0 1px 0 #075269,
-        0 5px 8px rgba(0, 0, 0, 0.34),
-        0 0 22px rgba(53, 232, 255, 0.78);
+        inset 0 8px 15px
+        rgba(0, 0, 0, 0.75),
+
+        inset 0 0 20px
+        rgba(0, 116, 255, 0.28),
+
+        0 1px 0
+        #003d70,
+
+        0 5px 8px
+        rgba(0, 0, 0, 0.34),
+
+        0 0 25px
+        var(--blue),
+
+        0 0 48px
+        rgba(0, 116, 255, 0.9);
 }
 
 /* ひし形配置 */
@@ -823,7 +920,7 @@ body {
     position: absolute;
 
     left: 14px;
-    bottom: 14px;
+    bottom: 8px;
 
     width: 33px;
     height: 33px;
@@ -860,10 +957,17 @@ body {
         );
 
     box-shadow:
-        inset 0 2px 3px rgba(255, 255, 255, 0.94),
-        inset 0 -4px 6px rgba(50, 76, 88, 0.25),
-        0 4px 0 #60757f,
-        0 7px 9px rgba(0, 0, 0, 0.4);
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.94),
+
+        inset 0 -4px 6px
+        rgba(50, 76, 88, 0.25),
+
+        0 4px 0
+        #60757f,
+
+        0 7px 9px
+        rgba(0, 0, 0, 0.4);
 
     transition:
         transform 100ms ease,
@@ -882,10 +986,17 @@ body {
         scale(0.95);
 
     box-shadow:
-        inset 0 5px 8px rgba(46, 69, 80, 0.33),
-        inset 0 1px 2px rgba(255, 255, 255, 0.62),
-        0 1px 0 #60757f,
-        0 3px 5px rgba(0, 0, 0, 0.31);
+        inset 0 5px 8px
+        rgba(46, 69, 80, 0.33),
+
+        inset 0 1px 2px
+        rgba(255, 255, 255, 0.62),
+
+        0 1px 0
+        #60757f,
+
+        0 3px 5px
+        rgba(0, 0, 0, 0.31);
 }
 
 /* =====================================
@@ -896,7 +1007,7 @@ body {
     position: absolute;
 
     right: 9px;
-    bottom: 14px;
+    bottom: 8px;
 
     display: grid;
 
@@ -916,13 +1027,13 @@ body {
 
     border:
         2px solid
-        var(--cyan);
+        var(--blue);
 
     border-radius: 50%;
 
     cursor: pointer;
 
-    color: var(--cyan-soft);
+    color: var(--blue-soft);
 
     font: inherit;
     font-size: 0.55rem;
@@ -931,19 +1042,26 @@ body {
     background:
         radial-gradient(
             circle at 40% 35%,
-            #24455c,
-            #07131f 72%
+            #163a5c,
+            #06111f 72%
         );
 
     box-shadow:
-        inset 0 0 7px rgba(53, 232, 255, 0.16),
-        0 3px 0 #075269,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 7px rgba(53, 232, 255, 0.78);
+        inset 0 0 7px
+        rgba(0, 116, 255, 0.18),
+
+        0 3px 0
+        #003d70,
+
+        0 5px 7px
+        rgba(0, 0, 0, 0.43),
+
+        0 0 8px
+        rgba(0, 126, 255, 0.82);
 
     text-shadow:
         0 0 6px
-        rgba(53, 232, 255, 0.76);
+        rgba(0, 141, 255, 0.8);
 
     transition:
         transform 100ms ease,
@@ -960,39 +1078,36 @@ body {
     transform:
         translateY(3px)
         scale(0.92);
-
-    box-shadow:
-        inset 0 5px 8px rgba(0, 0, 0, 0.6),
-        0 1px 0 #075269,
-        0 3px 5px rgba(0, 0, 0, 0.32),
-        0 0 9px rgba(53, 232, 255, 0.78);
 }
 
 .equal-key {
     color: #06141c;
 
-    border-color: var(--cyan-soft);
+    border-color: var(--blue-soft);
 
     background:
         radial-gradient(
             circle at 40% 35%,
             #f3feff,
-            #42e8ff 72%
+            #31baff 72%
         );
 
-    text-shadow:
-        0 1px 0
-        rgba(255, 255, 255, 0.55);
-
     box-shadow:
-        inset 0 1px 3px rgba(255, 255, 255, 0.78),
-        0 3px 0 #087087,
-        0 5px 7px rgba(0, 0, 0, 0.43),
-        0 0 11px rgba(53, 232, 255, 0.93);
+        inset 0 1px 3px
+        rgba(255, 255, 255, 0.78),
+
+        0 3px 0
+        #00588f,
+
+        0 5px 7px
+        rgba(0, 0, 0, 0.43),
+
+        0 0 12px
+        rgba(0, 141, 255, 0.95);
 }
 
 /* =====================================
-   パーティクル
+   Canvas
 ===================================== */
 
 #particles {
@@ -1063,7 +1178,7 @@ body {
 }
 
 /* =====================================
-   スマホ対応
+   スマホ
 ===================================== */
 
 @media (max-width: 520px) {
@@ -1071,57 +1186,57 @@ body {
         align-items: flex-start;
 
         padding:
-            42px
+            44px
             9px;
     }
 
     .calculator {
         width: 100%;
-        min-height: 720px;
+        min-height: 730px;
 
         padding:
             50px
             11px
-            52px;
+            54px;
     }
 
     .device-frame {
-        width: calc(100% + 14px);
+        width:
+            calc(100% + 14px);
     }
 
-    .cyan-module {
-        right: -8px;
-
-        width: 33px;
-        height: 25px;
+    .top-white-dot {
+        left: 13px;
     }
 
     .display-area {
-        min-height: 88px;
+        margin-top: 70px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
 
     .utility-buttons {
         grid-template-columns:
-            25px
-            25px
-            22px
-            25px
-            25px;
+            34px
+            34px
+            40px
+            34px
+            34px;
 
-        column-gap: 8px;
+        column-gap: 10px;
     }
 
     .utility-key {
-        width: 25px;
-        height: 56px;
+        width: 34px;
+        height: 68px;
     }
 
     .main-controls {
-        min-height: 430px;
+        min-height: 410px;
     }
 
     .number-cluster {
-        top: 57px;
+        top: 24px;
 
         transform:
             translateX(-50%)
@@ -1133,12 +1248,12 @@ body {
 
     .zero-key {
         left: 6px;
-        bottom: 10px;
+        bottom: 6px;
     }
 
     .operator-pad {
         right: 3px;
-        bottom: 10px;
+        bottom: 6px;
     }
 }
 
@@ -1151,23 +1266,18 @@ body {
 
     .utility-buttons {
         grid-template-columns:
-            23px
-            23px
-            18px
-            23px
-            23px;
+            31px
+            31px
+            30px
+            31px
+            31px;
 
-        column-gap: 6px;
+        column-gap: 7px;
     }
 
     .utility-key {
-        width: 23px;
-        height: 52px;
-    }
-
-    .operator-pad {
-        transform: scale(0.9);
-        transform-origin: bottom right;
+        width: 31px;
+        height: 63px;
     }
 }
 
