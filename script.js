@@ -1,51 +1,54 @@
 "use strict";
 
-const display =
-    document.getElementById("display");
+/* =========================================================
+   要素取得
+========================================================= */
 
-const buttons =
-    document.querySelectorAll(
-        ".calculator button"
-    );
+const display = document.getElementById("display");
+const calculator = document.querySelector(".calculator");
+const buttons = document.querySelectorAll(".calculator button");
 
-const canvas =
-    document.getElementById("particles");
+const canvas = document.getElementById("particles");
+const context = canvas.getContext("2d");
 
-const context =
-    canvas.getContext("2d");
+/* =========================================================
+   電卓の状態
+========================================================= */
 
 let currentValue = "0";
 let previousValue = null;
 let currentOperator = null;
 let shouldOverwrite = false;
+let lastOperand = null;
+let lastOperator = null;
+
+/* =========================================================
+   パーティクルの状態
+========================================================= */
 
 let particles = [];
-let animationFrameId = null;
+let particleAnimationId = null;
 
-/* =====================================
-   Canvas
-===================================== */
+/* =========================================================
+   Canvas設定
+========================================================= */
 
 function resizeCanvas() {
-    const pixelRatio =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
+    const pixelRatio = Math.min(
+        window.devicePixelRatio || 1,
+        2
+    );
 
-    canvas.width =
-        window.innerWidth *
-        pixelRatio;
+    canvas.width = Math.floor(
+        window.innerWidth * pixelRatio
+    );
 
-    canvas.height =
-        window.innerHeight *
-        pixelRatio;
+    canvas.height = Math.floor(
+        window.innerHeight * pixelRatio
+    );
 
-    canvas.style.width =
-        `${window.innerWidth}px`;
-
-    canvas.style.height =
-        `${window.innerHeight}px`;
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
 
     context.setTransform(
         pixelRatio,
@@ -57,70 +60,75 @@ function resizeCanvas() {
     );
 }
 
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
+window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
 
-/* =====================================
-   表示
-===================================== */
+/* =========================================================
+   表示整形
+========================================================= */
 
 function formatForDisplay(value) {
     if (value === "ERROR") {
+        return "ERROR";
+    }
+
+    if (value === "-0") {
+        return "0";
+    }
+
+    if (value.length <= 12) {
         return value;
     }
 
-    if (value.length <= 10) {
-        return value;
-    }
-
-    const number =
-        Number(value);
+    const number = Number(value);
 
     if (!Number.isFinite(number)) {
-        return value;
+        return "ERROR";
     }
 
-    return number.toExponential(5);
+    return number.toExponential(6);
 }
 
 function updateDisplay() {
-    display.textContent =
-        formatForDisplay(
-            currentValue
-        );
+    display.textContent = formatForDisplay(currentValue);
 
     display.animate(
         [
             {
-                transform:
-                    "scale(1.02)",
-
-                filter:
-                    "brightness(1.55)"
+                transform: "translateY(2px) scale(1.025)",
+                filter: "brightness(1.55)"
             },
-
             {
-                transform:
-                    "scale(1)",
-
-                filter:
-                    "brightness(1)"
+                transform: "translateY(0) scale(1)",
+                filter: "brightness(1)"
             }
         ],
         {
-            duration: 170,
+            duration: 165,
             easing: "ease-out"
         }
     );
 }
 
-/* =====================================
-   数字入力
-===================================== */
+/* =========================================================
+   数値処理
+========================================================= */
+
+function normalizeResult(number) {
+    if (!Number.isFinite(number)) {
+        return "ERROR";
+    }
+
+    const rounded =
+        Math.round(
+            (number + Number.EPSILON) *
+            1_000_000_000_000
+        ) /
+        1_000_000_000_000;
+
+    return String(rounded);
+}
 
 function inputNumber(number) {
     if (
@@ -137,16 +145,17 @@ function inputNumber(number) {
         return;
     }
 
+    if (currentValue === "-0") {
+        currentValue = `-${number}`;
+        return;
+    }
+
     if (currentValue.length >= 16) {
         return;
     }
 
     currentValue += number;
 }
-
-/* =====================================
-   小数
-===================================== */
 
 function inputDecimal() {
     if (
@@ -163,9 +172,32 @@ function inputDecimal() {
     }
 }
 
-/* =====================================
-   演算子
-===================================== */
+/* =========================================================
+   演算
+========================================================= */
+
+function performOperation(first, second, operator) {
+    switch (operator) {
+        case "+":
+            return first + second;
+
+        case "-":
+            return first - second;
+
+        case "*":
+            return first * second;
+
+        case "/":
+            if (second === 0) {
+                return null;
+            }
+
+            return first / second;
+
+        default:
+            return second;
+    }
+}
 
 function chooseOperator(operator) {
     if (currentValue === "ERROR") {
@@ -183,104 +215,111 @@ function chooseOperator(operator) {
     previousValue = currentValue;
     currentOperator = operator;
     shouldOverwrite = true;
+
+    lastOperator = null;
+    lastOperand = null;
 }
 
-/* =====================================
-   計算
-===================================== */
-
 function calculate() {
-    if (
-        previousValue === null ||
-        currentOperator === null ||
-        currentValue === "ERROR"
-    ) {
+    if (currentValue === "ERROR") {
         return;
     }
 
-    const first =
-        Number.parseFloat(
-            previousValue
-        );
+    let operatorToUse = currentOperator;
+    let firstNumber;
+    let secondNumber;
 
-    const second =
-        Number.parseFloat(
-            currentValue
-        );
+    if (
+        operatorToUse !== null &&
+        previousValue !== null
+    ) {
+        firstNumber = Number.parseFloat(previousValue);
+        secondNumber = Number.parseFloat(currentValue);
 
-    let result;
-
-    switch (currentOperator) {
-        case "+":
-            result = first + second;
-            break;
-
-        case "-":
-            result = first - second;
-            break;
-
-        case "*":
-            result = first * second;
-            break;
-
-        case "/":
-            result =
-                second === 0
-                    ? "ERROR"
-                    : first / second;
-            break;
-
-        default:
-            return;
+        lastOperator = operatorToUse;
+        lastOperand = currentValue;
+    } else if (
+        lastOperator !== null &&
+        lastOperand !== null
+    ) {
+        operatorToUse = lastOperator;
+        firstNumber = Number.parseFloat(currentValue);
+        secondNumber = Number.parseFloat(lastOperand);
+    } else {
+        return;
     }
 
-    if (typeof result === "number") {
-        result =
-            Math.round(
-                result *
-                1_000_000_000_000
-            ) /
-            1_000_000_000_000;
+    if (
+        !Number.isFinite(firstNumber) ||
+        !Number.isFinite(secondNumber)
+    ) {
+        currentValue = "ERROR";
+        previousValue = null;
+        currentOperator = null;
+        shouldOverwrite = true;
+        return;
     }
 
-    currentValue = String(result);
+    const result = performOperation(
+        firstNumber,
+        secondNumber,
+        operatorToUse
+    );
+
+    currentValue =
+        result === null
+            ? "ERROR"
+            : normalizeResult(result);
 
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = true;
+
+    triggerResultFlash(
+        currentValue !== "ERROR"
+    );
 }
 
-/* =====================================
+/* =========================================================
    補助機能
-===================================== */
+========================================================= */
 
 function clearCalculator() {
     currentValue = "0";
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = false;
+    lastOperand = null;
+    lastOperator = null;
 }
 
 function backspace() {
-    if (
-        shouldOverwrite ||
-        currentValue === "ERROR"
-    ) {
+    if (currentValue === "ERROR") {
+        clearCalculator();
         return;
     }
 
-    if (currentValue.length <= 1) {
+    if (shouldOverwrite) {
+        return;
+    }
+
+    if (
+        currentValue.length <= 1 ||
+        (
+            currentValue.startsWith("-") &&
+            currentValue.length === 2
+        )
+    ) {
         currentValue = "0";
         return;
     }
 
-    currentValue =
-        currentValue.slice(
-            0,
-            -1
-        );
+    currentValue = currentValue.slice(0, -1);
 
-    if (currentValue === "-") {
+    if (
+        currentValue === "-" ||
+        currentValue === ""
+    ) {
         currentValue = "0";
     }
 }
@@ -290,18 +329,20 @@ function convertToPercent() {
         return;
     }
 
-    currentValue =
-        String(
-            Number.parseFloat(
-                currentValue
-            ) / 100
-        );
+    const number = Number.parseFloat(currentValue);
+
+    if (!Number.isFinite(number)) {
+        return;
+    }
+
+    currentValue = normalizeResult(number / 100);
+    shouldOverwrite = true;
 }
 
 function toggleSign() {
     if (
-        currentValue === "0" ||
-        currentValue === "ERROR"
+        currentValue === "ERROR" ||
+        currentValue === "0"
     ) {
         return;
     }
@@ -312,74 +353,91 @@ function toggleSign() {
             : `-${currentValue}`;
 }
 
-/* =====================================
-   ボタン演出
-===================================== */
+/* =========================================================
+   押下アニメーション
+========================================================= */
 
 function animateButton(button) {
-    button.classList.add(
-        "is-pressed"
-    );
+    button.classList.remove("is-pressed");
 
-    window.setTimeout(
-        () => {
-            button.classList.remove(
-                "is-pressed"
-            );
-        },
-        160
+    void button.offsetWidth;
+
+    button.classList.add("is-pressed");
+
+    window.setTimeout(() => {
+        button.classList.remove("is-pressed");
+    }, 165);
+}
+
+function triggerResultFlash(success) {
+    calculator.animate(
+        [
+            {
+                filter:
+                    success
+                        ? "brightness(1.08)"
+                        : "brightness(1.05)"
+            },
+            {
+                filter:
+                    success
+                        ? "brightness(1.22)"
+                        : "brightness(0.82)"
+            },
+            {
+                filter: "brightness(1)"
+            }
+        ],
+        {
+            duration: success ? 320 : 420,
+            easing: "ease-out"
+        }
     );
 }
 
-/* =====================================
+/* =========================================================
    パーティクル
-===================================== */
+========================================================= */
 
 function createParticles(button) {
     if (
-        button.classList.contains(
-            "zero-key"
-        )
+        button.classList.contains("zero-key") ||
+        button.classList.contains("utility-key")
     ) {
         return;
     }
 
-    const rect =
-        button.getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
 
-    const centerX =
-        rect.left +
-        rect.width / 2;
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
 
-    const centerY =
-        rect.top +
-        rect.height / 2;
+    let count = 8;
 
-    const particleCount =
-        button.classList.contains(
-            "equal-key"
-        )
-            ? 14
-            : 8;
-
-    for (
-        let index = 0;
-        index < particleCount;
-        index += 1
+    if (
+        button.classList.contains("operator-equal")
     ) {
+        count = 18;
+    } else if (
+        button.classList.contains("operator-key")
+    ) {
+        count = 10;
+    }
+
+    for (let index = 0; index < count; index += 1) {
         const angle =
             Math.random() *
             Math.PI *
             2;
 
         const speed =
-            0.9 +
+            1.1 +
             Math.random() *
-            2.4;
+            2.6;
 
         particles.push({
-            x: centerX,
-            y: centerY,
+            x: originX,
+            y: originY,
 
             vx:
                 Math.cos(angle) *
@@ -388,19 +446,19 @@ function createParticles(button) {
             vy:
                 Math.sin(angle) *
                 speed -
-                0.6,
+                0.65,
 
             radius:
                 1.2 +
                 Math.random() *
-                2.3,
+                2.4,
 
             life: 1,
 
             decay:
                 0.025 +
                 Math.random() *
-                0.025
+                0.026
         });
     }
 
@@ -408,7 +466,7 @@ function createParticles(button) {
 }
 
 function startParticleAnimation() {
-    if (animationFrameId !== null) {
+    if (particleAnimationId !== null) {
         return;
     }
 
@@ -420,51 +478,47 @@ function startParticleAnimation() {
             window.innerHeight
         );
 
-        particles =
-            particles.filter(
-                (particle) =>
-                    particle.life > 0
+        particles = particles.filter(
+            (particle) => particle.life > 0
+        );
+
+        particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+
+            particle.vx *= 0.99;
+            particle.vy += 0.027;
+
+            particle.life -= particle.decay;
+
+            context.beginPath();
+
+            context.arc(
+                particle.x,
+                particle.y,
+                particle.radius,
+                0,
+                Math.PI * 2
             );
 
-        particles.forEach(
-            (particle) => {
-                particle.x +=
-                    particle.vx;
+            context.fillStyle =
+                `rgba(0, 112, 255, ${Math.max(
+                    particle.life,
+                    0
+                )})`;
 
-                particle.y +=
-                    particle.vy;
+            context.shadowColor =
+                "rgba(0, 126, 255, 0.95)";
 
-                particle.vy += 0.025;
+            context.shadowBlur = 12;
 
-                particle.life -=
-                    particle.decay;
-
-                context.beginPath();
-
-                context.arc(
-                    particle.x,
-                    particle.y,
-                    particle.radius,
-                    0,
-                    Math.PI * 2
-                );
-
-                context.fillStyle =
-                    `rgba(0, 132, 255, ${particle.life})`;
-
-                context.shadowColor =
-                    "rgba(0, 132, 255, 0.95)";
-
-                context.shadowBlur = 11;
-
-                context.fill();
-            }
-        );
+            context.fill();
+        });
 
         context.shadowBlur = 0;
 
         if (particles.length > 0) {
-            animationFrameId =
+            particleAnimationId =
                 window.requestAnimationFrame(
                     renderParticles
                 );
@@ -476,29 +530,24 @@ function startParticleAnimation() {
                 window.innerHeight
             );
 
-            animationFrameId = null;
+            particleAnimationId = null;
         }
     }
 
-    animationFrameId =
+    particleAnimationId =
         window.requestAnimationFrame(
             renderParticles
         );
 }
 
-/* =====================================
+/* =========================================================
    ボタン処理
-===================================== */
+========================================================= */
 
 function handleButton(button) {
-    const number =
-        button.dataset.number;
-
-    const action =
-        button.dataset.action;
-
-    const value =
-        button.dataset.value;
+    const number = button.dataset.number;
+    const action = button.dataset.action;
+    const value = button.dataset.value;
 
     animateButton(button);
     createParticles(button);
@@ -543,90 +592,88 @@ function handleButton(button) {
     updateDisplay();
 }
 
-buttons.forEach(
-    (button) => {
-        button.addEventListener(
-            "click",
-            () => {
-                handleButton(button);
-            }
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        handleButton(button);
+    });
+});
+
+/* =========================================================
+   キーボード対応
+========================================================= */
+
+function findButtonForKeyboardKey(key) {
+    if (/^[0-9]$/.test(key)) {
+        return document.querySelector(
+            `[data-number="${key}"]`
         );
     }
-);
 
-/* =====================================
-   キーボード
-===================================== */
-
-document.addEventListener(
-    "keydown",
-    (event) => {
-        let target = null;
-
-        if (/^[0-9]$/.test(event.key)) {
-            target =
-                document.querySelector(
-                    `[data-number="${event.key}"]`
-                );
-        }
-
-        if (event.key === ".") {
-            target =
-                document.querySelector(
-                    '[data-number="."]'
-                );
-        }
-
-        if (
-            ["+", "-", "*", "/"]
-                .includes(event.key)
-        ) {
-            target =
-                document.querySelector(
-                    `[data-action="operator"][data-value="${event.key}"]`
-                );
-        }
-
-        if (
-            event.key === "Enter" ||
-            event.key === "="
-        ) {
-            target =
-                document.querySelector(
-                    '[data-action="equal"]'
-                );
-        }
-
-        if (
-            event.key === "Backspace"
-        ) {
-            target =
-                document.querySelector(
-                    '[data-action="backspace"]'
-                );
-        }
-
-        if (
-            event.key === "Escape"
-        ) {
-            target =
-                document.querySelector(
-                    '[data-action="clear"]'
-                );
-        }
-
-        if (event.key === "%") {
-            target =
-                document.querySelector(
-                    '[data-action="percent"]'
-                );
-        }
-
-        if (target) {
-            event.preventDefault();
-            handleButton(target);
-        }
+    if (
+        key === "." ||
+        key === ","
+    ) {
+        return document.querySelector(
+            '[data-number="."]'
+        );
     }
-);
+
+    if (
+        ["+", "-", "*", "/"].includes(key)
+    ) {
+        return document.querySelector(
+            `[data-action="operator"][data-value="${key}"]`
+        );
+    }
+
+    if (
+        key === "Enter" ||
+        key === "="
+    ) {
+        return document.querySelector(
+            '[data-action="equal"]'
+        );
+    }
+
+    if (key === "Backspace") {
+        return document.querySelector(
+            '[data-action="backspace"]'
+        );
+    }
+
+    if (
+        key === "Escape" ||
+        key === "Delete"
+    ) {
+        return document.querySelector(
+            '[data-action="clear"]'
+        );
+    }
+
+    if (key === "%") {
+        return document.querySelector(
+            '[data-action="percent"]'
+        );
+    }
+
+    return null;
+}
+
+document.addEventListener("keydown", (event) => {
+    const targetButton =
+        findButtonForKeyboardKey(event.key);
+
+    if (!targetButton) {
+        return;
+    }
+
+    event.preventDefault();
+
+    handleButton(targetButton);
+});
+
+/* =========================================================
+   初期表示
+========================================================= */
 
 updateDisplay();
