@@ -1,323 +1,632 @@
-const display = document.querySelector("#display");
-const expressionDisplay = document.querySelector("#expression");
-const keys = document.querySelectorAll(".key");
+"use strict";
 
-let current = "0";
-let previous = null;
-let operator = null;
-let waitingForOperand = false;
-let justCalculated = false;
+const display =
+    document.getElementById("display");
 
-const operatorSymbols = {
-  "+": "+",
-  "−": "−",
-  "×": "×",
-  "÷": "÷"
-};
+const buttons =
+    document.querySelectorAll(
+        ".calculator button"
+    );
 
-function formatNumber(value) {
-  if (!Number.isFinite(value)) {
-    return "Error";
-  }
+const canvas =
+    document.getElementById("particles");
 
-  const absoluteValue = Math.abs(value);
+const context =
+    canvas.getContext("2d");
 
-  if (
-    absoluteValue >= 1e10 ||
-    (absoluteValue > 0 && absoluteValue < 1e-7)
-  ) {
-    return value
-      .toExponential(7)
-      .replace(/\.0+e/, "e");
-  }
+let currentValue = "0";
+let previousValue = null;
+let currentOperator = null;
+let shouldOverwrite = false;
 
-  return Number(value.toPrecision(12)).toString();
+let particles = [];
+let animationFrameId = null;
+
+/* =====================================
+   Canvas
+===================================== */
+
+function resizeCanvas() {
+    const pixelRatio =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    canvas.width =
+        window.innerWidth *
+        pixelRatio;
+
+    canvas.height =
+        window.innerHeight *
+        pixelRatio;
+
+    canvas.style.width =
+        `${window.innerWidth}px`;
+
+    canvas.style.height =
+        `${window.innerHeight}px`;
+
+    context.setTransform(
+        pixelRatio,
+        0,
+        0,
+        pixelRatio,
+        0,
+        0
+    );
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+/* =====================================
+   表示
+===================================== */
+
+function formatForDisplay(value) {
+    if (value === "ERROR") {
+        return value;
+    }
+
+    if (value.length <= 10) {
+        return value;
+    }
+
+    const number =
+        Number(value);
+
+    if (!Number.isFinite(number)) {
+        return value;
+    }
+
+    return number.toExponential(5);
 }
 
 function updateDisplay() {
-  display.textContent = current;
+    display.textContent =
+        formatForDisplay(
+            currentValue
+        );
 
-  if (previous !== null && operator) {
-    expressionDisplay.textContent =
-      `${formatNumber(previous)} ${operatorSymbols[operator]}`;
-  } else {
-    expressionDisplay.textContent = "";
-  }
-}
+    display.animate(
+        [
+            {
+                transform:
+                    "scale(1.02)",
 
-function inputDigit(digit) {
-  if (
-    current === "Error" ||
-    waitingForOperand ||
-    justCalculated
-  ) {
-    current = digit;
-    waitingForOperand = false;
-    justCalculated = false;
-    return;
-  }
+                filter:
+                    "brightness(1.55)"
+            },
 
-  if (current === "0") {
-    current = digit;
-  } else if (current.length < 12) {
-    current += digit;
-  }
-}
+            {
+                transform:
+                    "scale(1)",
 
-function inputDecimal() {
-  if (
-    current === "Error" ||
-    waitingForOperand ||
-    justCalculated
-  ) {
-    current = "0.";
-    waitingForOperand = false;
-    justCalculated = false;
-    return;
-  }
-
-  if (!current.includes(".")) {
-    current += ".";
-  }
-}
-
-function calculate(firstNumber, secondNumber, selectedOperator) {
-  switch (selectedOperator) {
-    case "+":
-      return firstNumber + secondNumber;
-
-    case "−":
-      return firstNumber - secondNumber;
-
-    case "×":
-      return firstNumber * secondNumber;
-
-    case "÷":
-      return secondNumber === 0
-        ? NaN
-        : firstNumber / secondNumber;
-
-    default:
-      return secondNumber;
-  }
-}
-
-function chooseOperator(nextOperator) {
-  const inputValue = Number(current);
-
-  if (!Number.isFinite(inputValue)) {
-    clearAll();
-    return;
-  }
-
-  if (operator && waitingForOperand) {
-    operator = nextOperator;
-    updateDisplay();
-    return;
-  }
-
-  if (previous === null) {
-    previous = inputValue;
-  } else if (operator) {
-    const result = calculate(
-      previous,
-      inputValue,
-      operator
+                filter:
+                    "brightness(1)"
+            }
+        ],
+        {
+            duration: 170,
+            easing: "ease-out"
+        }
     );
+}
 
-    current = formatNumber(result);
+/* =====================================
+   数字入力
+===================================== */
 
-    if (current === "Error") {
-      previous = null;
-      operator = null;
-      waitingForOperand = false;
-      updateDisplay();
-      return;
+function inputNumber(number) {
+    if (
+        currentValue === "ERROR" ||
+        shouldOverwrite
+    ) {
+        currentValue = number;
+        shouldOverwrite = false;
+        return;
     }
 
-    previous = Number(current);
-  }
+    if (currentValue === "0") {
+        currentValue = number;
+        return;
+    }
 
-  operator = nextOperator;
-  waitingForOperand = true;
-  justCalculated = false;
+    if (currentValue.length >= 16) {
+        return;
+    }
+
+    currentValue += number;
 }
 
-function equals() {
-  if (
-    previous === null ||
-    !operator ||
-    current === "Error"
-  ) {
-    return;
-  }
+/* =====================================
+   小数
+===================================== */
 
-  const inputValue = Number(current);
-  const firstNumber = previous;
-  const usedOperator = operator;
+function inputDecimal() {
+    if (
+        currentValue === "ERROR" ||
+        shouldOverwrite
+    ) {
+        currentValue = "0.";
+        shouldOverwrite = false;
+        return;
+    }
 
-  const result = calculate(
-    firstNumber,
-    inputValue,
-    usedOperator
-  );
-
-  expressionDisplay.textContent =
-    `${formatNumber(firstNumber)} ` +
-    `${operatorSymbols[usedOperator]} ` +
-    `${formatNumber(inputValue)} ＝`;
-
-  current = formatNumber(result);
-
-  previous = null;
-  operator = null;
-  waitingForOperand = false;
-  justCalculated = true;
-
-  display.textContent = current;
+    if (!currentValue.includes(".")) {
+        currentValue += ".";
+    }
 }
 
-function clearAll() {
-  current = "0";
-  previous = null;
-  operator = null;
-  waitingForOperand = false;
-  justCalculated = false;
+/* =====================================
+   演算子
+===================================== */
 
-  updateDisplay();
+function chooseOperator(operator) {
+    if (currentValue === "ERROR") {
+        clearCalculator();
+        return;
+    }
+
+    if (
+        currentOperator !== null &&
+        !shouldOverwrite
+    ) {
+        calculate();
+    }
+
+    previousValue = currentValue;
+    currentOperator = operator;
+    shouldOverwrite = true;
 }
 
-function deleteLast() {
-  if (
-    waitingForOperand ||
-    justCalculated ||
-    current === "Error"
-  ) {
-    return;
-  }
+/* =====================================
+   計算
+===================================== */
 
-  current =
-    current.length > 1
-      ? current.slice(0, -1)
-      : "0";
+function calculate() {
+    if (
+        previousValue === null ||
+        currentOperator === null ||
+        currentValue === "ERROR"
+    ) {
+        return;
+    }
 
-  if (current === "-") {
-    current = "0";
-  }
+    const first =
+        Number.parseFloat(
+            previousValue
+        );
+
+    const second =
+        Number.parseFloat(
+            currentValue
+        );
+
+    let result;
+
+    switch (currentOperator) {
+        case "+":
+            result = first + second;
+            break;
+
+        case "-":
+            result = first - second;
+            break;
+
+        case "*":
+            result = first * second;
+            break;
+
+        case "/":
+            result =
+                second === 0
+                    ? "ERROR"
+                    : first / second;
+            break;
+
+        default:
+            return;
+    }
+
+    if (typeof result === "number") {
+        result =
+            Math.round(
+                result *
+                1_000_000_000_000
+            ) /
+            1_000_000_000_000;
+    }
+
+    currentValue = String(result);
+
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = true;
 }
 
-function percent() {
-  if (current === "Error") {
-    return;
-  }
+/* =====================================
+   補助機能
+===================================== */
 
-  current = formatNumber(Number(current) / 100);
-  justCalculated = true;
+function clearCalculator() {
+    currentValue = "0";
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = false;
 }
 
-function handleKey(key) {
-  const value = key.dataset.value;
-  const action = key.dataset.action;
-  const nextOperator = key.dataset.operator;
+function backspace() {
+    if (
+        shouldOverwrite ||
+        currentValue === "ERROR"
+    ) {
+        return;
+    }
 
-  if (value !== undefined) {
-    inputDigit(value);
-  }
+    if (currentValue.length <= 1) {
+        currentValue = "0";
+        return;
+    }
 
-  if (nextOperator) {
-    chooseOperator(nextOperator);
-  }
+    currentValue =
+        currentValue.slice(
+            0,
+            -1
+        );
 
-  switch (action) {
-    case "decimal":
-      inputDecimal();
-      break;
-
-    case "equals":
-      equals();
-      return;
-
-    case "clear":
-      clearAll();
-      return;
-
-    case "delete":
-      deleteLast();
-      break;
-
-    case "percent":
-      percent();
-      break;
-  }
-
-  updateDisplay();
+    if (currentValue === "-") {
+        currentValue = "0";
+    }
 }
 
-keys.forEach((key) => {
-  key.addEventListener("click", () => {
-    handleKey(key);
-  });
-});
+function convertToPercent() {
+    if (currentValue === "ERROR") {
+        return;
+    }
 
-document.addEventListener("keydown", (event) => {
-  const keyboardOperatorMap = {
-    "/": "÷",
-    "*": "×",
-    "-": "−",
-    "+": "+"
-  };
+    currentValue =
+        String(
+            Number.parseFloat(
+                currentValue
+            ) / 100
+        );
+}
 
-  let targetKey = null;
+function toggleSign() {
+    if (
+        currentValue === "0" ||
+        currentValue === "ERROR"
+    ) {
+        return;
+    }
 
-  if (/^[0-9]$/.test(event.key)) {
-    targetKey = document.querySelector(
-      `[data-value="${event.key}"]`
+    currentValue =
+        currentValue.startsWith("-")
+            ? currentValue.slice(1)
+            : `-${currentValue}`;
+}
+
+/* =====================================
+   ボタン演出
+===================================== */
+
+function animateButton(button) {
+    button.classList.add(
+        "is-pressed"
     );
-  } else if (keyboardOperatorMap[event.key]) {
-    targetKey = document.querySelector(
-      `[data-operator="${keyboardOperatorMap[event.key]}"]`
-    );
-  } else if (
-    event.key === "." ||
-    event.key === ","
-  ) {
-    targetKey = document.querySelector(
-      '[data-action="decimal"]'
-    );
-  } else if (
-    event.key === "Enter" ||
-    event.key === "="
-  ) {
-    targetKey = document.querySelector(
-      '[data-action="equals"]'
-    );
-  } else if (event.key === "Escape") {
-    targetKey = document.querySelector(
-      '[data-action="clear"]'
-    );
-  } else if (event.key === "Backspace") {
-    targetKey = document.querySelector(
-      '[data-action="delete"]'
-    );
-  } else if (event.key === "%") {
-    targetKey = document.querySelector(
-      '[data-action="percent"]'
-    );
-  }
 
-  if (!targetKey) {
-    return;
-  }
+    window.setTimeout(
+        () => {
+            button.classList.remove(
+                "is-pressed"
+            );
+        },
+        160
+    );
+}
 
-  event.preventDefault();
+/* =====================================
+   パーティクル
+===================================== */
 
-  targetKey.classList.add("is-pressed");
+function createParticles(button) {
+    if (
+        button.classList.contains(
+            "zero-key"
+        )
+    ) {
+        return;
+    }
 
-  setTimeout(() => {
-    targetKey.classList.remove("is-pressed");
-  }, 110);
+    const rect =
+        button.getBoundingClientRect();
 
-  handleKey(targetKey);
-});
+    const centerX =
+        rect.left +
+        rect.width / 2;
+
+    const centerY =
+        rect.top +
+        rect.height / 2;
+
+    const particleCount =
+        button.classList.contains(
+            "equal-key"
+        )
+            ? 14
+            : 8;
+
+    for (
+        let index = 0;
+        index < particleCount;
+        index += 1
+    ) {
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+        const speed =
+            0.9 +
+            Math.random() *
+            2.4;
+
+        particles.push({
+            x: centerX,
+            y: centerY,
+
+            vx:
+                Math.cos(angle) *
+                speed,
+
+            vy:
+                Math.sin(angle) *
+                speed -
+                0.6,
+
+            radius:
+                1.2 +
+                Math.random() *
+                2.3,
+
+            life: 1,
+
+            decay:
+                0.025 +
+                Math.random() *
+                0.025
+        });
+    }
+
+    startParticleAnimation();
+}
+
+function startParticleAnimation() {
+    if (animationFrameId !== null) {
+        return;
+    }
+
+    function renderParticles() {
+        context.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
+        );
+
+        particles =
+            particles.filter(
+                (particle) =>
+                    particle.life > 0
+            );
+
+        particles.forEach(
+            (particle) => {
+                particle.x +=
+                    particle.vx;
+
+                particle.y +=
+                    particle.vy;
+
+                particle.vy += 0.025;
+
+                particle.life -=
+                    particle.decay;
+
+                context.beginPath();
+
+                context.arc(
+                    particle.x,
+                    particle.y,
+                    particle.radius,
+                    0,
+                    Math.PI * 2
+                );
+
+                context.fillStyle =
+                    `rgba(0, 132, 255, ${particle.life})`;
+
+                context.shadowColor =
+                    "rgba(0, 132, 255, 0.95)";
+
+                context.shadowBlur = 11;
+
+                context.fill();
+            }
+        );
+
+        context.shadowBlur = 0;
+
+        if (particles.length > 0) {
+            animationFrameId =
+                window.requestAnimationFrame(
+                    renderParticles
+                );
+        } else {
+            context.clearRect(
+                0,
+                0,
+                window.innerWidth,
+                window.innerHeight
+            );
+
+            animationFrameId = null;
+        }
+    }
+
+    animationFrameId =
+        window.requestAnimationFrame(
+            renderParticles
+        );
+}
+
+/* =====================================
+   ボタン処理
+===================================== */
+
+function handleButton(button) {
+    const number =
+        button.dataset.number;
+
+    const action =
+        button.dataset.action;
+
+    const value =
+        button.dataset.value;
+
+    animateButton(button);
+    createParticles(button);
+
+    if (number !== undefined) {
+        if (number === ".") {
+            inputDecimal();
+        } else {
+            inputNumber(number);
+        }
+    }
+
+    switch (action) {
+        case "operator":
+            chooseOperator(value);
+            break;
+
+        case "equal":
+            calculate();
+            break;
+
+        case "clear":
+            clearCalculator();
+            break;
+
+        case "backspace":
+            backspace();
+            break;
+
+        case "percent":
+            convertToPercent();
+            break;
+
+        case "sign":
+            toggleSign();
+            break;
+
+        default:
+            break;
+    }
+
+    updateDisplay();
+}
+
+buttons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                handleButton(button);
+            }
+        );
+    }
+);
+
+/* =====================================
+   キーボード
+===================================== */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+        let target = null;
+
+        if (/^[0-9]$/.test(event.key)) {
+            target =
+                document.querySelector(
+                    `[data-number="${event.key}"]`
+                );
+        }
+
+        if (event.key === ".") {
+            target =
+                document.querySelector(
+                    '[data-number="."]'
+                );
+        }
+
+        if (
+            ["+", "-", "*", "/"]
+                .includes(event.key)
+        ) {
+            target =
+                document.querySelector(
+                    `[data-action="operator"][data-value="${event.key}"]`
+                );
+        }
+
+        if (
+            event.key === "Enter" ||
+            event.key === "="
+        ) {
+            target =
+                document.querySelector(
+                    '[data-action="equal"]'
+                );
+        }
+
+        if (
+            event.key === "Backspace"
+        ) {
+            target =
+                document.querySelector(
+                    '[data-action="backspace"]'
+                );
+        }
+
+        if (
+            event.key === "Escape"
+        ) {
+            target =
+                document.querySelector(
+                    '[data-action="clear"]'
+                );
+        }
+
+        if (event.key === "%") {
+            target =
+                document.querySelector(
+                    '[data-action="percent"]'
+                );
+        }
+
+        if (target) {
+            event.preventDefault();
+            handleButton(target);
+        }
+    }
+);
 
 updateDisplay();
