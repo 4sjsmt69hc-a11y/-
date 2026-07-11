@@ -22,9 +22,7 @@ let shouldOverwrite = false;
 let particles = [];
 let animationFrameId = null;
 
-/* =====================================
-   Canvas
-===================================== */
+/* Canvas */
 
 function resizeCanvas() {
     const pixelRatio =
@@ -64,9 +62,7 @@ window.addEventListener(
 
 resizeCanvas();
 
-/* =====================================
-   表示
-===================================== */
+/* 表示 */
 
 function formatForDisplay(value) {
     if (value === "ERROR") {
@@ -96,12 +92,19 @@ function updateDisplay() {
     display.animate(
         [
             {
-                transform: "scale(1.025)",
-                filter: "brightness(1.6)"
+                transform:
+                    "scale(1.025)",
+
+                filter:
+                    "brightness(1.6)"
             },
+
             {
-                transform: "scale(1)",
-                filter: "brightness(1)"
+                transform:
+                    "scale(1)",
+
+                filter:
+                    "brightness(1)"
             }
         ],
         {
@@ -111,9 +114,7 @@ function updateDisplay() {
     );
 }
 
-/* =====================================
-   数字入力
-===================================== */
+/* 数字入力 */
 
 function inputNumber(number) {
     if (
@@ -137,9 +138,7 @@ function inputNumber(number) {
     currentValue += number;
 }
 
-/* =====================================
-   小数
-===================================== */
+/* 小数点 */
 
 function inputDecimal() {
     if (
@@ -151,21 +150,15 @@ function inputDecimal() {
         return;
     }
 
-    if (
-        !currentValue.includes(".")
-    ) {
+    if (!currentValue.includes(".")) {
         currentValue += ".";
     }
 }
 
-/* =====================================
-   演算子
-===================================== */
+/* 演算子 */
 
 function chooseOperator(operator) {
-    if (
-        currentValue === "ERROR"
-    ) {
+    if (currentValue === "ERROR") {
         clearCalculator();
         return;
     }
@@ -187,9 +180,7 @@ function chooseOperator(operator) {
         true;
 }
 
-/* =====================================
-   計算
-===================================== */
+/* 計算 */
 
 function calculate() {
     if (
@@ -214,15 +205,18 @@ function calculate() {
 
     switch (currentOperator) {
         case "+":
-            result = first + second;
+            result =
+                first + second;
             break;
 
         case "-":
-            result = first - second;
+            result =
+                first - second;
             break;
 
         case "*":
-            result = first * second;
+            result =
+                first * second;
             break;
 
         case "/":
@@ -255,9 +249,7 @@ function calculate() {
     shouldOverwrite = true;
 }
 
-/* =====================================
-   補助機能
-===================================== */
+/* 補助機能 */
 
 function clearCalculator() {
     currentValue = "0";
@@ -274,9 +266,7 @@ function backspace() {
         return;
     }
 
-    if (
-        currentValue.length <= 1
-    ) {
+    if (currentValue.length <= 1) {
         currentValue = "0";
         return;
     }
@@ -287,17 +277,13 @@ function backspace() {
             -1
         );
 
-    if (
-        currentValue === "-"
-    ) {
+    if (currentValue === "-") {
         currentValue = "0";
     }
 }
 
 function convertToPercent() {
-    if (
-        currentValue === "ERROR"
-    ) {
+    if (currentValue === "ERROR") {
         return;
     }
 
@@ -323,9 +309,7 @@ function toggleSign() {
             : `-${currentValue}`;
 }
 
-/* =====================================
-   ボタン演出
-===================================== */
+/* ボタン演出 */
 
 function animateButton(button) {
     button.classList.add(
@@ -342,9 +326,7 @@ function animateButton(button) {
     );
 }
 
-/* =====================================
-   パーティクル
-===================================== */
+/* パーティクル */
 
 function createParticles(button) {
     if (
@@ -497,9 +479,7 @@ function startParticleAnimation() {
         );
 }
 
-/* =====================================
-   ボタン入力
-===================================== */
+/* ボタン入力 */
 
 function handleButton(button) {
     const number =
@@ -565,18 +545,14 @@ buttons.forEach(
     }
 );
 
-/* =====================================
-   キーボード
-===================================== */
+/* キーボード */
 
 document.addEventListener(
     "keydown",
     (event) => {
         let target = null;
 
-        if (
-            /^[0-9]$/.test(event.key)
-        ) {
+        if (/^[0-9]$/.test(event.key)) {
             target =
                 document.querySelector(
                     `[data-number="${event.key}"]`
