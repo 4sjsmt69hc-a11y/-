@@ -849,40 +849,38 @@ button {
    本体の長さ・下部配置調整
 ===================================== */
 
-.calculator {
-    height: 860px;
+.calculator{
+    height:760px;
 }
 
-/* 数字ボタン群 */
-.number-cluster {
-    top: 470px;
+.number-cluster{
+    top:410px;
 }
 
-/* 左下の0ボタン */
-.zero-key {
-    bottom: 42px;
+.zero-key{
+    bottom:32px;
 }
 
-/* 演算ボタン群 */
-.operator-cluster {
-    bottom: 34px;
+.operator-cluster{
+    bottom:26px;
 }
 
-/* 小さい画面 */
-@media (max-width: 520px) {
-    .calculator {
-        height: 790px;
+@media (max-width:520px){
+
+    .calculator{
+        height:700px;
     }
 
-    .number-cluster {
-        top: 420px;
+    .number-cluster{
+        top:375px;
     }
 
-    .zero-key {
-        bottom: 34px;
+    .zero-key{
+        bottom:24px;
     }
 
-    .operator-cluster {
-        bottom: 28px;
+    .operator-cluster{
+        bottom:20px;
     }
+
 }
