@@ -1834,69 +1834,202 @@ button {
             auto !important;
     }
 }
-/* ===== 下部レイアウト修正版 ===== */
+/* =========================================================
+   レイアウト最終修正
+   各エリアを本体基準の絶対配置にして、はみ出しを防止
+========================================================= */
 
 .calculator {
+    position: relative;
+
+    width: min(430px, 94vw);
     height: 710px;
+
+    padding:
+        50px
+        26px
+        52px;
+
+    overflow: visible;
 }
 
-/* 操作エリアを本体内に固定 */
+/* =========================================================
+   計算表示
+========================================================= */
+
+.display-area {
+    position: absolute;
+
+    top: 138px;
+    left: 0;
+    right: 0;
+
+    width: auto;
+    height: 68px;
+
+    margin: 0;
+
+    padding:
+        0
+        56px
+        8px;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.display-value {
+    max-width: 270px;
+
+    font-size:
+        clamp(
+            1.45rem,
+            5vw,
+            1.95rem
+        );
+}
+
+/* =========================================================
+   銀ボタン
+========================================================= */
+
+.utility-buttons {
+    position: absolute;
+
+    top: 230px;
+    left: 0;
+    right: 0;
+
+    width: auto;
+
+    margin: 0;
+
+    grid-template-columns:
+        38px
+        38px
+        72px
+        38px
+        38px;
+
+    column-gap: 16px;
+}
+
+/* =========================================================
+   下半分の操作エリア
+========================================================= */
+
 .main-controls {
-    top: 320px;
-    bottom: 58px;
+    position: absolute;
+
+    top: 330px;
+    left: 26px;
+    right: 26px;
+    bottom: 42px;
+
+    width: auto;
+    height: auto;
+
+    margin: 0;
 }
 
-/* 数字ボタン群を少し上へ戻して、本体内に収める */
+/* =========================================================
+   数字ボタン群
+========================================================= */
+
 .number-cluster {
-    top: 28px;
+    position: absolute;
+
+    top: 14px;
+    left: 50%;
+
+    width: 374px;
+    height: 330px;
+
+    transform:
+        translateX(-50%);
 }
 
-/* 数字配置を少し詰める */
+/* 縦方向を少し詰め、本体内に収める */
+
 .key-1 {
     top: 0;
+    left: 145px;
 }
 
-.key-2,
+.key-2 {
+    top: 58px;
+    left: 72px;
+}
+
 .key-3 {
     top: 58px;
+    right: 72px;
 }
 
-.key-4,
-.key-5,
+.key-4 {
+    top: 116px;
+    left: 0;
+}
+
+.key-5 {
+    top: 116px;
+    left: 145px;
+}
+
 .key-6 {
     top: 116px;
+    right: 0;
 }
 
-.key-7,
+.key-7 {
+    top: 174px;
+    left: 72px;
+}
+
 .key-8 {
     top: 174px;
+    right: 72px;
 }
 
 .key-9 {
     top: 232px;
+    left: 145px;
 }
 
-/* 0ボタンを下フレームより上へ */
+/* =========================================================
+   白い0ボタン
+========================================================= */
+
 .zero-key {
-    left: 18px;
-    bottom: 18px;
+    left: -6px;
+    bottom: 4px;
 }
 
-/* 演算ボタン群を数字から離しつつ、本体内へ */
-.operator-cluster {
-    right: 8px;
-    bottom: 12px;
+/* =========================================================
+   演算ボタン群
+========================================================= */
 
-    width: 145px;
-    height: 145px;
+.operator-cluster {
+    position: absolute;
+
+    right: -6px;
+    bottom: 2px;
+
+    width: 154px;
+    height: 160px;
 }
 
 /*
-        ÷
-      ×
-        −
-    ＋   .
-  =
+             ÷
+
+         ×
+
+             −
+
+     ＋      .
+
+   =
 */
 
 .operator-divide {
@@ -1905,47 +2038,155 @@ button {
 }
 
 .operator-multiply {
-    top: 34px;
-    right: 42px;
+    top: 35px;
+    right: 45px;
 }
 
 .operator-minus {
-    top: 68px;
+    top: 70px;
     right: 0;
 }
 
 .operator-plus {
-    top: 76px;
-    right: 82px;
+    top: 88px;
+    right: 91px;
 }
 
 .operator-decimal {
-    top: 104px;
-    right: 40px;
+    top: 108px;
+    right: 43px;
 }
 
 .operator-equal {
-    top: 108px;
-    right: 92px;
+    top: 120px;
+    right: 108px;
 }
 
-/* スマホ調整 */
+/* =========================================================
+   幅520px以下
+========================================================= */
+
 @media (max-width: 520px) {
+    .calculator {
+        width: 100%;
+        height: 680px;
+
+        padding:
+            48px
+            12px;
+    }
+
+    .display-area {
+        top: 122px;
+
+        padding-left: 38px;
+        padding-right: 38px;
+    }
+
+    .utility-buttons {
+        top: 208px;
+
+        grid-template-columns:
+            33px
+            33px
+            48px
+            33px
+            33px;
+
+        column-gap: 11px;
+    }
+
+    .utility-gap {
+        width: 48px;
+    }
+
+    .utility-key {
+        width: 33px;
+        height: 76px;
+    }
+
     .main-controls {
-        top: 296px;
-        bottom: 54px;
+        top: 298px;
+        left: 12px;
+        right: 12px;
+        bottom: 38px;
     }
 
     .number-cluster {
-        top: 25px;
-    }
+        top: 18px;
 
-    .operator-cluster {
-        right: 2px;
-        bottom: 10px;
+        transform:
+            translateX(-50%)
+            scale(0.84);
+
+        transform-origin:
+            top center;
     }
 
     .zero-key {
-        bottom: 16px;
+        left: 0;
+        bottom: 3px;
+    }
+
+    .operator-cluster {
+        right: -2px;
+        bottom: 2px;
+
+        transform:
+            scale(0.86);
+
+        transform-origin:
+            bottom right;
+    }
+}
+
+/* =========================================================
+   幅370px以下
+========================================================= */
+
+@media (max-width: 370px) {
+    .calculator {
+        height: 650px;
+    }
+
+    .display-area {
+        top: 112px;
+    }
+
+    .utility-buttons {
+        top: 192px;
+
+        grid-template-columns:
+            29px
+            29px
+            35px
+            29px
+            29px;
+
+        column-gap: 8px;
+    }
+
+    .utility-key {
+        width: 29px;
+        height: 68px;
+    }
+
+    .main-controls {
+        top: 272px;
+        bottom: 34px;
+    }
+
+    .number-cluster {
+        transform:
+            translateX(-50%)
+            scale(0.75);
+    }
+
+    .operator-cluster {
+        transform:
+            scale(0.76);
+
+        transform-origin:
+            bottom right;
     }
 }
