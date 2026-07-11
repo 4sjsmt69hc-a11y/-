@@ -1834,3 +1834,118 @@ button {
             auto !important;
     }
 }
+/* ===== 下部レイアウト修正版 ===== */
+
+.calculator {
+    height: 710px;
+}
+
+/* 操作エリアを本体内に固定 */
+.main-controls {
+    top: 320px;
+    bottom: 58px;
+}
+
+/* 数字ボタン群を少し上へ戻して、本体内に収める */
+.number-cluster {
+    top: 28px;
+}
+
+/* 数字配置を少し詰める */
+.key-1 {
+    top: 0;
+}
+
+.key-2,
+.key-3 {
+    top: 58px;
+}
+
+.key-4,
+.key-5,
+.key-6 {
+    top: 116px;
+}
+
+.key-7,
+.key-8 {
+    top: 174px;
+}
+
+.key-9 {
+    top: 232px;
+}
+
+/* 0ボタンを下フレームより上へ */
+.zero-key {
+    left: 18px;
+    bottom: 18px;
+}
+
+/* 演算ボタン群を数字から離しつつ、本体内へ */
+.operator-cluster {
+    right: 8px;
+    bottom: 12px;
+
+    width: 145px;
+    height: 145px;
+}
+
+/*
+        ÷
+      ×
+        −
+    ＋   .
+  =
+*/
+
+.operator-divide {
+    top: 0;
+    right: 0;
+}
+
+.operator-multiply {
+    top: 34px;
+    right: 42px;
+}
+
+.operator-minus {
+    top: 68px;
+    right: 0;
+}
+
+.operator-plus {
+    top: 76px;
+    right: 82px;
+}
+
+.operator-decimal {
+    top: 104px;
+    right: 40px;
+}
+
+.operator-equal {
+    top: 108px;
+    right: 92px;
+}
+
+/* スマホ調整 */
+@media (max-width: 520px) {
+    .main-controls {
+        top: 296px;
+        bottom: 54px;
+    }
+
+    .number-cluster {
+        top: 25px;
+    }
+
+    .operator-cluster {
+        right: 2px;
+        bottom: 10px;
+    }
+
+    .zero-key {
+        bottom: 16px;
+    }
+}
