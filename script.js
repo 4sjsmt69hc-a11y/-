@@ -1,149 +1,235 @@
-const display = document.getElementById("display");
+"use strict";
 
-const buttons = document.querySelectorAll(
-    ".control-panel button"
+const display =
+    document.getElementById("display");
+
+const buttons =
+    document.querySelectorAll(
+        ".calculator button"
+    );
+
+const canvas =
+    document.getElementById("particles");
+
+const context =
+    canvas.getContext("2d");
+
+let currentValue = "0";
+let previousValue = null;
+let currentOperator = null;
+let shouldOverwrite = false;
+
+let particles = [];
+let animationFrameId = null;
+
+/* =====================================
+   Canvas
+===================================== */
+
+function resizeCanvas() {
+    const pixelRatio =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    canvas.width =
+        window.innerWidth *
+        pixelRatio;
+
+    canvas.height =
+        window.innerHeight *
+        pixelRatio;
+
+    canvas.style.width =
+        `${window.innerWidth}px`;
+
+    canvas.style.height =
+        `${window.innerHeight}px`;
+
+    context.setTransform(
+        pixelRatio,
+        0,
+        0,
+        pixelRatio,
+        0,
+        0
+    );
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
 );
 
-let current = "0";
-let previous = null;
-let operator = null;
-let overwrite = false;
+resizeCanvas();
 
-/* ==============================
+/* =====================================
    表示
-============================== */
+===================================== */
+
+function formatForDisplay(value) {
+    if (value === "ERROR") {
+        return value;
+    }
+
+    if (value.length <= 10) {
+        return value;
+    }
+
+    const number =
+        Number(value);
+
+    if (!Number.isFinite(number)) {
+        return value;
+    }
+
+    return number.toExponential(5);
+}
 
 function updateDisplay() {
-    display.textContent = current;
+    display.textContent =
+        formatForDisplay(
+            currentValue
+        );
 
     display.animate(
         [
             {
-                filter: "brightness(1.7)",
-                transform: "scale(1.025)"
+                transform: "scale(1.025)",
+                filter: "brightness(1.6)"
             },
             {
-                filter: "brightness(1)",
-                transform: "scale(1)"
+                transform: "scale(1)",
+                filter: "brightness(1)"
             }
         ],
         {
-            duration: 180,
+            duration: 170,
             easing: "ease-out"
         }
     );
 }
 
-/* ==============================
+/* =====================================
    数字入力
-============================== */
+===================================== */
 
-function inputNumber(value) {
+function inputNumber(number) {
     if (
-        current === "ERROR" ||
-        overwrite
+        currentValue === "ERROR" ||
+        shouldOverwrite
     ) {
-        current = value;
-        overwrite = false;
+        currentValue = number;
+        shouldOverwrite = false;
         return;
     }
 
-    if (current === "0") {
-        current = value;
-    } else {
-        current += value;
+    if (currentValue === "0") {
+        currentValue = number;
+        return;
     }
+
+    if (currentValue.length >= 16) {
+        return;
+    }
+
+    currentValue += number;
 }
 
-/* ==============================
-   小数点
-============================== */
+/* =====================================
+   小数
+===================================== */
 
 function inputDecimal() {
     if (
-        current === "ERROR" ||
-        overwrite
+        currentValue === "ERROR" ||
+        shouldOverwrite
     ) {
-        current = "0.";
-        overwrite = false;
+        currentValue = "0.";
+        shouldOverwrite = false;
         return;
     }
 
-    if (!current.includes(".")) {
-        current += ".";
+    if (
+        !currentValue.includes(".")
+    ) {
+        currentValue += ".";
     }
 }
 
-/* ==============================
+/* =====================================
    演算子
-============================== */
+===================================== */
 
-function setOperator(nextOperator) {
-    if (current === "ERROR") {
+function chooseOperator(operator) {
+    if (
+        currentValue === "ERROR"
+    ) {
         clearCalculator();
         return;
     }
 
     if (
-        operator !== null &&
-        !overwrite
+        currentOperator !== null &&
+        !shouldOverwrite
     ) {
         calculate();
     }
 
-    previous = current;
-    operator = nextOperator;
-    overwrite = true;
+    previousValue =
+        currentValue;
+
+    currentOperator =
+        operator;
+
+    shouldOverwrite =
+        true;
 }
 
-/* ==============================
+/* =====================================
    計算
-============================== */
+===================================== */
 
 function calculate() {
     if (
-        previous === null ||
-        operator === null ||
-        current === "ERROR"
+        previousValue === null ||
+        currentOperator === null ||
+        currentValue === "ERROR"
     ) {
         return;
     }
 
-    const firstNumber =
-        Number.parseFloat(previous);
+    const first =
+        Number.parseFloat(
+            previousValue
+        );
 
-    const secondNumber =
-        Number.parseFloat(current);
+    const second =
+        Number.parseFloat(
+            currentValue
+        );
 
     let result;
 
-    switch (operator) {
+    switch (currentOperator) {
         case "+":
-            result =
-                firstNumber +
-                secondNumber;
+            result = first + second;
             break;
 
         case "-":
-            result =
-                firstNumber -
-                secondNumber;
+            result = first - second;
             break;
 
         case "*":
-            result =
-                firstNumber *
-                secondNumber;
+            result = first * second;
             break;
 
         case "/":
-            if (secondNumber === 0) {
-                result = "ERROR";
-            } else {
-                result =
-                    firstNumber /
-                    secondNumber;
-            }
+            result =
+                second === 0
+                    ? "ERROR"
+                    : first / second;
             break;
 
         default:
@@ -161,97 +247,259 @@ function calculate() {
             1_000_000_000_000;
     }
 
-    current = String(result);
+    currentValue =
+        String(result);
 
-    previous = null;
-    operator = null;
-    overwrite = true;
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = true;
 }
 
-/* ==============================
-   クリア
-============================== */
+/* =====================================
+   補助機能
+===================================== */
 
 function clearCalculator() {
-    current = "0";
-    previous = null;
-    operator = null;
-    overwrite = false;
+    currentValue = "0";
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = false;
 }
-
-/* ==============================
-   一文字削除
-============================== */
 
 function backspace() {
     if (
-        overwrite ||
-        current === "ERROR"
+        shouldOverwrite ||
+        currentValue === "ERROR"
     ) {
         return;
     }
 
-    current =
-        current.length > 1
-            ? current.slice(0, -1)
-            : "0";
-
-    if (current === "-") {
-        current = "0";
-    }
-}
-
-/* ==============================
-   パーセント
-============================== */
-
-function percent() {
-    if (current === "ERROR") {
+    if (
+        currentValue.length <= 1
+    ) {
+        currentValue = "0";
         return;
     }
 
-    current = String(
-        Number.parseFloat(current) /
-        100
-    );
+    currentValue =
+        currentValue.slice(
+            0,
+            -1
+        );
+
+    if (
+        currentValue === "-"
+    ) {
+        currentValue = "0";
+    }
 }
 
-/* ==============================
-   正負切り替え
-============================== */
+function convertToPercent() {
+    if (
+        currentValue === "ERROR"
+    ) {
+        return;
+    }
+
+    currentValue =
+        String(
+            Number.parseFloat(
+                currentValue
+            ) / 100
+        );
+}
 
 function toggleSign() {
     if (
-        current === "0" ||
-        current === "ERROR"
+        currentValue === "0" ||
+        currentValue === "ERROR"
     ) {
         return;
     }
 
-    current = current.startsWith("-")
-        ? current.slice(1)
-        : `-${current}`;
+    currentValue =
+        currentValue.startsWith("-")
+            ? currentValue.slice(1)
+            : `-${currentValue}`;
 }
 
-/* ==============================
-   押下時の発光
-============================== */
+/* =====================================
+   ボタン演出
+===================================== */
 
 function animateButton(button) {
     button.classList.add(
         "is-pressed"
     );
 
-    window.setTimeout(() => {
-        button.classList.remove(
-            "is-pressed"
-        );
-    }, 170);
+    window.setTimeout(
+        () => {
+            button.classList.remove(
+                "is-pressed"
+            );
+        },
+        160
+    );
 }
 
-/* ==============================
-   ボタン処理
-============================== */
+/* =====================================
+   パーティクル
+===================================== */
+
+function createParticles(button) {
+    if (
+        button.classList.contains(
+            "zero-key"
+        )
+    ) {
+        return;
+    }
+
+    const rect =
+        button.getBoundingClientRect();
+
+    const centerX =
+        rect.left +
+        rect.width / 2;
+
+    const centerY =
+        rect.top +
+        rect.height / 2;
+
+    const particleCount =
+        button.classList.contains(
+            "equal-key"
+        )
+            ? 14
+            : 8;
+
+    for (
+        let index = 0;
+        index < particleCount;
+        index += 1
+    ) {
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+        const speed =
+            0.9 +
+            Math.random() *
+            2.4;
+
+        particles.push({
+            x: centerX,
+            y: centerY,
+
+            vx:
+                Math.cos(angle) *
+                speed,
+
+            vy:
+                Math.sin(angle) *
+                speed -
+                0.6,
+
+            radius:
+                1.2 +
+                Math.random() *
+                2.3,
+
+            life: 1,
+
+            decay:
+                0.025 +
+                Math.random() *
+                0.025
+        });
+    }
+
+    startParticleAnimation();
+}
+
+function startParticleAnimation() {
+    if (animationFrameId !== null) {
+        return;
+    }
+
+    function renderParticles() {
+        context.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
+        );
+
+        particles =
+            particles.filter(
+                (particle) =>
+                    particle.life > 0
+            );
+
+        particles.forEach(
+            (particle) => {
+                particle.x +=
+                    particle.vx;
+
+                particle.y +=
+                    particle.vy;
+
+                particle.vy += 0.025;
+
+                particle.life -=
+                    particle.decay;
+
+                context.beginPath();
+
+                context.arc(
+                    particle.x,
+                    particle.y,
+                    particle.radius,
+                    0,
+                    Math.PI * 2
+                );
+
+                context.fillStyle =
+                    `rgba(75, 235, 255, ${particle.life})`;
+
+                context.shadowColor =
+                    "rgba(55, 231, 255, 0.9)";
+
+                context.shadowBlur = 10;
+
+                context.fill();
+            }
+        );
+
+        context.shadowBlur = 0;
+
+        if (particles.length > 0) {
+            animationFrameId =
+                window.requestAnimationFrame(
+                    renderParticles
+                );
+        } else {
+            context.clearRect(
+                0,
+                0,
+                window.innerWidth,
+                window.innerHeight
+            );
+
+            animationFrameId = null;
+        }
+    }
+
+    animationFrameId =
+        window.requestAnimationFrame(
+            renderParticles
+        );
+}
+
+/* =====================================
+   ボタン入力
+===================================== */
 
 function handleButton(button) {
     const number =
@@ -264,6 +512,7 @@ function handleButton(button) {
         button.dataset.value;
 
     animateButton(button);
+    createParticles(button);
 
     if (number !== undefined) {
         if (number === ".") {
@@ -273,78 +522,81 @@ function handleButton(button) {
         }
     }
 
-    if (action === "operator") {
-        setOperator(value);
-    }
+    switch (action) {
+        case "operator":
+            chooseOperator(value);
+            break;
 
-    if (action === "equal") {
-        calculate();
-    }
+        case "equal":
+            calculate();
+            break;
 
-    if (action === "clear") {
-        clearCalculator();
-    }
+        case "clear":
+            clearCalculator();
+            break;
 
-    if (action === "backspace") {
-        backspace();
-    }
+        case "backspace":
+            backspace();
+            break;
 
-    if (action === "percent") {
-        percent();
-    }
+        case "percent":
+            convertToPercent();
+            break;
 
-    if (action === "sign") {
-        toggleSign();
+        case "sign":
+            toggleSign();
+            break;
+
+        default:
+            break;
     }
 
     updateDisplay();
 }
 
-buttons.forEach((button) => {
-    button.addEventListener(
-        "click",
-        () => {
-            handleButton(button);
-        }
-    );
-});
+buttons.forEach(
+    (button) => {
+        button.addEventListener(
+            "click",
+            () => {
+                handleButton(button);
+            }
+        );
+    }
+);
 
-/* ==============================
-   キーボード操作
-============================== */
+/* =====================================
+   キーボード
+===================================== */
 
 document.addEventListener(
     "keydown",
     (event) => {
-        let targetButton = null;
+        let target = null;
 
-        if (/^[0-9]$/.test(event.key)) {
-            targetButton =
+        if (
+            /^[0-9]$/.test(event.key)
+        ) {
+            target =
                 document.querySelector(
                     `[data-number="${event.key}"]`
                 );
         }
 
         if (event.key === ".") {
-            targetButton =
+            target =
                 document.querySelector(
                     '[data-number="."]'
                 );
         }
 
-        const operatorKeys = {
-            "+": "+",
-            "-": "-",
-            "*": "*",
-            "/": "/"
-        };
-
         if (
-            operatorKeys[event.key]
+            ["+", "-", "*", "/"]
+                .includes(event.key)
         ) {
-            targetButton =
+            target =
                 document.querySelector(
-                    `[data-action="operator"][data-value="${operatorKeys[event.key]}"]`
+                    `[data-action="operator"][data-value="${event.key}"]`
                 );
         }
 
@@ -352,7 +604,7 @@ document.addEventListener(
             event.key === "Enter" ||
             event.key === "="
         ) {
-            targetButton =
+            target =
                 document.querySelector(
                     '[data-action="equal"]'
                 );
@@ -361,7 +613,7 @@ document.addEventListener(
         if (
             event.key === "Backspace"
         ) {
-            targetButton =
+            target =
                 document.querySelector(
                     '[data-action="backspace"]'
                 );
@@ -370,22 +622,22 @@ document.addEventListener(
         if (
             event.key === "Escape"
         ) {
-            targetButton =
+            target =
                 document.querySelector(
                     '[data-action="clear"]'
                 );
         }
 
         if (event.key === "%") {
-            targetButton =
+            target =
                 document.querySelector(
                     '[data-action="percent"]'
                 );
         }
 
-        if (targetButton) {
+        if (target) {
             event.preventDefault();
-            handleButton(targetButton);
+            handleButton(target);
         }
     }
 );
