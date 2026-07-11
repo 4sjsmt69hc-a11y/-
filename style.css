@@ -35,8 +35,7 @@ html {
 body {
     min-height: 100vh;
     margin: 0;
-
-    padding: 60px 18px;
+    padding: 54px 18px;
 
     display: flex;
     align-items: center;
@@ -140,12 +139,12 @@ body {
     position: relative;
 
     width: min(430px, 94vw);
-    min-height: 850px;
+    min-height: 790px;
 
     padding:
-        66px
+        60px
         27px
-        72px;
+        65px;
 
     isolation: isolate;
 
@@ -186,7 +185,7 @@ body {
     left: 50%;
 
     width: calc(100% + 24px);
-    height: 37px;
+    height: 30px;
 
     transform: translateX(-50%);
 
@@ -195,66 +194,26 @@ body {
 
     border:
         1px solid
-        rgba(250, 255, 255, 0.8);
+        rgba(250, 255, 255, 0.82);
 
     background:
         linear-gradient(
             180deg,
             var(--metal-white) 0%,
-            var(--metal-light) 22%,
-            var(--metal-mid) 62%,
+            var(--metal-light) 24%,
+            var(--metal-mid) 65%,
             var(--metal-dark) 100%
         );
 
     box-shadow:
         inset 0 3px 3px rgba(255, 255, 255, 0.93),
-        inset 0 -7px 9px rgba(35, 62, 76, 0.31),
+        inset 0 -6px 8px rgba(35, 62, 76, 0.31),
         0 6px 14px rgba(0, 0, 0, 0.5);
 }
 
-.frame-top {
-    top: -13px;
-
-    clip-path:
-        polygon(
-            3% 0,
-            97% 0,
-            100% 26%,
-            100% 100%,
-            0 100%,
-            0 26%
-        );
-
-    border-radius:
-        11px
-        11px
-        3px
-        3px;
-}
-
-.frame-bottom {
-    bottom: -13px;
-
-    clip-path:
-        polygon(
-            0 0,
-            100% 0,
-            100% 74%,
-            97% 100%,
-            3% 100%,
-            0 74%
-        );
-
-    border-radius:
-        3px
-        3px
-        11px
-        11px;
-}
-
 /*
-   参考画像のように、
-   左右端だけ中央バーより下へ張り出す
+   参考画像のように中央は細い横バー、
+   左右の端だけ下方向へ張り出す。
 */
 
 .device-frame::before,
@@ -263,8 +222,10 @@ body {
 
     position: absolute;
 
-    width: 102px;
-    height: 47px;
+    top: -1px;
+
+    width: 92px;
+    height: 43px;
 
     background:
         linear-gradient(
@@ -280,98 +241,68 @@ body {
         inset 0 -7px 8px rgba(34, 59, 72, 0.28);
 }
 
-/* 上フレームの端 */
-
-.frame-top::before,
-.frame-top::after {
-    top: 0;
-}
-
-.frame-top::before {
-    left: 0;
+.device-frame::before {
+    left: -1px;
 
     clip-path:
         polygon(
             9% 0,
             100% 0,
-            87% 78%,
-            77% 100%,
+            90% 55%,
+            82% 100%,
             0 100%,
-            0 30%
+            0 28%
         );
 
     border-radius:
         10px
         2px
-        6px
+        7px
         4px;
 }
 
-.frame-top::after {
-    right: 0;
+.device-frame::after {
+    right: -1px;
 
     clip-path:
         polygon(
             0 0,
             91% 0,
-            100% 30%,
+            100% 28%,
             100% 100%,
-            23% 100%,
-            13% 78%
+            18% 100%,
+            10% 55%
         );
 
     border-radius:
         2px
         10px
         4px
-        6px;
+        7px;
 }
 
-/* 下フレームの端 */
-
-.frame-bottom::before,
-.frame-bottom::after {
-    bottom: 0;
-}
-
-.frame-bottom::before {
-    left: 0;
-
-    clip-path:
-        polygon(
-            0 0,
-            77% 0,
-            87% 22%,
-            100% 100%,
-            9% 100%,
-            0 70%
-        );
+.frame-top {
+    top: -12px;
 
     border-radius:
-        4px
-        6px
         10px
-        2px;
+        10px
+        3px
+        3px;
 }
 
-.frame-bottom::after {
-    right: 0;
+.frame-bottom {
+    bottom: -12px;
 
-    clip-path:
-        polygon(
-            23% 0,
-            100% 0,
-            100% 70%,
-            91% 100%,
-            0 100%,
-            13% 22%
-        );
+    transform:
+        translateX(-50%)
+        rotate(180deg);
 
     border-radius:
-        6px
-        4px
-        2px
-        10px;
+        10px
+        10px
+        3px
+        3px;
 }
 
 /* フレーム中央ライト */
@@ -380,10 +311,10 @@ body {
     position: absolute;
 
     left: 50%;
-    bottom: 5px;
+    bottom: 4px;
 
-    width: 58%;
-    height: 5px;
+    width: 53%;
+    height: 4px;
 
     transform: translateX(-50%);
 
@@ -403,8 +334,8 @@ body {
 
     box-shadow:
         0 0 6px var(--cyan),
-        0 0 17px rgba(53, 232, 255, 0.85),
-        0 0 32px rgba(53, 232, 255, 0.3);
+        0 0 16px rgba(53, 232, 255, 0.82),
+        0 0 28px rgba(53, 232, 255, 0.28);
 
     animation:
         frameLightPulse
@@ -420,22 +351,22 @@ body {
 .cyan-module {
     position: absolute;
 
-    top: 31px;
-    right: -13px;
+    top: 30px;
+    right: -12px;
 
-    width: 39px;
-    height: 30px;
+    width: 38px;
+    height: 27px;
 
     z-index: 27;
     pointer-events: none;
 
     clip-path:
         polygon(
-            0 13%,
-            76% 0,
-            100% 22%,
-            100% 82%,
-            78% 100%,
+            0 14%,
+            74% 0,
+            100% 23%,
+            100% 80%,
+            77% 100%,
             0 86%
         );
 
@@ -464,10 +395,10 @@ body {
 
     position: absolute;
 
-    top: 6px;
+    top: 5px;
     left: 7px;
 
-    width: 21px;
+    width: 20px;
     height: 3px;
 
     border-radius: 999px;
@@ -483,17 +414,17 @@ body {
 .display-area {
     position: relative;
 
-    min-height: 126px;
+    min-height: 110px;
 
     margin:
-        48px
+        28px
         0
-        34px;
+        20px;
 
     padding:
         7px
         18px
-        6px;
+        5px;
 
     display: flex;
     flex-direction: column;
@@ -503,7 +434,6 @@ body {
 .display-header {
     display: flex;
     align-items: center;
-
     gap: 9px;
 }
 
@@ -537,9 +467,9 @@ body {
 
     font-size:
         clamp(
-            2.6rem,
+            2.5rem,
             10vw,
-            4rem
+            3.9rem
         );
 
     font-weight: 600;
@@ -558,21 +488,18 @@ body {
 }
 
 /* =====================================
-   銀スイッチ
+   細長い銀スイッチ
 ===================================== */
 
 .utility-buttons {
     display: grid;
 
-    /*
-       2個 + 中央の大きな間隔 + 2個
-    */
     grid-template-columns:
-        48px
-        48px
-        34px
-        48px
-        48px;
+        33px
+        33px
+        28px
+        33px
+        33px;
 
     grid-template-areas:
         "a b gap c d";
@@ -580,12 +507,12 @@ body {
     align-items: center;
     justify-content: center;
 
-    column-gap: 11px;
+    column-gap: 10px;
 
     margin:
-        48px
+        24px
         auto
-        62px;
+        34px;
 }
 
 .utility-key-a {
@@ -607,8 +534,8 @@ body {
 .utility-key {
     position: relative;
 
-    width: 48px;
-    height: 63px;
+    width: 33px;
+    height: 58px;
 
     padding: 0;
 
@@ -617,27 +544,30 @@ body {
         rgba(237, 252, 255, 0.75);
 
     border-radius:
-        17px
-        17px
-        13px
-        13px;
+        14px;
 
     cursor: pointer;
 
-    color: #13232b;
+    color:
+        rgba(
+            27,
+            47,
+            58,
+            0.28
+        );
 
     font: inherit;
-    font-size: 0.64rem;
+    font-size: 0.58rem;
     font-weight: 700;
 
     background:
         linear-gradient(
             90deg,
-            #7e929c 0%,
-            #edf9fc 20%,
-            #c3d1d7 50%,
-            #f4fdff 78%,
-            #778c96 100%
+            #758a94 0%,
+            #edf9fc 22%,
+            #c5d3d8 50%,
+            #f5fdff 78%,
+            #718690 100%
         );
 
     box-shadow:
@@ -646,13 +576,17 @@ body {
         0 5px 0 #607580,
         0 9px 12px rgba(0, 0, 0, 0.44);
 
+    text-shadow: none;
+
     transition:
         transform 100ms ease,
         filter 100ms ease,
+        color 120ms ease,
+        text-shadow 120ms ease,
         box-shadow 100ms ease;
 }
 
-/* 円柱の側面っぽい縦ライン */
+/* 円柱の縦方向の反射 */
 
 .utility-key::before {
     content: "";
@@ -660,8 +594,8 @@ body {
     position: absolute;
 
     top: 8px;
-    bottom: 10px;
-    left: 7px;
+    bottom: 9px;
+    left: 5px;
 
     width: 4px;
 
@@ -670,42 +604,48 @@ body {
     background:
         linear-gradient(
             to right,
-            rgba(74, 99, 111, 0.32),
-            rgba(255, 255, 255, 0.58)
+            rgba(69, 94, 106, 0.28),
+            rgba(255, 255, 255, 0.62)
         );
+
+    pointer-events: none;
 }
 
-/* 下端のシアンライト */
+/* 青いライトは表示しない */
 
 .utility-key::after {
-    content: "";
-
-    position: absolute;
-
-    left: 22%;
-    right: 22%;
-    bottom: 6px;
-
-    height: 2px;
-
-    border-radius: 999px;
-
-    background: var(--cyan);
-
-    box-shadow:
-        0 0 5px var(--cyan),
-        0 0 11px rgba(53, 232, 255, 0.82);
+    content: none;
 }
 
 .utility-key:hover {
-    filter: brightness(1.1);
+    color:
+        rgba(
+            27,
+            47,
+            58,
+            0.48
+        );
+
+    filter: brightness(1.06);
 }
 
 .utility-key:active,
 .utility-key.is-pressed {
     transform:
         translateY(5px)
-        scaleY(0.96);
+        scaleY(0.95);
+
+    color:
+        rgba(
+            218,
+            252,
+            255,
+            0.96
+        );
+
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 9px rgba(53, 232, 255, 0.7);
 
     box-shadow:
         inset 0 7px 11px rgba(27, 52, 65, 0.4),
@@ -720,7 +660,7 @@ body {
 .main-controls {
     position: relative;
 
-    min-height: 475px;
+    min-height: 432px;
 }
 
 /* =====================================
@@ -734,7 +674,7 @@ body {
     height: 380px;
 
     margin:
-        26px
+        34px
         auto
         0;
 }
@@ -840,7 +780,7 @@ body {
         0 0 22px rgba(53, 232, 255, 0.78);
 }
 
-/* 45度回転した正方形状 */
+/* 数字配置 */
 
 .key-1 {
     top: 0;
@@ -895,7 +835,7 @@ body {
     position: absolute;
 
     left: 14px;
-    bottom: 3px;
+    bottom: 0;
 
     width: 33px;
     height: 33px;
@@ -968,7 +908,7 @@ body {
     position: absolute;
 
     right: 9px;
-    bottom: 3px;
+    bottom: 0;
 
     display: grid;
 
@@ -1143,18 +1083,18 @@ body {
         align-items: flex-start;
 
         padding:
-            44px
+            42px
             9px;
     }
 
     .calculator {
         width: 100%;
-        min-height: 790px;
+        min-height: 740px;
 
         padding:
-            60px
+            56px
             11px
-            66px;
+            62px;
     }
 
     .device-frame {
@@ -1165,53 +1105,53 @@ body {
         right: -8px;
 
         width: 33px;
-        height: 26px;
+        height: 25px;
     }
 
     .display-area {
-        min-height: 112px;
+        min-height: 104px;
 
-        margin-top: 38px;
+        margin-top: 24px;
     }
 
     .utility-buttons {
         grid-template-columns:
-            43px
-            43px
-            24px
-            43px
-            43px;
+            30px
+            30px
+            20px
+            30px
+            30px;
 
         column-gap: 8px;
 
-        margin-top: 38px;
-        margin-bottom: 52px;
+        margin-top: 21px;
+        margin-bottom: 30px;
     }
 
     .utility-key {
-        width: 43px;
-        height: 57px;
+        width: 30px;
+        height: 53px;
     }
 
     .main-controls {
-        min-height: 430px;
+        min-height: 404px;
     }
 
     .number-cluster {
         transform: scale(0.84);
         transform-origin: top center;
 
-        margin-top: 20px;
+        margin-top: 31px;
     }
 
     .zero-key {
         left: 6px;
-        bottom: 5px;
+        bottom: 3px;
     }
 
     .operator-pad {
         right: 3px;
-        bottom: 5px;
+        bottom: 3px;
     }
 }
 
@@ -1222,18 +1162,18 @@ body {
 
     .utility-buttons {
         grid-template-columns:
-            39px
-            39px
-            18px
-            39px
-            39px;
+            28px
+            28px
+            16px
+            28px
+            28px;
 
         column-gap: 6px;
     }
 
     .utility-key {
-        width: 39px;
-        height: 53px;
+        width: 28px;
+        height: 49px;
     }
 
     .operator-pad {
