@@ -61,10 +61,7 @@ function resizeCanvas() {
     );
 }
 
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
+window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
 
@@ -95,22 +92,17 @@ function formatForDisplay(value) {
 }
 
 function updateDisplay() {
-    display.textContent =
-        formatForDisplay(currentValue);
+    display.textContent = formatForDisplay(currentValue);
 
     display.animate(
         [
             {
-                transform:
-                    "translateY(2px) scale(1.025)",
-                filter:
-                    "brightness(1.5)"
+                transform: "translateY(2px) scale(1.025)",
+                filter: "brightness(1.5)"
             },
             {
-                transform:
-                    "translateY(0) scale(1)",
-                filter:
-                    "brightness(1)"
+                transform: "translateY(0) scale(1)",
+                filter: "brightness(1)"
             }
         ],
         {
@@ -185,11 +177,7 @@ function normalizeResult(number) {
     return String(rounded);
 }
 
-function performOperation(
-    first,
-    second,
-    operator
-) {
+function performOperation(first, second, operator) {
     switch (operator) {
         case "+":
             return first + second;
@@ -238,9 +226,7 @@ function calculate() {
         return;
     }
 
-    let operatorToUse =
-        currentOperator;
-
+    let operatorToUse = currentOperator;
     let firstNumber;
     let secondNumber;
 
@@ -248,29 +234,18 @@ function calculate() {
         operatorToUse !== null &&
         previousValue !== null
     ) {
-        firstNumber =
-            Number.parseFloat(previousValue);
+        firstNumber = Number.parseFloat(previousValue);
+        secondNumber = Number.parseFloat(currentValue);
 
-        secondNumber =
-            Number.parseFloat(currentValue);
-
-        lastOperator =
-            operatorToUse;
-
-        lastOperand =
-            currentValue;
+        lastOperator = operatorToUse;
+        lastOperand = currentValue;
     } else if (
         lastOperator !== null &&
         lastOperand !== null
     ) {
-        operatorToUse =
-            lastOperator;
-
-        firstNumber =
-            Number.parseFloat(currentValue);
-
-        secondNumber =
-            Number.parseFloat(lastOperand);
+        operatorToUse = lastOperator;
+        firstNumber = Number.parseFloat(currentValue);
+        secondNumber = Number.parseFloat(lastOperand);
     } else {
         return;
     }
@@ -343,8 +318,7 @@ function backspace() {
         return;
     }
 
-    currentValue =
-        currentValue.slice(0, -1);
+    currentValue = currentValue.slice(0, -1);
 
     if (
         currentValue === "" ||
@@ -359,16 +333,13 @@ function convertToPercent() {
         return;
     }
 
-    const number =
-        Number.parseFloat(currentValue);
+    const number = Number.parseFloat(currentValue);
 
     if (!Number.isFinite(number)) {
         return;
     }
 
-    currentValue =
-        normalizeResult(number / 100);
-
+    currentValue = normalizeResult(number / 100);
     shouldOverwrite = true;
 }
 
@@ -391,20 +362,14 @@ function toggleSign() {
 ========================================================= */
 
 function animateButton(button) {
-    button.classList.remove(
-        "is-pressed"
-    );
+    button.classList.remove("is-pressed");
 
     void button.offsetWidth;
 
-    button.classList.add(
-        "is-pressed"
-    );
+    button.classList.add("is-pressed");
 
     window.setTimeout(() => {
-        button.classList.remove(
-            "is-pressed"
-        );
+        button.classList.remove("is-pressed");
     }, 165);
 }
 
@@ -424,18 +389,12 @@ function triggerResultFlash(success) {
                         : "brightness(0.78)"
             },
             {
-                filter:
-                    "brightness(1)"
+                filter: "brightness(1)"
             }
         ],
         {
-            duration:
-                success
-                    ? 320
-                    : 420,
-
-            easing:
-                "ease-out"
+            duration: success ? 320 : 420,
+            easing: "ease-out"
         }
     );
 }
@@ -446,39 +405,23 @@ function triggerResultFlash(success) {
 
 function createParticles(button) {
     if (
-        button.classList.contains(
-            "zero-key"
-        ) ||
-        button.classList.contains(
-            "utility-key"
-        )
+        button.classList.contains("zero-key") ||
+        button.classList.contains("utility-key")
     ) {
         return;
     }
 
-    const rect =
-        button.getBoundingClientRect();
+    const rect = button.getBoundingClientRect();
 
-    const originX =
-        rect.left +
-        rect.width / 2;
-
-    const originY =
-        rect.top +
-        rect.height / 2;
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
 
     let count = 8;
 
-    if (
-        button.classList.contains(
-            "equal"
-        )
-    ) {
+    if (button.classList.contains("equal")) {
         count = 18;
     } else if (
-        button.classList.contains(
-            "operator-key"
-        )
+        button.classList.contains("operator-key")
     ) {
         count = 10;
     }
@@ -529,9 +472,7 @@ function createParticles(button) {
 }
 
 function startParticleAnimation() {
-    if (
-        particleAnimationId !== null
-    ) {
+    if (particleAnimationId !== null) {
         return;
     }
 
@@ -543,60 +484,46 @@ function startParticleAnimation() {
             window.innerHeight
         );
 
-        particles =
-            particles.filter(
-                (particle) =>
-                    particle.life > 0
+        particles = particles.filter(
+            (particle) => particle.life > 0
+        );
+
+        particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+
+            particle.vx *= 0.99;
+            particle.vy += 0.028;
+
+            particle.life -= particle.decay;
+
+            context.beginPath();
+
+            context.arc(
+                particle.x,
+                particle.y,
+                particle.radius,
+                0,
+                Math.PI * 2
             );
 
-        particles.forEach(
-            (particle) => {
-                particle.x +=
-                    particle.vx;
+            context.fillStyle =
+                `rgba(0, 112, 255, ${Math.max(
+                    particle.life,
+                    0
+                )})`;
 
-                particle.y +=
-                    particle.vy;
+            context.shadowColor =
+                "rgba(0, 126, 255, 0.95)";
 
-                particle.vx *=
-                    0.99;
+            context.shadowBlur = 12;
 
-                particle.vy +=
-                    0.028;
-
-                particle.life -=
-                    particle.decay;
-
-                context.beginPath();
-
-                context.arc(
-                    particle.x,
-                    particle.y,
-                    particle.radius,
-                    0,
-                    Math.PI * 2
-                );
-
-                context.fillStyle =
-                    `rgba(0, 112, 255, ${Math.max(
-                        particle.life,
-                        0
-                    )})`;
-
-                context.shadowColor =
-                    "rgba(0, 126, 255, 0.95)";
-
-                context.shadowBlur =
-                    12;
-
-                context.fill();
-            }
-        );
+            context.fill();
+        });
 
         context.shadowBlur = 0;
 
-        if (
-            particles.length > 0
-        ) {
+        if (particles.length > 0) {
             particleAnimationId =
                 window.requestAnimationFrame(
                     renderParticles
@@ -609,8 +536,7 @@ function startParticleAnimation() {
                 window.innerHeight
             );
 
-            particleAnimationId =
-                null;
+            particleAnimationId = null;
         }
     }
 
@@ -625,14 +551,9 @@ function startParticleAnimation() {
 ========================================================= */
 
 function handleButton(button) {
-    const number =
-        button.dataset.number;
-
-    const action =
-        button.dataset.action;
-
-    const value =
-        button.dataset.value;
+    const number = button.dataset.number;
+    const action = button.dataset.action;
+    const value = button.dataset.value;
 
     animateButton(button);
     createParticles(button);
