@@ -19,11 +19,12 @@ let currentValue = "0";
 let previousValue = null;
 let currentOperator = null;
 let shouldOverwrite = false;
-let lastOperand = null;
+
 let lastOperator = null;
+let lastOperand = null;
 
 /* =========================================================
-   パーティクルの状態
+   パーティクル
 ========================================================= */
 
 let particles = [];
@@ -65,7 +66,7 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 /* =========================================================
-   表示整形
+   表示
 ========================================================= */
 
 function formatForDisplay(value) {
@@ -97,7 +98,7 @@ function updateDisplay() {
         [
             {
                 transform: "translateY(2px) scale(1.025)",
-                filter: "brightness(1.55)"
+                filter: "brightness(1.5)"
             },
             {
                 transform: "translateY(0) scale(1)",
@@ -105,30 +106,15 @@ function updateDisplay() {
             }
         ],
         {
-            duration: 165,
+            duration: 160,
             easing: "ease-out"
         }
     );
 }
 
 /* =========================================================
-   数値処理
+   数値入力
 ========================================================= */
-
-function normalizeResult(number) {
-    if (!Number.isFinite(number)) {
-        return "ERROR";
-    }
-
-    const rounded =
-        Math.round(
-            (number + Number.EPSILON) *
-            1_000_000_000_000
-        ) /
-        1_000_000_000_000;
-
-    return String(rounded);
-}
 
 function inputNumber(number) {
     if (
@@ -173,8 +159,23 @@ function inputDecimal() {
 }
 
 /* =========================================================
-   演算
+   計算
 ========================================================= */
+
+function normalizeResult(number) {
+    if (!Number.isFinite(number)) {
+        return "ERROR";
+    }
+
+    const rounded =
+        Math.round(
+            (number + Number.EPSILON) *
+            1_000_000_000_000
+        ) /
+        1_000_000_000_000;
+
+    return String(rounded);
+}
 
 function performOperation(first, second, operator) {
     switch (operator) {
@@ -257,6 +258,8 @@ function calculate() {
         previousValue = null;
         currentOperator = null;
         shouldOverwrite = true;
+
+        triggerResultFlash(false);
         return;
     }
 
@@ -281,7 +284,7 @@ function calculate() {
 }
 
 /* =========================================================
-   補助機能
+   補助操作
 ========================================================= */
 
 function clearCalculator() {
@@ -289,8 +292,8 @@ function clearCalculator() {
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = false;
-    lastOperand = null;
     lastOperator = null;
+    lastOperand = null;
 }
 
 function backspace() {
@@ -317,8 +320,8 @@ function backspace() {
     currentValue = currentValue.slice(0, -1);
 
     if (
-        currentValue === "-" ||
-        currentValue === ""
+        currentValue === "" ||
+        currentValue === "-"
     ) {
         currentValue = "0";
     }
@@ -354,7 +357,7 @@ function toggleSign() {
 }
 
 /* =========================================================
-   押下アニメーション
+   ボタン演出
 ========================================================= */
 
 function animateButton(button) {
@@ -376,13 +379,13 @@ function triggerResultFlash(success) {
                 filter:
                     success
                         ? "brightness(1.08)"
-                        : "brightness(1.05)"
+                        : "brightness(1.02)"
             },
             {
                 filter:
                     success
-                        ? "brightness(1.22)"
-                        : "brightness(0.82)"
+                        ? "brightness(1.2)"
+                        : "brightness(0.78)"
             },
             {
                 filter: "brightness(1)"
@@ -396,7 +399,7 @@ function triggerResultFlash(success) {
 }
 
 /* =========================================================
-   パーティクル
+   パーティクル生成
 ========================================================= */
 
 function createParticles(button) {
@@ -414,9 +417,7 @@ function createParticles(button) {
 
     let count = 8;
 
-    if (
-        button.classList.contains("operator-equal")
-    ) {
+    if (button.classList.contains("equal")) {
         count = 18;
     } else if (
         button.classList.contains("operator-key")
@@ -451,14 +452,14 @@ function createParticles(button) {
             radius:
                 1.2 +
                 Math.random() *
-                2.4,
+                2.3,
 
             life: 1,
 
             decay:
-                0.025 +
+                0.026 +
                 Math.random() *
-                0.026
+                0.025
         });
     }
 
@@ -487,7 +488,7 @@ function startParticleAnimation() {
             particle.y += particle.vy;
 
             particle.vx *= 0.99;
-            particle.vy += 0.027;
+            particle.vy += 0.028;
 
             particle.life -= particle.decay;
 
@@ -660,16 +661,16 @@ function findButtonForKeyboardKey(key) {
 }
 
 document.addEventListener("keydown", (event) => {
-    const targetButton =
+    const button =
         findButtonForKeyboardKey(event.key);
 
-    if (!targetButton) {
+    if (!button) {
         return;
     }
 
     event.preventDefault();
 
-    handleButton(targetButton);
+    handleButton(button);
 });
 
 /* =========================================================
