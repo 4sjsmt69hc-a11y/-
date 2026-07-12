@@ -1,34 +1,28 @@
 /* =========================================================
    YUUKA_NO_DENTAKU
-   style.css 完全再構築版
+   style.css 完全版
 ========================================================= */
 
 :root {
-    /* 本体 */
     --calculator-width: 430px;
     --calculator-height: 820px;
 
-    /* 各パーツの基準位置 */
     --display-top: 110px;
     --utility-top: 220px;
-    --number-top: 390px;
+    --number-top: 405px;
 
-    /* 背景 */
     --bg-deep: #020811;
     --bg-middle: #061626;
     --bg-light: #0d2a43;
 
-    /* 本体色 */
     --panel-top: #243e5b;
     --panel-middle: #10253d;
     --panel-bottom: #040d19;
 
-    /* 青色 */
     --blue: #087fff;
     --blue-bright: #39c5ff;
     --blue-soft: #c9f4ff;
 
-    /* 金属色 */
     --metal-white: #ffffff;
     --metal-light: #dce9ee;
     --metal-middle: #a9bbc4;
@@ -92,7 +86,7 @@ button {
 }
 
 /* =========================================================
-   背景グリッド
+   背景
 ========================================================= */
 
 .background-grid {
@@ -290,8 +284,6 @@ button {
         rotate(180deg);
 }
 
-/* 中央バー */
-
 .frame-center {
     position: absolute;
 
@@ -326,8 +318,6 @@ button {
         0 5px 11px
         rgba(0, 0, 0, 0.45);
 }
-
-/* 左右端パーツ */
 
 .frame-end {
     position: absolute;
@@ -398,8 +388,6 @@ button {
         8px;
 }
 
-/* フレーム外側ライト */
-
 .frame-light {
     position: absolute;
 
@@ -441,7 +429,7 @@ button {
 }
 
 /* =========================================================
-   右上水色パーツ
+   装飾
 ========================================================= */
 
 .cyan-module {
@@ -492,10 +480,6 @@ button {
         0 0 13px
         rgba(53, 232, 255, 0.45);
 }
-
-/* =========================================================
-   左上白丸
-========================================================= */
 
 .white-decoration {
     position: absolute;
@@ -754,12 +738,15 @@ button {
     opacity: 1;
 
     text-shadow:
-        0 0 6px #ffffff,
-        0 0 10px var(--blue);
+        0 0 6px
+        #ffffff,
+
+        0 0 10px
+        var(--blue);
 }
 
 /* =========================================================
-   メイン操作エリア
+   操作エリア
 ========================================================= */
 
 .main-controls {
@@ -779,8 +766,8 @@ button {
     top: var(--number-top);
     left: 50%;
 
-    width: 386px;
-    height: 386px;
+    width: 334px;
+    height: 334px;
 
     transform:
         translateX(-50%);
@@ -791,8 +778,8 @@ button {
 .number-key {
     position: absolute;
 
-    width: 74px;
-    height: 74px;
+    width: 78px;
+    height: 78px;
 
     padding: 0;
 
@@ -807,7 +794,7 @@ button {
     color:
         rgba(210, 240, 255, 0.2);
 
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: 700;
 
     background:
@@ -869,69 +856,64 @@ button {
     color: #ffffff;
 
     text-shadow:
-        0 0 6px #ffffff,
-        0 0 15px var(--blue),
-        0 0 30px var(--blue);
+        0 0 6px
+        #ffffff,
+
+        0 0 15px
+        var(--blue),
+
+        0 0 30px
+        var(--blue);
 }
 
 /* =========================================================
-   数字ボタン配置
-   正方形を45度回転した均等なひし形
-
-                1
-
-          2           3
-
-     4          5          6
-
-          7           8
-
-                9
+   数字配置
+   ボタンサイズは大きめ、間隔は狭め
 ========================================================= */
 
 .key-1 {
     top: 0;
-    left: 156px;
+    left: 128px;
 }
 
 .key-2 {
-    top: 78px;
-    left: 78px;
+    top: 64px;
+    left: 64px;
 }
 
 .key-3 {
-    top: 78px;
-    left: 234px;
+    top: 64px;
+    left: 192px;
 }
 
 .key-4 {
-    top: 156px;
+    top: 128px;
     left: 0;
 }
 
 .key-5 {
-    top: 156px;
-    left: 156px;
+    top: 128px;
+    left: 128px;
 }
 
 .key-6 {
-    top: 156px;
-    left: 312px;
+    top: 128px;
+    left: 256px;
 }
 
 .key-7 {
-    top: 234px;
-    left: 78px;
+    top: 192px;
+    left: 64px;
 }
 
 .key-8 {
-    top: 234px;
-    left: 234px;
+    top: 192px;
+    left: 192px;
 }
 
 .key-9 {
-    top: 312px;
-    left: 156px;
+    top: 256px;
+    left: 128px;
 }
 
 /* =========================================================
@@ -995,16 +977,17 @@ button {
 
 /* =========================================================
    演算ボタン
+   数字ボタンから右側へ離す
 ========================================================= */
 
 .operator-cluster {
     position: absolute;
 
-    right: 12px;
-    bottom: 35px;
+    right: 2px;
+    bottom: 40px;
 
-    width: 166px;
-    height: 180px;
+    width: 92px;
+    height: 235px;
 
     pointer-events: auto;
 }
@@ -1059,43 +1042,45 @@ button {
 }
 
 /*
-              ÷
+          ÷
 
-          ×       −
+      ×       −
 
-      ＋      .
+          ＋
+
+      . 
 
    =
 */
 
 .operator-divide {
     top: 0;
-    left: 128px;
+    right: 0;
 }
 
 .operator-multiply {
-    top: 44px;
-    left: 84px;
+    top: 48px;
+    right: 44px;
 }
 
 .operator-minus {
-    top: 44px;
-    left: 128px;
+    top: 48px;
+    right: 0;
 }
 
 .operator-plus {
-    top: 88px;
-    left: 40px;
+    top: 96px;
+    right: 22px;
 }
 
 .operator-decimal {
-    top: 88px;
-    left: 84px;
+    top: 144px;
+    right: 44px;
 }
 
 .operator-equal {
-    top: 132px;
-    left: 0;
+    top: 192px;
+    right: 44px;
 
     color: #06131d;
 
@@ -1125,7 +1110,7 @@ button {
 }
 
 /* =========================================================
-   パーティクル
+   Canvas
 ========================================================= */
 
 #particles {
@@ -1205,7 +1190,7 @@ button {
     .number-cluster {
         transform:
             translateX(-50%)
-            scale(0.76);
+            scale(0.84);
 
         transform-origin:
             top center;
@@ -1217,7 +1202,7 @@ button {
     }
 
     .operator-cluster {
-        right: 5px;
+        right: 0;
         bottom: 22px;
 
         transform:
@@ -1227,10 +1212,6 @@ button {
             bottom right;
     }
 }
-
-/* =========================================================
-   小型スマホ
-========================================================= */
 
 @media (max-width: 370px) {
     :root {
@@ -1244,7 +1225,7 @@ button {
     .number-cluster {
         transform:
             translateX(-50%)
-            scale(0.67);
+            scale(0.74);
     }
 
     .operator-cluster {
@@ -1342,69 +1323,4 @@ button {
         transition-duration:
             0.01ms !important;
     }
-}
-/* =========================================================
-   数字ボタンの間隔を少し狭める
-========================================================= */
-
-.number-cluster {
-    width: 374px;
-    height: 374px;
-}
-
-/*
-                1
-
-          2           3
-
-     4          5          6
-
-          7           8
-
-                9
-*/
-
-.key-1 {
-    top: 0;
-    left: 150px;
-}
-
-.key-2 {
-    top: 75px;
-    left: 75px;
-}
-
-.key-3 {
-    top: 75px;
-    left: 225px;
-}
-
-.key-4 {
-    top: 150px;
-    left: 0;
-}
-
-.key-5 {
-    top: 150px;
-    left: 150px;
-}
-
-.key-6 {
-    top: 150px;
-    left: 300px;
-}
-
-.key-7 {
-    top: 225px;
-    left: 75px;
-}
-
-.key-8 {
-    top: 225px;
-    left: 225px;
-}
-
-.key-9 {
-    top: 300px;
-    left: 150px;
 }
