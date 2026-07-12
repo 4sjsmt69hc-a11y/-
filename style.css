@@ -1,6 +1,6 @@
 /* =========================================================
-   YUUKA CALCULATOR
-   新HTML専用 style.css
+   YUUKA CALCULATOR v5
+   style.css 完全版
 ========================================================= */
 
 :root {
@@ -8,27 +8,27 @@
     --calculator-width: 430px;
     --calculator-height: 820px;
 
-    /* 配置 */
-    --display-top: 102px;
-    --utility-top: 205px;
-    --number-top: 390px;
+    /* 各パーツの縦位置 */
+    --display-top: 132px;
+    --utility-top: 232px;
+    --number-top: 410px;
 
-    /* 背景色 */
+    /* 背景 */
     --bg-deep: #020811;
     --bg-middle: #061626;
     --bg-light: #0d2a43;
 
-    /* 本体色 */
+    /* 本体 */
     --panel-top: #294462;
     --panel-middle: #112740;
     --panel-bottom: #040d19;
 
-    /* 発光色 */
+    /* 青 */
     --blue: #087fff;
-    --blue-bright: #37c6ff;
+    --blue-bright: #38c7ff;
     --blue-soft: #c8f5ff;
 
-    /* 金属色 */
+    /* 金属 */
     --metal-white: #ffffff;
     --metal-light: #dce9ee;
     --metal-middle: #aebfc7;
@@ -261,7 +261,7 @@ button {
 }
 
 /* =========================================================
-   上下の銀フレーム
+   上下銀フレーム
 ========================================================= */
 
 .frame {
@@ -269,7 +269,7 @@ button {
     left: 50%;
 
     width: calc(100% + 28px);
-    height: 54px;
+    height: 56px;
 
     transform: translateX(-50%);
 
@@ -277,15 +277,15 @@ button {
     pointer-events: none;
 }
 
-/* 中央のつながった銀バー */
+/* 中央の銀バー */
 
 .frame::before {
     content: "";
 
     position: absolute;
 
-    left: 47px;
-    right: 47px;
+    left: 42px;
+    right: 42px;
     top: 10px;
 
     height: 22px;
@@ -316,7 +316,7 @@ button {
         rgba(0, 0, 0, 0.45);
 }
 
-/* 左右へ張り出す形 */
+/* 両端と中央切り欠き */
 
 .frame::after {
     content: "";
@@ -335,22 +335,22 @@ button {
 
     clip-path:
         polygon(
-            2% 20%,
-            26% 20%,
-            33% 61%,
+            1% 20%,
+            25% 20%,
+            34% 61%,
             42% 61%,
-            46% 38%,
-            54% 38%,
+            46% 39%,
+            54% 39%,
             58% 61%,
-            67% 61%,
-            74% 20%,
-            98% 20%,
+            66% 61%,
+            75% 20%,
+            99% 20%,
             100% 38%,
             100% 100%,
-            75% 100%,
-            65% 59%,
-            35% 59%,
-            25% 100%,
+            74% 100%,
+            63% 58%,
+            37% 58%,
+            26% 100%,
             0 100%,
             0 38%
         );
@@ -423,7 +423,7 @@ button {
 }
 
 /* =========================================================
-   左上の白丸
+   左上白丸
 ========================================================= */
 
 .white-dot {
@@ -467,7 +467,7 @@ button {
 }
 
 /* =========================================================
-   右上の水色装飾
+   右上水色装飾
 ========================================================= */
 
 .cyan-corner {
@@ -520,21 +520,21 @@ button {
 }
 
 /* =========================================================
-   表示部分
+   計算表示
 ========================================================= */
 
 .display {
     position: absolute;
 
     top: var(--display-top);
-    left: 44px;
-    right: 44px;
+    left: 68px;
+    right: 68px;
 
-    height: 88px;
+    height: 86px;
 
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 #display {
@@ -546,15 +546,15 @@ button {
 
     font-size:
         clamp(
-            1.45rem,
+            1.65rem,
             5vw,
-            1.95rem
+            2.2rem
         );
 
     font-weight: 600;
     line-height: 1;
 
-    text-align: right;
+    text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;
 
@@ -570,7 +570,7 @@ button {
 }
 
 /* =========================================================
-   銀ボタン
+   上部銀ボタン
 ========================================================= */
 
 .utility-buttons {
@@ -585,7 +585,7 @@ button {
     grid-template-columns:
         38px
         38px
-        78px
+        80px
         38px
         38px;
 
@@ -648,7 +648,7 @@ button {
         color 120ms ease;
 }
 
-/* 3個目から右側へ送る */
+/* 右側2個を中央の空白後へ送る */
 
 .utility-key:nth-child(3) {
     grid-column: 4;
@@ -657,8 +657,6 @@ button {
 .utility-key:nth-child(4) {
     grid-column: 5;
 }
-
-/* 上側の黒穴 */
 
 .utility-key::before {
     content: "";
@@ -721,13 +719,15 @@ button {
     top: var(--number-top);
     left: 50%;
 
-    width: 334px;
-    height: 334px;
+    width: 350px;
+    height: 350px;
 
     transform: translateX(-50%);
 }
 
-/* 数字ボタン */
+/* =========================================================
+   数字ボタン
+========================================================= */
 
 .number-key {
     position: absolute;
@@ -813,66 +813,65 @@ button {
 
 /* =========================================================
    数字配置
-   間隔を少し狭めた正方形型のひし形
+   前回より少しだけ間隔を広げたひし形
 ========================================================= */
 
 .n1 {
     top: 0;
-    left: 125px;
+    left: 133px;
 }
 
 .n2 {
-    top: 62px;
-    left: 63px;
+    top: 67px;
+    left: 66px;
 }
 
 .n3 {
-    top: 62px;
-    left: 187px;
+    top: 67px;
+    left: 200px;
 }
 
 .n4 {
-    top: 124px;
-    left: 1px;
+    top: 134px;
+    left: -1px;
 }
 
 .n5 {
-    top: 124px;
-    left: 125px;
+    top: 134px;
+    left: 133px;
 }
 
 .n6 {
-    top: 124px;
-    left: 249px;
+    top: 134px;
+    left: 267px;
 }
 
 .n7 {
-    top: 186px;
-    left: 63px;
+    top: 201px;
+    left: 66px;
 }
 
 .n8 {
-    top: 186px;
-    left: 187px;
+    top: 201px;
+    left: 200px;
 }
 
 .n9 {
-    top: 248px;
-    left: 125px;
+    top: 268px;
+    left: 133px;
 }
 
 /* =========================================================
    演算ボタン
-   数字群から右側へ離す
 ========================================================= */
 
 .operator-area {
     position: absolute;
 
-    right: 8px;
-    bottom: 42px;
+    right: 0;
+    bottom: 35px;
 
-    width: 98px;
+    width: 96px;
     height: 250px;
 }
 
@@ -958,7 +957,7 @@ button {
 
 .plus {
     top: 98px;
-    right: 24px;
+    right: 22px;
 }
 
 .decimal {
@@ -1079,9 +1078,9 @@ button {
         --calculator-width: 100%;
         --calculator-height: 735px;
 
-        --display-top: 96px;
-        --utility-top: 182px;
-        --number-top: 350px;
+        --display-top: 112px;
+        --utility-top: 205px;
+        --number-top: 365px;
     }
 
     body {
@@ -1102,8 +1101,8 @@ button {
     }
 
     .display {
-        left: 34px;
-        right: 34px;
+        left: 45px;
+        right: 45px;
     }
 
     .utility-buttons {
@@ -1125,14 +1124,14 @@ button {
     .number-area {
         transform:
             translateX(-50%)
-            scale(0.83);
+            scale(0.82);
 
         transform-origin:
             top center;
     }
 
     .operator-area {
-        right: 1px;
+        right: 0;
         bottom: 25px;
 
         transform:
@@ -1156,15 +1155,15 @@ button {
     :root {
         --calculator-height: 670px;
 
-        --display-top: 88px;
-        --utility-top: 164px;
-        --number-top: 315px;
+        --display-top: 100px;
+        --utility-top: 184px;
+        --number-top: 330px;
     }
 
     .number-area {
         transform:
             translateX(-50%)
-            scale(0.73);
+            scale(0.72);
     }
 
     .operator-area {
