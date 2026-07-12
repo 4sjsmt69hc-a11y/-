@@ -1,26 +1,46 @@
 "use strict";
 
 /* =========================================================
+   YUUKA CALCULATOR v7
+   script.js
+   前半
+========================================================= */
+
+/* =========================================================
    要素取得
 ========================================================= */
 
-const display = document.getElementById("display");
-const calculator = document.querySelector(".calculator");
-const buttons = document.querySelectorAll(".calculator button");
+const display =
+    document.getElementById("display");
 
-const canvas = document.getElementById("particles");
-const context = canvas.getContext("2d");
+const calculator =
+    document.querySelector(".calculator");
+
+const buttons =
+    document.querySelectorAll(
+        ".calculator button"
+    );
+
+const canvas =
+    document.getElementById("particles");
+
+const context =
+    canvas.getContext("2d");
 
 /* =========================================================
-   電卓の状態
+   電卓状態
 ========================================================= */
 
 let currentValue = "0";
+
 let previousValue = null;
+
 let currentOperator = null;
+
 let shouldOverwrite = false;
 
 let lastOperator = null;
+
 let lastOperand = null;
 
 /* =========================================================
@@ -28,283 +48,378 @@ let lastOperand = null;
 ========================================================= */
 
 let particles = [];
-let particleAnimationId = null;
+
+let animationId = null;
 
 /* =========================================================
-   Canvas設定
+   Canvas
 ========================================================= */
 
 function resizeCanvas() {
-    const pixelRatio = Math.min(
-        window.devicePixelRatio || 1,
-        2
-    );
 
-    canvas.width = Math.floor(
-        window.innerWidth * pixelRatio
-    );
+    const ratio =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
 
-    canvas.height = Math.floor(
-        window.innerHeight * pixelRatio
-    );
+    canvas.width =
+        window.innerWidth *
+        ratio;
 
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    canvas.height =
+        window.innerHeight *
+        ratio;
+
+    canvas.style.width =
+        window.innerWidth + "px";
+
+    canvas.style.height =
+        window.innerHeight + "px";
 
     context.setTransform(
-        pixelRatio,
+        ratio,
         0,
         0,
-        pixelRatio,
+        ratio,
         0,
         0
     );
+
 }
 
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
 
 resizeCanvas();
 
 /* =========================================================
-   表示整形
+   表示
 ========================================================= */
 
-function formatForDisplay(value) {
-    if (value === "ERROR") {
-        return "ERROR";
-    }
+function formatValue(value){
 
-    if (value === "-0") {
-        return "0";
-    }
-
-    if (value.length <= 12) {
+    if(value==="ERROR"){
         return value;
     }
 
-    const number = Number(value);
+    if(value.length<=12){
+        return value;
+    }
 
-    if (!Number.isFinite(number)) {
+    const number =
+        Number(value);
+
+    if(
+        !Number.isFinite(number)
+    ){
         return "ERROR";
     }
 
     return number.toExponential(6);
+
 }
 
-function updateDisplay() {
-    display.textContent = formatForDisplay(currentValue);
+function updateDisplay(){
+
+    display.textContent =
+        formatValue(currentValue);
 
     display.animate(
         [
             {
-                transform: "translateY(2px) scale(1.025)",
-                filter: "brightness(1.5)"
+                transform:
+                    "translateY(2px) scale(1.03)",
+
+                filter:
+                    "brightness(1.45)"
             },
             {
-                transform: "translateY(0) scale(1)",
-                filter: "brightness(1)"
+                transform:
+                    "translateY(0) scale(1)",
+
+                filter:
+                    "brightness(1)"
             }
         ],
         {
-            duration: 160,
-            easing: "ease-out"
+            duration:170,
+            easing:"ease-out"
         }
     );
+
 }
 
 /* =========================================================
-   数値入力
+   数字入力
 ========================================================= */
 
-function inputNumber(number) {
-    if (
-        currentValue === "ERROR" ||
+function inputNumber(number){
+
+    if(
+        currentValue==="ERROR"||
         shouldOverwrite
-    ) {
-        currentValue = number;
-        shouldOverwrite = false;
+    ){
+
+        currentValue=number;
+
+        shouldOverwrite=false;
+
+        return;
+
+    }
+
+    if(currentValue==="0"){
+
+        currentValue=number;
+
+        return;
+
+    }
+
+    if(currentValue.length>=16){
         return;
     }
 
-    if (currentValue === "0") {
-        currentValue = number;
-        return;
-    }
+    currentValue+=number;
 
-    if (currentValue === "-0") {
-        currentValue = `-${number}`;
-        return;
-    }
-
-    if (currentValue.length >= 16) {
-        return;
-    }
-
-    currentValue += number;
 }
 
-function inputDecimal() {
-    if (
-        currentValue === "ERROR" ||
-        shouldOverwrite
-    ) {
-        currentValue = "0.";
-        shouldOverwrite = false;
+function inputDecimal(){
+
+    if(
+        shouldOverwrite||
+        currentValue==="ERROR"
+    ){
+
+        currentValue="0.";
+
+        shouldOverwrite=false;
+
         return;
+
     }
 
-    if (!currentValue.includes(".")) {
-        currentValue += ".";
+    if(
+        !currentValue.includes(".")
+    ){
+
+        currentValue+=".";
+
     }
+
 }
 
 /* =========================================================
-   計算処理
+   計算
 ========================================================= */
 
-function normalizeResult(number) {
-    if (!Number.isFinite(number)) {
+function normalize(number){
+
+    if(
+        !Number.isFinite(number)
+    ){
         return "ERROR";
     }
 
-    const rounded =
-        Math.round(
-            (number + Number.EPSILON) *
-            1_000_000_000_000
-        ) /
-        1_000_000_000_000;
+    return String(
 
-    return String(rounded);
+        Math.round(
+
+            (
+                number+
+                Number.EPSILON
+            )*
+            1000000000000
+
+        )/
+        1000000000000
+
+    );
+
 }
 
-function performOperation(first, second, operator) {
-    switch (operator) {
+function operate(
+    a,
+    b,
+    op
+){
+
+    switch(op){
+
         case "+":
-            return first + second;
+            return a+b;
 
         case "-":
-            return first - second;
+            return a-b;
 
         case "*":
-            return first * second;
+            return a*b;
 
         case "/":
-            if (second === 0) {
+
+            if(b===0){
                 return null;
             }
 
-            return first / second;
+            return a/b;
 
         default:
-            return second;
+
+            return b;
+
     }
+
 }
 
-function chooseOperator(operator) {
-    if (currentValue === "ERROR") {
+function chooseOperator(op){
+
+    if(
+        currentValue==="ERROR"
+    ){
+
         clearCalculator();
+
         return;
+
     }
 
-    if (
-        currentOperator !== null &&
+    if(
+        currentOperator &&
         !shouldOverwrite
-    ) {
+    ){
+
         calculate();
+
     }
 
-    previousValue = currentValue;
-    currentOperator = operator;
-    shouldOverwrite = true;
+    previousValue=currentValue;
 
-    lastOperator = null;
-    lastOperand = null;
+    currentOperator=op;
+
+    shouldOverwrite=true;
+
+    lastOperator=null;
+
+    lastOperand=null;
+
 }
 
-function calculate() {
-    if (currentValue === "ERROR") {
-        return;
+function calculate(){
+
+    let op=currentOperator;
+
+    let first;
+
+    let second;
+
+    if(
+        op!==null &&
+        previousValue!==null
+    ){
+
+        first=
+            parseFloat(
+                previousValue
+            );
+
+        second=
+            parseFloat(
+                currentValue
+            );
+
+        lastOperator=op;
+
+        lastOperand=currentValue;
+
     }
 
-    let operatorToUse = currentOperator;
-    let firstNumber;
-    let secondNumber;
+    else if(
+        lastOperator!==null
+    ){
 
-    if (
-        operatorToUse !== null &&
-        previousValue !== null
-    ) {
-        firstNumber = Number.parseFloat(previousValue);
-        secondNumber = Number.parseFloat(currentValue);
+        op=lastOperator;
 
-        lastOperator = operatorToUse;
-        lastOperand = currentValue;
-    } else if (
-        lastOperator !== null &&
-        lastOperand !== null
-    ) {
-        operatorToUse = lastOperator;
-        firstNumber = Number.parseFloat(currentValue);
-        secondNumber = Number.parseFloat(lastOperand);
-    } else {
-        return;
+        first=
+            parseFloat(
+                currentValue
+            );
+
+        second=
+            parseFloat(
+                lastOperand
+            );
+
     }
 
-    if (
-        !Number.isFinite(firstNumber) ||
-        !Number.isFinite(secondNumber)
-    ) {
-        currentValue = "ERROR";
-        previousValue = null;
-        currentOperator = null;
-        shouldOverwrite = true;
+    else{
 
-        triggerResultFlash(false);
         return;
+
     }
 
-    const result = performOperation(
-        firstNumber,
-        secondNumber,
-        operatorToUse
+    const result=
+        operate(
+            first,
+            second,
+            op
+        );
+
+    currentValue=
+
+        result===null
+
+        ? "ERROR"
+
+        : normalize(result);
+
+    currentOperator=null;
+
+    previousValue=null;
+
+    shouldOverwrite=true;
+
+    flashResult(
+        currentValue!=="ERROR"
     );
 
-    currentValue =
-        result === null
-            ? "ERROR"
-            : normalizeResult(result);
-
-    previousValue = null;
-    currentOperator = null;
-    shouldOverwrite = true;
-
-    triggerResultFlash(
-        currentValue !== "ERROR"
-    );
 }
-
 /* =========================================================
    補助機能
 ========================================================= */
 
 function clearCalculator() {
+
     currentValue = "0";
+
     previousValue = null;
+
     currentOperator = null;
+
     shouldOverwrite = false;
 
     lastOperator = null;
+
     lastOperand = null;
+
 }
 
 function backspace() {
+
     if (currentValue === "ERROR") {
+
         clearCalculator();
+
         return;
+
     }
 
     if (shouldOverwrite) {
+
         return;
+
     }
 
     if (
@@ -314,47 +429,62 @@ function backspace() {
             currentValue.length === 2
         )
     ) {
+
         currentValue = "0";
+
         return;
-    }
 
-    currentValue = currentValue.slice(0, -1);
-
-    if (
-        currentValue === "" ||
-        currentValue === "-"
-    ) {
-        currentValue = "0";
-    }
-}
-
-function convertToPercent() {
-    if (currentValue === "ERROR") {
-        return;
-    }
-
-    const number = Number.parseFloat(currentValue);
-
-    if (!Number.isFinite(number)) {
-        return;
-    }
-
-    currentValue = normalizeResult(number / 100);
-    shouldOverwrite = true;
-}
-
-function toggleSign() {
-    if (
-        currentValue === "ERROR" ||
-        currentValue === "0"
-    ) {
-        return;
     }
 
     currentValue =
+        currentValue.slice(0, -1);
+
+}
+
+function percent() {
+
+    if (currentValue === "ERROR") {
+
+        return;
+
+    }
+
+    currentValue =
+        normalize(
+            Number(currentValue) / 100
+        );
+
+    shouldOverwrite = true;
+
+}
+
+function toggleSign() {
+
+    if (
+        currentValue === "0" ||
+        currentValue === "ERROR"
+    ) {
+
+        return;
+
+    }
+
+    if (
         currentValue.startsWith("-")
-            ? currentValue.slice(1)
-            : `-${currentValue}`;
+    ) {
+
+        currentValue =
+            currentValue.slice(1);
+
+    }
+
+    else {
+
+        currentValue =
+            "-" + currentValue;
+
+    }
+
 }
 
 /* =========================================================
@@ -362,332 +492,447 @@ function toggleSign() {
 ========================================================= */
 
 function animateButton(button) {
-    button.classList.remove("is-pressed");
+
+    button.classList.remove(
+        "is-pressed"
+    );
 
     void button.offsetWidth;
 
-    button.classList.add("is-pressed");
+    button.classList.add(
+        "is-pressed"
+    );
 
-    window.setTimeout(() => {
-        button.classList.remove("is-pressed");
-    }, 165);
+    setTimeout(() => {
+
+        button.classList.remove(
+            "is-pressed"
+        );
+
+    }, 160);
+
 }
 
-function triggerResultFlash(success) {
+function flashResult(success) {
+
     calculator.animate(
+
         [
+
             {
+
                 filter:
+
                     success
-                        ? "brightness(1.08)"
-                        : "brightness(1.02)"
+
+                    ? "brightness(1.08)"
+
+                    : "brightness(.95)"
+
             },
+
             {
+
                 filter:
+
                     success
-                        ? "brightness(1.2)"
-                        : "brightness(0.78)"
+
+                    ? "brightness(1.18)"
+
+                    : "brightness(.75)"
+
             },
+
             {
-                filter: "brightness(1)"
+
+                filter:
+                    "brightness(1)"
+
             }
+
         ],
+
         {
-            duration: success ? 320 : 420,
-            easing: "ease-out"
+
+            duration:320,
+
+            easing:"ease-out"
+
         }
+
     );
+
 }
 
 /* =========================================================
-   パーティクル生成
+   パーティクル
 ========================================================= */
 
-function createParticles(button) {
-    if (
-        button.classList.contains("zero-key") ||
-        button.classList.contains("utility-key")
-    ) {
+function createParticles(button){
+
+    if(
+        button.classList.contains("utility-key") ||
+        button.classList.contains("zero-key")
+    ){
         return;
     }
 
-    const rect = button.getBoundingClientRect();
+    const rect =
+        button.getBoundingClientRect();
 
-    const originX = rect.left + rect.width / 2;
-    const originY = rect.top + rect.height / 2;
+    const x =
+        rect.left +
+        rect.width/2;
+
+    const y =
+        rect.top +
+        rect.height/2;
 
     let count = 8;
 
-    if (button.classList.contains("equal")) {
+    if(
+        button.classList.contains("equal")
+    ){
+
         count = 18;
-    } else if (
-        button.classList.contains("operator-key")
-    ) {
-        count = 10;
+
     }
 
-    for (
-        let index = 0;
-        index < count;
-        index += 1
-    ) {
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
         const angle =
             Math.random() *
-            Math.PI *
-            2;
+            Math.PI * 2;
 
         const speed =
-            1.1 +
-            Math.random() *
-            2.6;
+            1 +
+            Math.random()*2.8;
 
         particles.push({
-            x: originX,
-            y: originY,
+
+            x,
+
+            y,
 
             vx:
-                Math.cos(angle) *
+                Math.cos(angle)*
                 speed,
 
             vy:
-                Math.sin(angle) *
-                speed -
-                0.65,
+                Math.sin(angle)*
+                speed,
 
             radius:
-                1.2 +
-                Math.random() *
-                2.3,
+                1.5+
+                Math.random()*2,
 
-            life: 1,
+            life:1,
 
             decay:
-                0.026 +
-                Math.random() *
-                0.025
+                .025+
+                Math.random()*.02
+
         });
+
     }
 
-    startParticleAnimation();
+    if(animationId===null){
+
+        animationId=
+            requestAnimationFrame(
+                renderParticles
+            );
+
+    }
+
 }
 
-function startParticleAnimation() {
-    if (particleAnimationId !== null) {
-        return;
-    }
+function renderParticles(){
 
-    function renderParticles() {
-        context.clearRect(
-            0,
-            0,
-            window.innerWidth,
-            window.innerHeight
+    context.clearRect(
+
+        0,
+        0,
+
+        window.innerWidth,
+
+        window.innerHeight
+
+    );
+
+    particles=
+        particles.filter(
+
+            p=>p.life>0
+
         );
 
-        particles = particles.filter(
-            (particle) => particle.life > 0
-        );
+    particles.forEach(
 
-        particles.forEach((particle) => {
-            particle.x += particle.vx;
-            particle.y += particle.vy;
+        p=>{
 
-            particle.vx *= 0.99;
-            particle.vy += 0.028;
+            p.x+=p.vx;
 
-            particle.life -= particle.decay;
+            p.y+=p.vy;
+
+            p.vx*=.99;
+
+            p.vy+=.03;
+
+            p.life-=p.decay;
 
             context.beginPath();
 
             context.arc(
-                particle.x,
-                particle.y,
-                particle.radius,
+
+                p.x,
+
+                p.y,
+
+                p.radius,
+
                 0,
-                Math.PI * 2
+
+                Math.PI*2
+
             );
 
-            context.fillStyle =
-                `rgba(0, 112, 255, ${Math.max(
-                    particle.life,
-                    0
-                )})`;
+            context.fillStyle=
 
-            context.shadowColor =
-                "rgba(0, 126, 255, 0.95)";
+                `rgba(0,140,255,${p.life})`;
 
-            context.shadowBlur = 12;
+            context.shadowColor=
+                "#2cbcff";
+
+            context.shadowBlur=12;
 
             context.fill();
-        });
 
-        context.shadowBlur = 0;
+        }
 
-        if (particles.length > 0) {
-            particleAnimationId =
-                window.requestAnimationFrame(
-                    renderParticles
-                );
-        } else {
-            context.clearRect(
-                0,
-                0,
-                window.innerWidth,
-                window.innerHeight
+    );
+
+    context.shadowBlur=0;
+
+    if(
+        particles.length
+    ){
+
+        animationId=
+            requestAnimationFrame(
+                renderParticles
             );
 
-            particleAnimationId = null;
-        }
     }
 
-    particleAnimationId =
-        window.requestAnimationFrame(
-            renderParticles
-        );
+    else{
+
+        animationId=null;
+
+    }
+
 }
 
 /* =========================================================
    ボタン処理
 ========================================================= */
 
-function handleButton(button) {
-    const number = button.dataset.number;
-    const action = button.dataset.action;
-    const value = button.dataset.value;
+function handleButton(button){
 
     animateButton(button);
+
     createParticles(button);
 
-    if (number !== undefined) {
-        if (number === ".") {
+    const number =
+        button.dataset.number;
+
+    const action =
+        button.dataset.action;
+
+    const value =
+        button.dataset.value;
+
+    if(number!==undefined){
+
+        if(number==="."){
+
             inputDecimal();
-        } else {
-            inputNumber(number);
+
         }
+
+        else{
+
+            inputNumber(number);
+
+        }
+
     }
 
-    switch (action) {
+    switch(action){
+
         case "operator":
+
             chooseOperator(value);
+
             break;
 
         case "equal":
+
             calculate();
+
             break;
 
         case "clear":
+
             clearCalculator();
+
             break;
 
         case "backspace":
+
             backspace();
+
             break;
 
         case "percent":
-            convertToPercent();
+
+            percent();
+
             break;
 
         case "sign":
+
             toggleSign();
+
             break;
 
-        default:
-            break;
     }
 
     updateDisplay();
+
 }
 
-buttons.forEach((button) => {
+buttons.forEach(button=>{
+
     button.addEventListener(
+
         "click",
-        () => {
-            handleButton(button);
-        }
+
+        ()=>handleButton(button)
+
     );
+
 });
 
 /* =========================================================
-   キーボード対応
+   キーボード
 ========================================================= */
 
-function findButtonForKeyboardKey(key) {
-    if (/^[0-9]$/.test(key)) {
-        return document.querySelector(
-            `[data-number="${key}"]`
-        );
-    }
-
-    if (
-        key === "." ||
-        key === ","
-    ) {
-        return document.querySelector(
-            '[data-number="."]'
-        );
-    }
-
-    if (
-        ["+", "-", "*", "/"].includes(key)
-    ) {
-        return document.querySelector(
-            `[data-action="operator"][data-value="${key}"]`
-        );
-    }
-
-    if (
-        key === "Enter" ||
-        key === "="
-    ) {
-        return document.querySelector(
-            '[data-action="equal"]'
-        );
-    }
-
-    if (key === "Backspace") {
-        return document.querySelector(
-            '[data-action="backspace"]'
-        );
-    }
-
-    if (
-        key === "Escape" ||
-        key === "Delete"
-    ) {
-        return document.querySelector(
-            '[data-action="clear"]'
-        );
-    }
-
-    if (key === "%") {
-        return document.querySelector(
-            '[data-action="percent"]'
-        );
-    }
-
-    return null;
-}
-
 document.addEventListener(
+
     "keydown",
-    (event) => {
-        const button =
-            findButtonForKeyboardKey(
-                event.key
+
+    event=>{
+
+        const key=
+            event.key;
+
+        let button=null;
+
+        if(
+            /^[0-9]$/.test(key)
+        ){
+
+            button=document.querySelector(
+
+                `[data-number="${key}"]`
+
             );
 
-        if (!button) {
+        }
+
+        else if(
+            key==="."
+        ){
+
+            button=document.querySelector(
+
+                '[data-number="."]'
+
+            );
+
+        }
+
+        else if(
+            ["+","-","*","/"].includes(key)
+        ){
+
+            button=document.querySelector(
+
+                `[data-action="operator"][data-value="${key}"]`
+
+            );
+
+        }
+
+        else if(
+            key==="Enter"||
+            key==="="
+        ){
+
+            button=document.querySelector(
+
+                '[data-action="equal"]'
+
+            );
+
+        }
+
+        else if(
+            key==="Backspace"
+        ){
+
+            button=document.querySelector(
+
+                '[data-action="backspace"]'
+
+            );
+
+        }
+
+        else if(
+            key==="Delete"||
+            key==="Escape"
+        ){
+
+            button=document.querySelector(
+
+                '[data-action="clear"]'
+
+            );
+
+        }
+
+        if(!button){
+
             return;
+
         }
 
         event.preventDefault();
 
         handleButton(button);
+
     }
+
 );
 
 /* =========================================================
-   初期表示
+   初期化
 ========================================================= */
 
 updateDisplay();
