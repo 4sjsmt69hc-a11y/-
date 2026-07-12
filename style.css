@@ -1,7 +1,9 @@
 /* =========================================================
-   YUUKA CALCULATOR v6
+   YUUKA CALCULATOR v7
    style.css 前半
-   基本・背景・本体・銀フレーム・表示・銀ボタン
+
+   基本・背景・本体・銀フレーム
+   装飾・計算表示・上部銀ボタン
 ========================================================= */
 
 :root {
@@ -9,7 +11,7 @@
     --calculator-width: 430px;
     --calculator-height: 820px;
 
-    /* 各パーツの縦位置 */
+    /* 各パーツの基準位置 */
     --display-top: 170px;
     --utility-top: 285px;
     --number-top: 410px;
@@ -24,22 +26,24 @@
     --panel-middle: #112740;
     --panel-bottom: #040d19;
 
-    /* 青 */
+    /* 青い発光 */
     --blue: #087fff;
     --blue-bright: #38c7ff;
     --blue-soft: #c8f5ff;
 
     /* 金属 */
     --metal-white: #ffffff;
+    --metal-highlight: #f7fcfd;
     --metal-light: #dce9ee;
     --metal-middle: #aebfc7;
-    --metal-dark: #607681;
+    --metal-shadow: #80949e;
+    --metal-dark: #536974;
 
     --text-light: #e3faff;
 }
 
 /* =========================================================
-   基本
+   基本設定
 ========================================================= */
 
 * {
@@ -262,15 +266,15 @@ button {
 }
 
 /* =========================================================
-   上下銀フレーム
+   上下の銀フレーム
 ========================================================= */
 
-.frame {
+.device-frame {
     position: absolute;
     left: 50%;
 
-    width: calc(100% + 28px);
-    height: 56px;
+    width: calc(100% + 30px);
+    height: 72px;
 
     transform: translateX(-50%);
 
@@ -278,108 +282,194 @@ button {
     pointer-events: none;
 }
 
-/* 中央の銀バー */
-
-.frame::before {
-    content: "";
-
-    position: absolute;
-
-    left: 34px;
-    right: 34px;
-    top: 10px;
-
-    height: 22px;
-
-    border:
-        1px solid
-        rgba(250, 255, 255, 0.88);
-
-    border-radius: 6px;
-
-    background:
-        linear-gradient(
-            180deg,
-            var(--metal-white) 0%,
-            var(--metal-light) 27%,
-            var(--metal-middle) 67%,
-            var(--metal-dark) 100%
-        );
-
-    box-shadow:
-        inset 0 3px 3px
-        rgba(255, 255, 255, 0.95),
-
-        inset 0 -5px 7px
-        rgba(35, 61, 74, 0.32),
-
-        0 5px 11px
-        rgba(0, 0, 0, 0.45);
-}
-
-/* 両端と中央の切り欠き */
-
-.frame::after {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            #ffffff 0%,
-            #e7f0f3 24%,
-            #afc0c8 65%,
-            #627883 100%
-        );
-
-    clip-path:
-        polygon(
-            1% 20%,
-            26% 20%,
-            36% 61%,
-            43% 61%,
-            47% 39%,
-            53% 39%,
-            57% 61%,
-            64% 61%,
-            74% 20%,
-            99% 20%,
-            100% 38%,
-            100% 100%,
-            73% 100%,
-            60% 58%,
-            40% 58%,
-            27% 100%,
-            0 100%,
-            0 38%
-        );
-
-    box-shadow:
-        inset 0 3px 3px
-        rgba(255, 255, 255, 0.95),
-
-        inset 0 -8px 9px
-        rgba(34, 59, 72, 0.3),
-
-        0 5px 10px
-        rgba(0, 0, 0, 0.34);
-}
-
 .frame-top {
-    top: -20px;
+    top: -30px;
 }
 
 .frame-bottom {
-    bottom: -20px;
+    bottom: -30px;
 
     transform:
         translateX(-50%)
         rotate(180deg);
 }
 
-/* フレーム外側ライト */
+/* =========================================================
+   銀フレーム：外側の厚い本体
+
+   真ん中の切り欠きを広めにし、
+   左右の角を滑らかに丸くする
+========================================================= */
+
+.frame-body {
+    position: absolute;
+
+    inset: 8px 0 0;
+
+    height: 58px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.88);
+
+    border-radius:
+        30px
+        30px
+        15px
+        15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #f3f9fb 18%,
+            #d9e6eb 43%,
+            #a8bbc4 72%,
+            #667d88 100%
+        );
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 0,
+            100% 100%,
+
+            75% 100%,
+            69% 70%,
+            64% 44%,
+
+            36% 44%,
+            31% 70%,
+            25% 100%,
+
+            0 100%
+        );
+
+    box-shadow:
+        inset 0 5px 7px
+        rgba(255, 255, 255, 0.96),
+
+        inset 0 -10px 13px
+        rgba(44, 69, 82, 0.34),
+
+        inset 0 -2px 2px
+        rgba(255, 255, 255, 0.24),
+
+        0 7px 12px
+        rgba(0, 0, 0, 0.45),
+
+        0 14px 24px
+        rgba(0, 0, 0, 0.22);
+}
+
+/* =========================================================
+   銀フレーム：正面の明るい面
+
+   上側の不自然な中央陰影をなくし、
+   左から右まで滑らかな金属面にする
+========================================================= */
+
+.frame-face {
+    position: absolute;
+
+    top: 9px;
+    left: 5px;
+    right: 5px;
+
+    height: 39px;
+
+    border-radius:
+        27px
+        27px
+        12px
+        12px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.98) 0%,
+            rgba(249, 253, 254, 0.96) 28%,
+            rgba(218, 232, 237, 0.93) 70%,
+            rgba(159, 180, 190, 0.9) 100%
+        );
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 0,
+            100% 100%,
+
+            74% 100%,
+            68% 65%,
+            63% 35%,
+
+            37% 35%,
+            32% 65%,
+            26% 100%,
+
+            0 100%
+        );
+
+    box-shadow:
+        inset 0 4px 4px
+        rgba(255, 255, 255, 0.98),
+
+        inset 0 -5px 7px
+        rgba(64, 86, 97, 0.18);
+}
+
+/* =========================================================
+   銀フレーム：切り欠きの内側エッジ
+
+   真ん中のくぼみに厚みを追加
+========================================================= */
+
+.frame-inner-edge {
+    position: absolute;
+
+    top: 31px;
+    left: 50%;
+
+    width: 146px;
+    height: 22px;
+
+    transform: translateX(-50%);
+
+    clip-path:
+        polygon(
+            0 0,
+            15% 0,
+            25% 52%,
+            31% 72%,
+
+            69% 72%,
+            75% 52%,
+            85% 0,
+            100% 0,
+
+            87% 100%,
+            13% 100%
+        );
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(100, 125, 137, 0.76),
+            rgba(224, 237, 241, 0.92) 45%,
+            rgba(113, 137, 148, 0.94)
+        );
+
+    box-shadow:
+        inset 0 2px 3px
+        rgba(255, 255, 255, 0.68),
+
+        0 3px 4px
+        rgba(0, 0, 0, 0.27);
+}
+
+/* =========================================================
+   フレーム外側の青いライト
+========================================================= */
 
 .frame-light {
     position: absolute;
@@ -424,7 +514,7 @@ button {
 }
 
 /* =========================================================
-   左上白丸
+   左上の白丸
 ========================================================= */
 
 .white-dot {
@@ -468,56 +558,59 @@ button {
 }
 
 /* =========================================================
-   右上水色装飾
+   右上の水色パーツ
+
+   銀フレームに重ならないよう下へ移動し、
+   サイズも少し大きくする
 ========================================================= */
 
 .cyan-corner {
     position: absolute;
 
-    top: 25px;
-    right: -11px;
+    top: 45px;
+    right: -12px;
 
-    width: 40px;
-    height: 26px;
+    width: 48px;
+    height: 34px;
 
     z-index: 35;
     pointer-events: none;
 
     clip-path:
         polygon(
-            0 12%,
+            0 10%,
             72% 0,
-            100% 22%,
-            100% 80%,
-            76% 100%,
+            100% 20%,
+            100% 77%,
+            74% 100%,
             0 86%
         );
 
     border:
         1px solid
-        rgba(207, 254, 255, 0.72);
+        rgba(207, 254, 255, 0.76);
 
     background:
         linear-gradient(
             140deg,
-            #e5feff,
-            #8cf5fb 23%,
-            #43c6d7 62%,
+            #edffff,
+            #9cf8fc 22%,
+            #4dd3df 58%,
             #15758e
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.78),
+        inset 0 3px 4px
+        rgba(255, 255, 255, 0.82),
 
-        inset 0 -5px 7px
-        rgba(8, 76, 98, 0.34),
+        inset 0 -6px 8px
+        rgba(8, 76, 98, 0.38),
 
-        0 4px 8px
-        rgba(0, 0, 0, 0.42),
+        0 5px 9px
+        rgba(0, 0, 0, 0.44),
 
-        0 0 13px
-        rgba(53, 232, 255, 0.45);
+        0 0 15px
+        rgba(53, 232, 255, 0.52);
 }
 
 /* =========================================================
@@ -591,7 +684,7 @@ button {
 }
 
 /* =========================================================
-   上部銀ボタン
+   上部の銀ボタン
 ========================================================= */
 
 .utility-buttons {
@@ -670,7 +763,7 @@ button {
         text-shadow 120ms ease;
 }
 
-/* 右側2個を空白の後へ配置 */
+/* 右側2個を中央の空白後へ配置 */
 
 .utility-key:nth-child(3) {
     grid-column: 4;
@@ -680,7 +773,7 @@ button {
     grid-column: 5;
 }
 
-/* 上部の大きな黒穴 */
+/* 銀ボタン上部の黒穴 */
 
 .utility-key::before {
     content: "";
@@ -713,6 +806,17 @@ button {
         rgba(255, 255, 255, 0.32);
 }
 
+.utility-key span {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    margin-top: 29px;
+
+    opacity: 0.34;
+}
+
 .utility-key:hover {
     filter: brightness(1.08);
 }
@@ -733,722 +837,377 @@ button {
         var(--blue);
 }
 /* =========================================================
-   YUUKA CALCULATOR v6
    style.css 後半
-   数字ボタン・0ボタン・演算ボタン・レスポンシブ
+   数字ボタン・演算ボタン・アニメーション
 ========================================================= */
 
 /* =========================================================
-   数字ボタンラッパー
+   数字ボタンエリア
 ========================================================= */
 
-.number-wrap {
-    position: absolute;
-    inset: 0;
-
-    pointer-events: none;
+.number-wrap{
+    position:absolute;
+    inset:0;
 }
 
-/* =========================================================
-   数字ボタン全体
-========================================================= */
+.number-area{
+    position:absolute;
 
-.number-area {
-    position: absolute;
+    top:var(--number-top);
+    left:50%;
 
-    top: var(--number-top);
-    left: 50%;
+    width:310px;
+    height:310px;
 
-    width: 370px;
-    height: 370px;
-
-    transform:
-        translateX(-50%);
-
-    pointer-events: auto;
+    transform:translateX(-50%);
 }
 
 /* =========================================================
    数字ボタン
 ========================================================= */
 
-.number-key {
-    position: absolute;
+.number-key{
+    position:absolute;
 
-    width: 84px;
-    height: 84px;
+    width:76px;
+    height:76px;
 
-    padding: 0;
+    border:none;
+    border-radius:50%;
 
-    border:
-        6px solid
-        var(--blue);
+    cursor:pointer;
 
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            210,
-            240,
-            255,
-            0.22
-        );
-
-    font-size: 1.08rem;
-    font-weight: 700;
+    color:#8fd3ff;
+    font-size:1.15rem;
+    font-weight:600;
 
     background:
-        radial-gradient(
-            circle at 42% 36%,
-            #173c63,
-            #071726 55%,
-            #020811
-        );
+        radial-gradient(circle at 35% 30%,
+            #213752,
+            #0d2034 60%,
+            #08131f 100%);
 
     box-shadow:
-        inset 0 0 16px
-        rgba(0, 130, 255, 0.16),
-
-        0 5px 0
-        #003d72,
-
-        0 10px 15px
-        rgba(0, 0, 0, 0.5),
-
-        0 0 10px
-        rgba(0, 120, 255, 0.95),
-
-        0 0 24px
-        rgba(0, 105, 255, 0.8),
-
-        0 0 44px
-        rgba(0, 90, 255, 0.45);
+        inset 0 2px 4px rgba(255,255,255,.10),
+        inset 0 -8px 16px rgba(0,0,0,.45),
+        0 0 0 4px #0d86ff,
+        0 0 18px rgba(0,126,255,.9),
+        0 0 38px rgba(0,126,255,.35);
 
     transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 120ms ease;
+        .15s;
 }
 
-.number-key:hover {
-    color:
-        rgba(
-            220,
-            245,
-            255,
-            0.7
-        );
+.number-key:hover{
 
-    filter:
-        brightness(1.12);
+    transform:scale(1.05);
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,.16),
+        inset 0 -8px 16px rgba(0,0,0,.45),
+        0 0 0 4px #20a0ff,
+        0 0 25px rgba(0,170,255,.95),
+        0 0 48px rgba(0,170,255,.45);
+
 }
 
 .number-key:active,
-.number-key.is-pressed {
-    transform:
-        translateY(6px)
-        scale(0.93);
+.number-key.is-pressed{
 
-    color: #ffffff;
+    transform:scale(.93);
 
-    text-shadow:
-        0 0 6px
-        #ffffff,
-
-        0 0 15px
-        var(--blue),
-
-        0 0 30px
-        var(--blue);
-
-    box-shadow:
-        inset 0 8px 14px
-        rgba(0, 0, 0, 0.68),
-
-        0 1px 0
-        #003d72,
-
-        0 5px 9px
-        rgba(0, 0, 0, 0.38),
-
-        0 0 18px
-        rgba(0, 125, 255, 1),
-
-        0 0 38px
-        rgba(0, 100, 255, 0.78);
 }
 
 /* =========================================================
-   数字配置
-   位置は維持しつつ、前回より少し広げたひし形
+   ひし形配置
 ========================================================= */
 
-/*
-                1
-
-          2           3
-
-     4          5          6
-
-          7           8
-
-                9
-*/
-
-.n1 {
-    top: 0;
-    left: 143px;
+.n1{
+    left:117px;
+    top:0;
 }
 
-.n2 {
-    top: 72px;
-    left: 71px;
+.n2{
+    left:59px;
+    top:64px;
 }
 
-.n3 {
-    top: 72px;
-    left: 215px;
+.n3{
+    left:175px;
+    top:64px;
 }
 
-.n4 {
-    top: 144px;
-    left: -1px;
+.n4{
+    left:0;
+    top:128px;
 }
 
-.n5 {
-    top: 144px;
-    left: 143px;
+.n5{
+    left:117px;
+    top:128px;
 }
 
-.n6 {
-    top: 144px;
-    left: 287px;
+.n6{
+    left:234px;
+    top:128px;
 }
 
-.n7 {
-    top: 216px;
-    left: 71px;
+.n7{
+    left:59px;
+    top:192px;
 }
 
-.n8 {
-    top: 216px;
-    left: 215px;
+.n8{
+    left:175px;
+    top:192px;
 }
 
-.n9 {
-    top: 288px;
-    left: 143px;
+.n9{
+    left:117px;
+    top:256px;
 }
 
 /* =========================================================
    0ボタン
 ========================================================= */
 
-.zero-key {
-    position: absolute;
+.zero-key{
 
-    left: 22px;
-    bottom: 72px;
+    position:absolute;
 
-    width: 38px;
-    height: 38px;
+    left:38px;
+    bottom:118px;
 
-    padding: 0;
+    width:40px;
+    height:40px;
 
-    border:
-        1px solid
-        rgba(245, 254, 255, 0.92);
+    border:none;
+    border-radius:50%;
 
-    border-radius: 50%;
+    cursor:pointer;
 
-    cursor: pointer;
-
-    color:
-        rgba(
-            30,
-            48,
-            58,
-            0.55
-        );
+    color:#9aa9b6;
+    font-size:.75rem;
 
     background:
-        radial-gradient(
-            circle at 35% 30%,
+        radial-gradient(circle at 35% 30%,
             #ffffff,
-            #dce9ee 55%,
-            #7a8f98
-        );
+            #d8e6ea,
+            #94a7b1);
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.9),
+        inset 0 2px 3px rgba(255,255,255,.9),
+        inset 0 -5px 7px rgba(56,79,90,.25),
+        0 4px 8px rgba(0,0,0,.45);
 
-        inset 0 -4px 6px
-        rgba(50, 76, 88, 0.22),
-
-        0 4px 0
-        #60757f,
-
-        0 8px 10px
-        rgba(0, 0, 0, 0.4);
-
-    transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        box-shadow 120ms ease;
-}
-
-.zero-key:hover {
-    filter:
-        brightness(1.08);
-}
-
-.zero-key:active,
-.zero-key.is-pressed {
-    transform:
-        translateY(4px)
-        scale(0.95);
-
-    box-shadow:
-        inset 0 5px 8px
-        rgba(46, 69, 80, 0.34),
-
-        0 1px 0
-        #60757f,
-
-        0 3px 5px
-        rgba(0, 0, 0, 0.32);
-}
-
-/* =========================================================
-   演算ボタン全体
-========================================================= */
-
-.operator-area {
-    position: absolute;
-
-    right: -1px;
-    bottom: 34px;
-
-    width: 102px;
-    height: 252px;
 }
 
 /* =========================================================
    演算ボタン
 ========================================================= */
 
-.operator-key {
-    position: absolute;
+.operator-area{
 
-    width: 39px;
-    height: 39px;
+    position:absolute;
 
-    padding: 0;
+    right:22px;
+    bottom:102px;
 
-    border:
-        3px solid
-        var(--blue);
+    width:82px;
+    height:235px;
 
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            200,
-            240,
-            255,
-            0.75
-        );
-
-    background:
-        radial-gradient(
-            circle at 40% 35%,
-            #19466d,
-            #08192b 58%,
-            #020811
-        );
-
-    box-shadow:
-        inset 0 0 7px
-        rgba(0, 116, 255, 0.18),
-
-        0 3px 0
-        #003d72,
-
-        0 6px 9px
-        rgba(0, 0, 0, 0.45),
-
-        0 0 8px
-        rgba(0, 120, 255, 0.9);
-
-    transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease;
 }
 
-.operator-key:hover {
-    filter:
-        brightness(1.18);
+.operator-key{
+
+    position:absolute;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    color:#d6f4ff;
+
+    background:
+        radial-gradient(circle at 35% 30%,
+            #173352,
+            #0a1828);
+
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,.12),
+        inset 0 -5px 10px rgba(0,0,0,.42),
+        0 0 0 2px #0b87ff,
+        0 0 12px rgba(0,126,255,.65);
+
+    transition:.15s;
+
+}
+
+.operator-key:hover{
+
+    transform:scale(1.06);
+
 }
 
 .operator-key:active,
-.operator-key.is-pressed {
-    transform:
-        translateY(3px)
-        scale(0.92);
+.operator-key.is-pressed{
 
-    color: #ffffff;
+    transform:scale(.92);
 
-    text-shadow:
-        0 0 5px
-        #ffffff,
-
-        0 0 11px
-        var(--blue);
 }
 
-/* =========================================================
-   演算ボタン配置
+/* 大ボタン */
 
-           ÷
+.divide{
 
-       ×       −
+    width:34px;
+    height:34px;
 
-           ＋
+    right:0;
+    top:0;
 
-       .
-
-   =
-========================================================= */
-
-.divide {
-    top: 0;
-    right: 0;
 }
 
-.multiply {
-    top: 49px;
-    right: 51px;
+.multiply{
+
+    width:38px;
+    height:38px;
+
+    left:8px;
+    top:44px;
+
 }
 
-.minus {
-    top: 49px;
-    right: 0;
+.minus{
+
+    width:34px;
+    height:34px;
+
+    right:0;
+    top:86px;
+
 }
 
-.plus {
-    top: 98px;
-    right: 25px;
+.plus{
+
+    width:36px;
+    height:36px;
+
+    left:0;
+    top:132px;
+
 }
 
-.decimal {
-    top: 147px;
-    right: 51px;
+.decimal{
+
+    width:34px;
+    height:34px;
+
+    right:10px;
+    bottom:44px;
+
 }
 
-.equal {
-    top: 196px;
-    right: 51px;
+.equal{
 
-    color: #06131d;
+    width:40px;
+    height:40px;
 
-    border-color:
-        var(--blue-soft);
+    right:0;
+    bottom:0;
 
     background:
-        radial-gradient(
-            circle at 39% 34%,
-            #ffffff,
-            #8ce5ff 36%,
-            #49c7ff 64%,
-            #087eff
-        );
+        radial-gradient(circle at 35% 30%,
+            #dffbff,
+            #8fdfff,
+            #38bfff);
+
+    color:#0f4066;
 
     box-shadow:
-        inset 0 2px 4px
-        rgba(255, 255, 255, 0.82),
+        0 0 0 2px #7fdfff,
+        0 0 18px rgba(121,229,255,.95);
 
-        0 3px 0
-        #00558e,
-
-        0 6px 9px
-        rgba(0, 0, 0, 0.45),
-
-        0 0 13px
-        rgba(0, 130, 255, 0.95),
-
-        0 0 25px
-        rgba(0, 130, 255, 0.42);
 }
 
 /* =========================================================
-   パーティクルCanvas
+   パーティクル
 ========================================================= */
 
-#particles {
-    position: fixed;
-    inset: 0;
+#particles{
 
-    width: 100%;
-    height: 100%;
+    position:fixed;
+    inset:0;
 
-    z-index: 100;
+    pointer-events:none;
 
-    pointer-events: none;
-}
+    z-index:999;
 
-/* =========================================================
-   タブレット・スマホ
-========================================================= */
-
-@media (max-width: 520px) {
-    :root {
-        --calculator-width: 100%;
-        --calculator-height: 735px;
-
-        --display-top: 142px;
-        --utility-top: 245px;
-        --number-top: 370px;
-    }
-
-    body {
-        padding:
-            38px
-            8px;
-
-        align-items:
-            flex-start;
-    }
-
-    .calculator {
-        width: 100%;
-    }
-
-    .frame {
-        width:
-            calc(100% + 15px);
-    }
-
-    .frame::before {
-        left: 27px;
-        right: 27px;
-    }
-
-    .display {
-        left: 44px;
-        right: 44px;
-    }
-
-    #display {
-        font-size:
-            clamp(
-                1.55rem,
-                8vw,
-                2rem
-            );
-    }
-
-    .utility-buttons {
-        grid-template-columns:
-            34px
-            34px
-            50px
-            34px
-            34px;
-
-        column-gap: 11px;
-    }
-
-    .utility-key {
-        width: 34px;
-        height: 76px;
-
-        border-radius: 18px;
-    }
-
-    .utility-key::before {
-        top: 6px;
-
-        width: 15px;
-        height: 15px;
-    }
-
-    .number-area {
-        transform:
-            translateX(-50%)
-            scale(0.78);
-
-        transform-origin:
-            top center;
-    }
-
-    .zero-key {
-        left: 14px;
-        bottom: 61px;
-    }
-
-    .operator-area {
-        right: -3px;
-        bottom: 19px;
-
-        transform:
-            scale(0.86);
-
-        transform-origin:
-            bottom right;
-    }
-}
-
-/* =========================================================
-   小型スマホ
-========================================================= */
-
-@media (max-width: 370px) {
-    :root {
-        --calculator-height: 670px;
-
-        --display-top: 124px;
-        --utility-top: 216px;
-        --number-top: 328px;
-    }
-
-    .display {
-        left: 35px;
-        right: 35px;
-    }
-
-    .utility-buttons {
-        grid-template-columns:
-            30px
-            30px
-            36px
-            30px
-            30px;
-
-        column-gap: 8px;
-    }
-
-    .utility-key {
-        width: 30px;
-        height: 68px;
-
-        border-radius: 16px;
-
-        font-size: 0.56rem;
-    }
-
-    .utility-key::before {
-        width: 13px;
-        height: 13px;
-    }
-
-    .number-area {
-        transform:
-            translateX(-50%)
-            scale(0.68);
-    }
-
-    .operator-area {
-        transform:
-            scale(0.75);
-
-        transform-origin:
-            bottom right;
-    }
-
-    .zero-key {
-        width: 34px;
-        height: 34px;
-
-        bottom: 54px;
-    }
 }
 
 /* =========================================================
    アニメーション
 ========================================================= */
 
-@keyframes calculator-enter {
-    from {
-        opacity: 0;
+@keyframes frame-light-pulse{
 
-        transform:
-            translateY(24px)
-            scale(0.97);
+    0%{
 
-        filter:
-            blur(6px);
+        opacity:.5;
+
     }
 
-    to {
-        opacity: 1;
+    50%{
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        opacity:.5;
+
+    }
+
+}
+
+@keyframes background-sweep{
+
+    from{
+
+        transform:translateX(-120%);
+
+    }
+
+    to{
+
+        transform:translateX(120%);
+
+    }
+
+}
+
+@keyframes calculator-enter{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(30px)
+            scale(.95);
+
+    }
+
+    to{
+
+        opacity:1;
 
         transform:
             translateY(0)
             scale(1);
 
-        filter:
-            blur(0);
-    }
-}
-
-@keyframes frame-light-pulse {
-    0%,
-    100% {
-        opacity: 0.65;
-
-        transform:
-            translateX(-50%)
-            scaleX(0.93);
     }
 
-    50% {
-        opacity: 1;
-
-        transform:
-            translateX(-50%)
-            scaleX(1.04);
-    }
-}
-
-@keyframes background-sweep {
-    from {
-        transform:
-            translateX(-125%);
-    }
-
-    to {
-        transform:
-            translateX(125%);
-    }
-}
-
-/* =========================================================
-   動きを減らす設定
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration:
-            0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            0.01ms !important;
-
-        scroll-behavior:
-            auto !important;
-    }
 }
