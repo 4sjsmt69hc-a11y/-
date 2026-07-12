@@ -1,46 +1,26 @@
 "use strict";
 
 /* =========================================================
-   YUUKA CALCULATOR v7
-   script.js
-   前半
-========================================================= */
-
-/* =========================================================
    要素取得
 ========================================================= */
 
-const display =
-    document.getElementById("display");
+const display = document.getElementById("display");
+const calculator = document.querySelector(".calculator");
+const buttons = document.querySelectorAll(".calculator button");
 
-const calculator =
-    document.querySelector(".calculator");
-
-const buttons =
-    document.querySelectorAll(
-        ".calculator button"
-    );
-
-const canvas =
-    document.getElementById("particles");
-
-const context =
-    canvas.getContext("2d");
+const canvas = document.getElementById("particles");
+const context = canvas.getContext("2d");
 
 /* =========================================================
-   電卓状態
+   電卓の状態
 ========================================================= */
 
 let currentValue = "0";
-
 let previousValue = null;
-
 let currentOperator = null;
-
 let shouldOverwrite = false;
 
 let lastOperator = null;
-
 let lastOperand = null;
 
 /* =========================================================
@@ -48,378 +28,285 @@ let lastOperand = null;
 ========================================================= */
 
 let particles = [];
-
-let animationId = null;
+let particleAnimationId = null;
 
 /* =========================================================
-   Canvas
+   Canvas設定
 ========================================================= */
 
 function resizeCanvas() {
+    const pixelRatio = Math.min(
+        window.devicePixelRatio || 1,
+        2
+    );
 
-    const ratio =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
+    canvas.width = Math.floor(
+        window.innerWidth * pixelRatio
+    );
 
-    canvas.width =
-        window.innerWidth *
-        ratio;
+    canvas.height = Math.floor(
+        window.innerHeight * pixelRatio
+    );
 
-    canvas.height =
-        window.innerHeight *
-        ratio;
-
-    canvas.style.width =
-        window.innerWidth + "px";
-
-    canvas.style.height =
-        window.innerHeight + "px";
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
 
     context.setTransform(
-        ratio,
+        pixelRatio,
         0,
         0,
-        ratio,
+        pixelRatio,
         0,
         0
     );
-
 }
 
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
+window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
 
 /* =========================================================
-   表示
+   表示処理
 ========================================================= */
 
-function formatValue(value){
+function formatForDisplay(value) {
+    if (value === "ERROR") {
+        return "ERROR";
+    }
 
-    if(value==="ERROR"){
+    if (value === "-0") {
+        return "0";
+    }
+
+    if (value.length <= 12) {
         return value;
     }
 
-    if(value.length<=12){
-        return value;
-    }
+    const number = Number(value);
 
-    const number =
-        Number(value);
-
-    if(
-        !Number.isFinite(number)
-    ){
+    if (!Number.isFinite(number)) {
         return "ERROR";
     }
 
     return number.toExponential(6);
-
 }
 
-function updateDisplay(){
+function updateDisplay() {
+    display.textContent = formatForDisplay(currentValue);
 
-    display.textContent =
-        formatValue(currentValue);
-
-    display.animate(
-        [
+    if (typeof display.animate === "function") {
+        display.animate(
+            [
+                {
+                    transform: "translateY(2px) scale(1.025)",
+                    filter: "brightness(1.45)"
+                },
+                {
+                    transform: "translateY(0) scale(1)",
+                    filter: "brightness(1)"
+                }
+            ],
             {
-                transform:
-                    "translateY(2px) scale(1.03)",
-
-                filter:
-                    "brightness(1.45)"
-            },
-            {
-                transform:
-                    "translateY(0) scale(1)",
-
-                filter:
-                    "brightness(1)"
+                duration: 160,
+                easing: "ease-out"
             }
-        ],
-        {
-            duration:170,
-            easing:"ease-out"
-        }
-    );
-
+        );
+    }
 }
 
 /* =========================================================
    数字入力
 ========================================================= */
 
-function inputNumber(number){
-
-    if(
-        currentValue==="ERROR"||
+function inputNumber(number) {
+    if (
+        currentValue === "ERROR" ||
         shouldOverwrite
-    ){
-
-        currentValue=number;
-
-        shouldOverwrite=false;
-
-        return;
-
-    }
-
-    if(currentValue==="0"){
-
-        currentValue=number;
-
-        return;
-
-    }
-
-    if(currentValue.length>=16){
+    ) {
+        currentValue = number;
+        shouldOverwrite = false;
         return;
     }
 
-    currentValue+=number;
+    if (currentValue === "0") {
+        currentValue = number;
+        return;
+    }
 
+    if (currentValue === "-0") {
+        currentValue = `-${number}`;
+        return;
+    }
+
+    if (currentValue.length >= 16) {
+        return;
+    }
+
+    currentValue += number;
 }
 
-function inputDecimal(){
-
-    if(
-        shouldOverwrite||
-        currentValue==="ERROR"
-    ){
-
-        currentValue="0.";
-
-        shouldOverwrite=false;
-
+function inputDecimal() {
+    if (
+        currentValue === "ERROR" ||
+        shouldOverwrite
+    ) {
+        currentValue = "0.";
+        shouldOverwrite = false;
         return;
-
     }
 
-    if(
-        !currentValue.includes(".")
-    ){
-
-        currentValue+=".";
-
+    if (!currentValue.includes(".")) {
+        currentValue += ".";
     }
-
 }
 
 /* =========================================================
-   計算
+   計算処理
 ========================================================= */
 
-function normalize(number){
-
-    if(
-        !Number.isFinite(number)
-    ){
+function normalizeResult(number) {
+    if (!Number.isFinite(number)) {
         return "ERROR";
     }
 
-    return String(
-
+    const rounded =
         Math.round(
+            (number + Number.EPSILON) *
+            1_000_000_000_000
+        ) /
+        1_000_000_000_000;
 
-            (
-                number+
-                Number.EPSILON
-            )*
-            1000000000000
-
-        )/
-        1000000000000
-
-    );
-
+    return String(rounded);
 }
 
-function operate(
-    a,
-    b,
-    op
-){
-
-    switch(op){
-
+function performOperation(first, second, operator) {
+    switch (operator) {
         case "+":
-            return a+b;
+            return first + second;
 
         case "-":
-            return a-b;
+            return first - second;
 
         case "*":
-            return a*b;
+            return first * second;
 
         case "/":
-
-            if(b===0){
+            if (second === 0) {
                 return null;
             }
 
-            return a/b;
+            return first / second;
 
         default:
-
-            return b;
-
+            return second;
     }
-
 }
 
-function chooseOperator(op){
-
-    if(
-        currentValue==="ERROR"
-    ){
-
+function chooseOperator(operator) {
+    if (currentValue === "ERROR") {
         clearCalculator();
-
         return;
-
     }
 
-    if(
-        currentOperator &&
+    if (
+        currentOperator !== null &&
         !shouldOverwrite
-    ){
-
+    ) {
         calculate();
-
     }
 
-    previousValue=currentValue;
+    previousValue = currentValue;
+    currentOperator = operator;
+    shouldOverwrite = true;
 
-    currentOperator=op;
-
-    shouldOverwrite=true;
-
-    lastOperator=null;
-
-    lastOperand=null;
-
+    lastOperator = null;
+    lastOperand = null;
 }
 
-function calculate(){
-
-    let op=currentOperator;
-
-    let first;
-
-    let second;
-
-    if(
-        op!==null &&
-        previousValue!==null
-    ){
-
-        first=
-            parseFloat(
-                previousValue
-            );
-
-        second=
-            parseFloat(
-                currentValue
-            );
-
-        lastOperator=op;
-
-        lastOperand=currentValue;
-
-    }
-
-    else if(
-        lastOperator!==null
-    ){
-
-        op=lastOperator;
-
-        first=
-            parseFloat(
-                currentValue
-            );
-
-        second=
-            parseFloat(
-                lastOperand
-            );
-
-    }
-
-    else{
-
+function calculate() {
+    if (currentValue === "ERROR") {
         return;
-
     }
 
-    const result=
-        operate(
-            first,
-            second,
-            op
-        );
+    let operatorToUse = currentOperator;
+    let firstNumber;
+    let secondNumber;
 
-    currentValue=
+    if (
+        operatorToUse !== null &&
+        previousValue !== null
+    ) {
+        firstNumber = Number.parseFloat(previousValue);
+        secondNumber = Number.parseFloat(currentValue);
 
-        result===null
+        lastOperator = operatorToUse;
+        lastOperand = currentValue;
+    } else if (
+        lastOperator !== null &&
+        lastOperand !== null
+    ) {
+        operatorToUse = lastOperator;
+        firstNumber = Number.parseFloat(currentValue);
+        secondNumber = Number.parseFloat(lastOperand);
+    } else {
+        return;
+    }
 
-        ? "ERROR"
+    if (
+        !Number.isFinite(firstNumber) ||
+        !Number.isFinite(secondNumber)
+    ) {
+        currentValue = "ERROR";
+        previousValue = null;
+        currentOperator = null;
+        shouldOverwrite = true;
 
-        : normalize(result);
+        triggerResultFlash(false);
+        return;
+    }
 
-    currentOperator=null;
-
-    previousValue=null;
-
-    shouldOverwrite=true;
-
-    flashResult(
-        currentValue!=="ERROR"
+    const result = performOperation(
+        firstNumber,
+        secondNumber,
+        operatorToUse
     );
 
+    currentValue =
+        result === null
+            ? "ERROR"
+            : normalizeResult(result);
+
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = true;
+
+    triggerResultFlash(
+        currentValue !== "ERROR"
+    );
 }
+
 /* =========================================================
-   補助機能
+   補助操作
 ========================================================= */
 
 function clearCalculator() {
-
     currentValue = "0";
-
     previousValue = null;
-
     currentOperator = null;
-
     shouldOverwrite = false;
 
     lastOperator = null;
-
     lastOperand = null;
-
 }
 
 function backspace() {
-
     if (currentValue === "ERROR") {
-
         clearCalculator();
-
         return;
-
     }
 
     if (shouldOverwrite) {
-
         return;
-
     }
 
     if (
@@ -429,62 +316,47 @@ function backspace() {
             currentValue.length === 2
         )
     ) {
-
         currentValue = "0";
-
         return;
-
     }
 
-    currentValue =
-        currentValue.slice(0, -1);
+    currentValue = currentValue.slice(0, -1);
 
+    if (
+        currentValue === "" ||
+        currentValue === "-"
+    ) {
+        currentValue = "0";
+    }
 }
 
-function percent() {
-
+function convertToPercent() {
     if (currentValue === "ERROR") {
-
         return;
-
     }
 
-    currentValue =
-        normalize(
-            Number(currentValue) / 100
-        );
+    const number = Number.parseFloat(currentValue);
 
+    if (!Number.isFinite(number)) {
+        return;
+    }
+
+    currentValue = normalizeResult(number / 100);
     shouldOverwrite = true;
-
 }
 
 function toggleSign() {
-
     if (
-        currentValue === "0" ||
-        currentValue === "ERROR"
+        currentValue === "ERROR" ||
+        currentValue === "0"
     ) {
-
         return;
-
     }
 
-    if (
+    currentValue =
         currentValue.startsWith("-")
-    ) {
-
-        currentValue =
-            currentValue.slice(1);
-
-    }
-
-    else {
-
-        currentValue =
-            "-" + currentValue;
-
-    }
-
+            ? currentValue.slice(1)
+            : `-${currentValue}`;
 }
 
 /* =========================================================
@@ -492,447 +364,333 @@ function toggleSign() {
 ========================================================= */
 
 function animateButton(button) {
-
-    button.classList.remove(
-        "is-pressed"
-    );
+    button.classList.remove("is-pressed");
 
     void button.offsetWidth;
 
-    button.classList.add(
-        "is-pressed"
-    );
+    button.classList.add("is-pressed");
 
-    setTimeout(() => {
-
-        button.classList.remove(
-            "is-pressed"
-        );
-
-    }, 160);
-
+    window.setTimeout(() => {
+        button.classList.remove("is-pressed");
+    }, 165);
 }
 
-function flashResult(success) {
-
-    calculator.animate(
-
-        [
-
-            {
-
-                filter:
-
-                    success
-
-                    ? "brightness(1.08)"
-
-                    : "brightness(.95)"
-
-            },
-
-            {
-
-                filter:
-
-                    success
-
-                    ? "brightness(1.18)"
-
-                    : "brightness(.75)"
-
-            },
-
-            {
-
-                filter:
-                    "brightness(1)"
-
-            }
-
-        ],
-
-        {
-
-            duration:320,
-
-            easing:"ease-out"
-
-        }
-
-    );
-
-}
-
-/* =========================================================
-   パーティクル
-========================================================= */
-
-function createParticles(button){
-
-    if(
-        button.classList.contains("utility-key") ||
-        button.classList.contains("zero-key")
-    ){
+function triggerResultFlash(success) {
+    if (typeof calculator.animate !== "function") {
         return;
     }
 
-    const rect =
-        button.getBoundingClientRect();
+    calculator.animate(
+        [
+            {
+                filter:
+                    success
+                        ? "brightness(1.08)"
+                        : "brightness(1)"
+            },
+            {
+                filter:
+                    success
+                        ? "brightness(1.2)"
+                        : "brightness(0.76)"
+            },
+            {
+                filter: "brightness(1)"
+            }
+        ],
+        {
+            duration: success ? 320 : 420,
+            easing: "ease-out"
+        }
+    );
+}
 
-    const x =
-        rect.left +
-        rect.width/2;
+/* =========================================================
+   パーティクル生成
+========================================================= */
 
-    const y =
-        rect.top +
-        rect.height/2;
+function createParticles(button) {
+    if (
+        button.classList.contains("zero-key") ||
+        button.classList.contains("utility-key")
+    ) {
+        return;
+    }
+
+    const rect = button.getBoundingClientRect();
+
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
 
     let count = 8;
 
-    if(
-        button.classList.contains("equal")
-    ){
-
+    if (button.classList.contains("equal")) {
         count = 18;
-
+    } else if (
+        button.classList.contains("operator-key")
+    ) {
+        count = 10;
     }
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
+    for (
+        let index = 0;
+        index < count;
+        index += 1
+    ) {
         const angle =
             Math.random() *
-            Math.PI * 2;
+            Math.PI *
+            2;
 
         const speed =
-            1 +
-            Math.random()*2.8;
+            1.1 +
+            Math.random() *
+            2.6;
 
         particles.push({
-
-            x,
-
-            y,
+            x: originX,
+            y: originY,
 
             vx:
-                Math.cos(angle)*
+                Math.cos(angle) *
                 speed,
 
             vy:
-                Math.sin(angle)*
-                speed,
+                Math.sin(angle) *
+                speed -
+                0.65,
 
             radius:
-                1.5+
-                Math.random()*2,
+                1.2 +
+                Math.random() *
+                2.3,
 
-            life:1,
+            life: 1,
 
             decay:
-                .025+
-                Math.random()*.02
-
+                0.026 +
+                Math.random() *
+                0.025
         });
-
     }
 
-    if(animationId===null){
-
-        animationId=
-            requestAnimationFrame(
-                renderParticles
-            );
-
-    }
-
+    startParticleAnimation();
 }
 
-function renderParticles(){
+function startParticleAnimation() {
+    if (particleAnimationId !== null) {
+        return;
+    }
 
-    context.clearRect(
-
-        0,
-        0,
-
-        window.innerWidth,
-
-        window.innerHeight
-
-    );
-
-    particles=
-        particles.filter(
-
-            p=>p.life>0
-
+    function renderParticles() {
+        context.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
         );
 
-    particles.forEach(
+        particles = particles.filter(
+            (particle) => particle.life > 0
+        );
 
-        p=>{
+        particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
 
-            p.x+=p.vx;
+            particle.vx *= 0.99;
+            particle.vy += 0.028;
 
-            p.y+=p.vy;
-
-            p.vx*=.99;
-
-            p.vy+=.03;
-
-            p.life-=p.decay;
+            particle.life -= particle.decay;
 
             context.beginPath();
 
             context.arc(
-
-                p.x,
-
-                p.y,
-
-                p.radius,
-
+                particle.x,
+                particle.y,
+                particle.radius,
                 0,
-
-                Math.PI*2
-
+                Math.PI * 2
             );
 
-            context.fillStyle=
+            context.fillStyle =
+                `rgba(0, 135, 255, ${Math.max(
+                    particle.life,
+                    0
+                )})`;
 
-                `rgba(0,140,255,${p.life})`;
+            context.shadowColor =
+                "rgba(34, 184, 255, 0.95)";
 
-            context.shadowColor=
-                "#2cbcff";
-
-            context.shadowBlur=12;
+            context.shadowBlur = 12;
 
             context.fill();
+        });
 
-        }
+        context.shadowBlur = 0;
 
-    );
-
-    context.shadowBlur=0;
-
-    if(
-        particles.length
-    ){
-
-        animationId=
-            requestAnimationFrame(
-                renderParticles
+        if (particles.length > 0) {
+            particleAnimationId =
+                window.requestAnimationFrame(
+                    renderParticles
+                );
+        } else {
+            context.clearRect(
+                0,
+                0,
+                window.innerWidth,
+                window.innerHeight
             );
 
+            particleAnimationId = null;
+        }
     }
 
-    else{
-
-        animationId=null;
-
-    }
-
+    particleAnimationId =
+        window.requestAnimationFrame(
+            renderParticles
+        );
 }
 
 /* =========================================================
    ボタン処理
 ========================================================= */
 
-function handleButton(button){
+function handleButton(button) {
+    const number = button.dataset.number;
+    const action = button.dataset.action;
+    const value = button.dataset.value;
 
     animateButton(button);
-
     createParticles(button);
 
-    const number =
-        button.dataset.number;
-
-    const action =
-        button.dataset.action;
-
-    const value =
-        button.dataset.value;
-
-    if(number!==undefined){
-
-        if(number==="."){
-
+    if (number !== undefined) {
+        if (number === ".") {
             inputDecimal();
-
-        }
-
-        else{
-
+        } else {
             inputNumber(number);
-
         }
-
     }
 
-    switch(action){
-
+    switch (action) {
         case "operator":
-
             chooseOperator(value);
-
             break;
 
         case "equal":
-
             calculate();
-
             break;
 
         case "clear":
-
             clearCalculator();
-
             break;
 
         case "backspace":
-
             backspace();
-
             break;
 
         case "percent":
-
-            percent();
-
+            convertToPercent();
             break;
 
         case "sign":
-
             toggleSign();
-
             break;
 
+        default:
+            break;
     }
 
     updateDisplay();
-
 }
 
-buttons.forEach(button=>{
-
-    button.addEventListener(
-
-        "click",
-
-        ()=>handleButton(button)
-
-    );
-
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        handleButton(button);
+    });
 });
 
 /* =========================================================
-   キーボード
+   キーボード対応
 ========================================================= */
 
+function findButtonForKeyboardKey(key) {
+    if (/^[0-9]$/.test(key)) {
+        return document.querySelector(
+            `[data-number="${key}"]`
+        );
+    }
+
+    if (
+        key === "." ||
+        key === ","
+    ) {
+        return document.querySelector(
+            '[data-number="."]'
+        );
+    }
+
+    if (
+        ["+", "-", "*", "/"].includes(key)
+    ) {
+        return document.querySelector(
+            `[data-action="operator"][data-value="${key}"]`
+        );
+    }
+
+    if (
+        key === "Enter" ||
+        key === "="
+    ) {
+        return document.querySelector(
+            '[data-action="equal"]'
+        );
+    }
+
+    if (key === "Backspace") {
+        return document.querySelector(
+            '[data-action="backspace"]'
+        );
+    }
+
+    if (
+        key === "Escape" ||
+        key === "Delete"
+    ) {
+        return document.querySelector(
+            '[data-action="clear"]'
+        );
+    }
+
+    if (key === "%") {
+        return document.querySelector(
+            '[data-action="percent"]'
+        );
+    }
+
+    return null;
+}
+
 document.addEventListener(
-
     "keydown",
-
-    event=>{
-
-        const key=
-            event.key;
-
-        let button=null;
-
-        if(
-            /^[0-9]$/.test(key)
-        ){
-
-            button=document.querySelector(
-
-                `[data-number="${key}"]`
-
+    (event) => {
+        const button =
+            findButtonForKeyboardKey(
+                event.key
             );
 
-        }
-
-        else if(
-            key==="."
-        ){
-
-            button=document.querySelector(
-
-                '[data-number="."]'
-
-            );
-
-        }
-
-        else if(
-            ["+","-","*","/"].includes(key)
-        ){
-
-            button=document.querySelector(
-
-                `[data-action="operator"][data-value="${key}"]`
-
-            );
-
-        }
-
-        else if(
-            key==="Enter"||
-            key==="="
-        ){
-
-            button=document.querySelector(
-
-                '[data-action="equal"]'
-
-            );
-
-        }
-
-        else if(
-            key==="Backspace"
-        ){
-
-            button=document.querySelector(
-
-                '[data-action="backspace"]'
-
-            );
-
-        }
-
-        else if(
-            key==="Delete"||
-            key==="Escape"
-        ){
-
-            button=document.querySelector(
-
-                '[data-action="clear"]'
-
-            );
-
-        }
-
-        if(!button){
-
+        if (!button) {
             return;
-
         }
 
         event.preventDefault();
 
         handleButton(button);
-
     }
-
 );
 
 /* =========================================================
-   初期化
+   初期表示
 ========================================================= */
 
 updateDisplay();
