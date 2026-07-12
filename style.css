@@ -1,18 +1,19 @@
 /* =========================================================
-   yuuka_no_dentaku
-   style.css 完全版
+   YUUKA_NO_DENTAKU
+   style.css 完全整理版
 ========================================================= */
 
 :root {
-    /* 全体サイズ・配置 */
+    /* 本体サイズ */
     --calculator-width: 430px;
-    --calculator-height: 770px;
+    --calculator-height: 820px;
 
-    --display-top: 108px;
-    --utility-top: 215px;
+    /* 上側パーツの位置 */
+    --display-top: 105px;
+    --utility-top: 205px;
 
-    /* 数字ボタン全体の位置 */
-    --number-top: 415px;
+    /* 数字ボタン群の位置 */
+    --number-top: 395px;
 
     /* 背景 */
     --bg-deep: #020811;
@@ -24,7 +25,7 @@
     --panel-middle: #10243a;
     --panel-bottom: #040d18;
 
-    /* 発光 */
+    /* 青色 */
     --blue: #087fff;
     --blue-bright: #2fb8ff;
     --blue-soft: #bfeeff;
@@ -39,7 +40,7 @@
 }
 
 /* =========================================================
-   基本
+   基本設定
 ========================================================= */
 
 * {
@@ -54,7 +55,7 @@ body {
 body {
     min-height: 100vh;
     margin: 0;
-    padding: 48px 18px;
+    padding: 28px 18px;
 
     display: flex;
     align-items: center;
@@ -93,7 +94,7 @@ button {
 }
 
 /* =========================================================
-   背景
+   背景グリッド
 ========================================================= */
 
 .background-grid {
@@ -186,7 +187,7 @@ button {
         1px solid
         rgba(181, 228, 255, 0.24);
 
-    border-radius: 17px;
+    border-radius: 16px;
 
     background:
         linear-gradient(
@@ -197,20 +198,11 @@ button {
         );
 
     box-shadow:
-        0 42px 100px
-        rgba(0, 0, 0, 0.68),
-
-        0 0 0 5px
-        rgba(173, 225, 255, 0.035),
-
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.13),
-
-        inset 0 -34px 48px
-        rgba(0, 0, 0, 0.35),
-
-        0 0 30px
-        rgba(0, 126, 255, 0.08);
+        0 42px 100px rgba(0, 0, 0, 0.68),
+        0 0 0 5px rgba(173, 225, 255, 0.035),
+        inset 0 1px 0 rgba(255, 255, 255, 0.13),
+        inset 0 -34px 48px rgba(0, 0, 0, 0.35),
+        0 0 30px rgba(0, 126, 255, 0.08);
 
     animation:
         calculator-enter
@@ -256,8 +248,7 @@ button {
 
     border-radius: 50%;
 
-    background:
-        rgba(0, 0, 0, 0.48);
+    background: rgba(0, 0, 0, 0.48);
 
     filter: blur(17px);
 }
@@ -270,8 +261,8 @@ button {
     position: absolute;
     left: 50%;
 
-    width: calc(100% + 26px);
-    height: 25px;
+    width: calc(100% + 28px);
+    height: 20px;
 
     transform: translateX(-50%);
 
@@ -280,57 +271,57 @@ button {
 }
 
 .frame-top {
-    top: -11px;
+    top: -9px;
 }
 
 .frame-bottom {
-    bottom: -11px;
+    bottom: -9px;
 
     transform:
         translateX(-50%)
         rotate(180deg);
 }
 
-/* 中央バー */
+/* 中央の細い銀バー */
 
 .frame-center {
     position: absolute;
-    inset: 0;
+
+    left: 60px;
+    right: 60px;
+    top: 0;
+
+    height: 20px;
 
     border:
         1px solid
         rgba(250, 255, 255, 0.85);
 
-    border-radius: 7px;
+    border-radius: 5px;
 
     background:
         linear-gradient(
             180deg,
             #ffffff 0%,
-            var(--metal-light) 29%,
-            var(--metal-middle) 67%,
-            var(--metal-dark) 100%
+            #e5eef1 28%,
+            #a9bac2 68%,
+            #607681 100%
         );
 
     box-shadow:
-        inset 0 3px 3px
-        rgba(255, 255, 255, 0.92),
-
-        inset 0 -6px 8px
-        rgba(35, 61, 74, 0.32),
-
-        0 6px 13px
-        rgba(0, 0, 0, 0.5);
+        inset 0 3px 3px rgba(255, 255, 255, 0.94),
+        inset 0 -5px 7px rgba(35, 61, 74, 0.32),
+        0 5px 11px rgba(0, 0, 0, 0.45);
 }
 
-/* 両端 */
+/* 左右の張り出した金属パーツ */
 
 .frame-end {
     position: absolute;
-    top: -1px;
+    top: 0;
 
-    width: 122px;
-    height: 53px;
+    width: 116px;
+    height: 48px;
 
     z-index: 2;
 
@@ -338,63 +329,58 @@ button {
         linear-gradient(
             180deg,
             #ffffff 0%,
-            #e4eef1 25%,
-            #adbec6 66%,
-            #637984 100%
+            #e6eff2 25%,
+            #aebec6 66%,
+            #627883 100%
         );
 
     box-shadow:
-        inset 0 3px 3px
-        rgba(255, 255, 255, 0.94),
-
-        inset 0 -8px 9px
-        rgba(34, 59, 72, 0.3),
-
-        0 5px 10px
-        rgba(0, 0, 0, 0.34);
+        inset 0 3px 3px rgba(255, 255, 255, 0.95),
+        inset 0 -8px 9px rgba(34, 59, 72, 0.3),
+        0 5px 10px rgba(0, 0, 0, 0.34);
 }
 
 .frame-end-left {
-    left: -1px;
+    left: 0;
 
     clip-path:
         polygon(
-            7% 0,
+            8% 0,
             100% 0,
-            84% 38%,
-            74% 100%,
+            86% 42%,
+            75% 100%,
             0 100%,
-            0 20%
+            0 22%
         );
 
     border-radius:
-        10px
+        9px
         2px
-        8px
-        5px;
+        7px
+        4px;
 }
 
 .frame-end-right {
-    right: -1px;
+    right: 0;
 
     clip-path:
         polygon(
             0 0,
-            93% 0,
-            100% 20%,
+            92% 0,
+            100% 22%,
             100% 100%,
-            26% 100%,
-            16% 38%
+            25% 100%,
+            14% 42%
         );
 
     border-radius:
         2px
-        10px
-        5px
-        8px;
+        9px
+        4px
+        7px;
 }
 
-/* 外側ライト */
+/* 外側の青いライト */
 
 .frame-light {
     position: absolute;
@@ -402,7 +388,7 @@ button {
     top: -8px;
     left: 50%;
 
-    width: 50%;
+    width: 48%;
     height: 4px;
 
     transform: translateX(-50%);
@@ -420,14 +406,9 @@ button {
         );
 
     box-shadow:
-        0 0 7px
-        var(--blue),
-
-        0 0 18px
-        rgba(8, 127, 255, 0.86),
-
-        0 0 31px
-        rgba(8, 127, 255, 0.35);
+        0 0 7px var(--blue),
+        0 0 18px rgba(8, 127, 255, 0.86),
+        0 0 31px rgba(8, 127, 255, 0.35);
 
     animation:
         frame-light-pulse
@@ -437,24 +418,24 @@ button {
 }
 
 /* =========================================================
-   右上水色パーツ
+   右上の水色パーツ
 ========================================================= */
 
 .cyan-module {
     position: absolute;
 
-    top: 27px;
-    right: -12px;
+    top: 24px;
+    right: -11px;
 
-    width: 40px;
-    height: 27px;
+    width: 39px;
+    height: 25px;
 
     z-index: 35;
     pointer-events: none;
 
     clip-path:
         polygon(
-            0 14%,
+            0 12%,
             73% 0,
             100% 22%,
             100% 80%,
@@ -476,21 +457,14 @@ button {
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.78),
-
-        inset 0 -5px 7px
-        rgba(8, 76, 98, 0.34),
-
-        0 4px 8px
-        rgba(0, 0, 0, 0.42),
-
-        0 0 13px
-        rgba(53, 232, 255, 0.45);
+        inset 0 2px 3px rgba(255, 255, 255, 0.78),
+        inset 0 -5px 7px rgba(8, 76, 98, 0.34),
+        0 4px 8px rgba(0, 0, 0, 0.42),
+        0 0 13px rgba(53, 232, 255, 0.45);
 }
 
 /* =========================================================
-   左上白丸
+   左上の白丸
 ========================================================= */
 
 .white-decoration {
@@ -517,26 +491,19 @@ button {
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
-
-        inset 0 -4px 6px
-        rgba(50, 76, 88, 0.25),
-
-        0 4px 0
-        #60757f,
-
-        0 7px 9px
-        rgba(0, 0, 0, 0.4);
+        inset 0 2px 3px rgba(255, 255, 255, 0.94),
+        inset 0 -4px 6px rgba(50, 76, 88, 0.25),
+        0 4px 0 #60757f,
+        0 7px 9px rgba(0, 0, 0, 0.4);
 }
 
 .white-decoration-top {
-    top: 64px;
+    top: 66px;
     left: 20px;
 }
 
 /* =========================================================
-   表示
+   計算表示
 ========================================================= */
 
 .display-area {
@@ -575,18 +542,13 @@ button {
     text-overflow: ellipsis;
 
     text-shadow:
-        0 0 4px
-        rgba(191, 238, 255, 0.82),
-
-        0 0 13px
-        rgba(0, 131, 255, 0.55),
-
-        0 0 26px
-        rgba(0, 131, 255, 0.22);
+        0 0 4px rgba(191, 238, 255, 0.82),
+        0 0 13px rgba(0, 131, 255, 0.55),
+        0 0 26px rgba(0, 131, 255, 0.22);
 }
 
 /* =========================================================
-   銀ボタン
+   上部の銀ボタン
 ========================================================= */
 
 .utility-buttons {
@@ -668,17 +630,10 @@ button {
         );
 
     box-shadow:
-        inset 0 3px 4px
-        rgba(255, 255, 255, 0.92),
-
-        inset 0 -10px 12px
-        rgba(32, 56, 69, 0.28),
-
-        0 6px 0
-        #5c717c,
-
-        0 11px 14px
-        rgba(0, 0, 0, 0.42);
+        inset 0 3px 4px rgba(255, 255, 255, 0.92),
+        inset 0 -10px 12px rgba(32, 56, 69, 0.28),
+        0 6px 0 #5c717c,
+        0 11px 14px rgba(0, 0, 0, 0.42);
 
     transition:
         transform 120ms ease,
@@ -710,11 +665,8 @@ button {
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(0, 0, 0, 0.95),
-
-        0 1px 1px
-        rgba(255, 255, 255, 0.3);
+        inset 0 2px 3px rgba(0, 0, 0, 0.95),
+        0 1px 1px rgba(255, 255, 255, 0.3);
 }
 
 .utility-key span {
@@ -750,15 +702,12 @@ button {
     opacity: 1;
 
     text-shadow:
-        0 0 6px
-        #ffffff,
-
-        0 0 10px
-        var(--blue);
+        0 0 6px #ffffff,
+        0 0 10px var(--blue);
 }
 
 /* =========================================================
-   操作エリア
+   メイン操作エリア
 ========================================================= */
 
 .main-controls {
@@ -778,11 +727,10 @@ button {
     top: var(--number-top);
     left: 50%;
 
-    width: 410px;
-    height: 340px;
+    width: 390px;
+    height: 375px;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     pointer-events: auto;
 }
@@ -818,23 +766,12 @@ button {
         );
 
     box-shadow:
-        inset 0 0 16px
-        rgba(0, 130, 255, 0.16),
-
-        0 5px 0
-        #003d72,
-
-        0 10px 15px
-        rgba(0, 0, 0, 0.5),
-
-        0 0 10px
-        rgba(0, 120, 255, 0.95),
-
-        0 0 24px
-        rgba(0, 105, 255, 0.8),
-
-        0 0 44px
-        rgba(0, 90, 255, 0.45);
+        inset 0 0 16px rgba(0, 130, 255, 0.16),
+        0 5px 0 #003d72,
+        0 10px 15px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(0, 120, 255, 0.95),
+        0 0 24px rgba(0, 105, 255, 0.8),
+        0 0 44px rgba(0, 90, 255, 0.45);
 
     transition:
         transform 120ms ease,
@@ -868,18 +805,14 @@ button {
     color: #ffffff;
 
     text-shadow:
-        0 0 6px
-        #ffffff,
-
-        0 0 15px
-        var(--blue),
-
-        0 0 30px
-        var(--blue);
+        0 0 6px #ffffff,
+        0 0 15px var(--blue),
+        0 0 30px var(--blue);
 }
 
 /* =========================================================
-   数字ボタン：間隔を広げた均等なひし形
+   数字ボタン配置
+   正方形を45度回転したような均等なひし形
 
                 1
 
@@ -894,63 +827,61 @@ button {
 
 .key-1 {
     top: 0;
-    left: 164px;
+    left: 154px;
 }
 
 .key-2 {
-    top: 64px;
-    left: 76px;
+    top: 72px;
+    left: 56px;
 }
 
 .key-3 {
-    top: 64px;
+    top: 72px;
     left: 252px;
 }
 
 .key-4 {
-    top: 128px;
-    left: -12px;
+    top: 144px;
+    left: 7px;
 }
 
 .key-5 {
-    top: 128px;
-    left: 164px;
+    top: 144px;
+    left: 154px;
 }
 
 .key-6 {
-    top: 128px;
-    left: 340px;
+    top: 144px;
+    left: 301px;
 }
 
 .key-7 {
-    top: 192px;
-    left: 76px;
+    top: 216px;
+    left: 56px;
 }
 
 .key-8 {
-    top: 192px;
+    top: 216px;
     left: 252px;
 }
 
 .key-9 {
-    top: 256px;
-    left: 164px;
+    top: 288px;
+    left: 154px;
 }
 
 /* =========================================================
-   0ボタン
+   白い0ボタン
 ========================================================= */
 
 .zero-key {
     position: absolute;
 
-    left: 20px;
+    left: 21px;
+    bottom: 110px;
 
-    /* 以前より大きく上へ */
-    bottom: 105px;
-
-    width: 34px;
-    height: 34px;
+    width: 35px;
+    height: 35px;
 
     padding: 0;
 
@@ -972,14 +903,9 @@ button {
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.9),
-
-        0 4px 0
-        #60757f,
-
-        0 8px 10px
-        rgba(0, 0, 0, 0.4);
+        inset 0 2px 3px rgba(255, 255, 255, 0.9),
+        0 4px 0 #60757f,
+        0 8px 10px rgba(0, 0, 0, 0.4);
 
     transition:
         transform 120ms ease,
@@ -988,7 +914,6 @@ button {
 
 .zero-key span {
     opacity: 0.45;
-
     font-size: 0.55rem;
 }
 
@@ -1006,11 +931,11 @@ button {
 .operator-cluster {
     position: absolute;
 
-    right: 8px;
-    bottom: 30px;
+    right: 12px;
+    bottom: 38px;
 
-    width: 160px;
-    height: 170px;
+    width: 165px;
+    height: 178px;
 
     pointer-events: auto;
 }
@@ -1018,8 +943,8 @@ button {
 .operator-key {
     position: absolute;
 
-    width: 37px;
-    height: 37px;
+    width: 38px;
+    height: 38px;
 
     padding: 0;
 
@@ -1043,14 +968,9 @@ button {
         );
 
     box-shadow:
-        0 3px 0
-        #003d72,
-
-        0 6px 9px
-        rgba(0, 0, 0, 0.45),
-
-        0 0 8px
-        rgba(0, 120, 255, 0.9);
+        0 3px 0 #003d72,
+        0 6px 9px rgba(0, 0, 0, 0.45),
+        0 0 8px rgba(0, 120, 255, 0.9);
 
     transition:
         transform 120ms ease,
@@ -1065,38 +985,38 @@ button {
 }
 
 /*
-           ÷
+              ÷
 
-       ×   −
+          ×       −
 
-     ＋   .
+      ＋      .
 
    =
 */
 
 .operator-divide {
     top: 0;
-    left: 123px;
+    left: 126px;
 }
 
 .operator-multiply {
     top: 43px;
-    left: 80px;
+    left: 83px;
 }
 
 .operator-minus {
     top: 43px;
-    left: 123px;
+    left: 126px;
 }
 
 .operator-plus {
     top: 86px;
-    left: 37px;
+    left: 40px;
 }
 
 .operator-decimal {
     top: 86px;
-    left: 80px;
+    left: 83px;
 }
 
 .operator-equal {
@@ -1117,17 +1037,10 @@ button {
         );
 
     box-shadow:
-        inset 0 2px 4px
-        rgba(255, 255, 255, 0.8),
-
-        0 3px 0
-        #00558e,
-
-        0 6px 9px
-        rgba(0, 0, 0, 0.45),
-
-        0 0 13px
-        rgba(0, 130, 255, 0.95);
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),
+        0 3px 0 #00558e,
+        0 6px 9px rgba(0, 0, 0, 0.45),
+        0 0 13px rgba(0, 130, 255, 0.95);
 }
 
 /* =========================================================
@@ -1153,17 +1066,17 @@ button {
 @media (max-width: 520px) {
     :root {
         --calculator-width: 100%;
-        --calculator-height: 700px;
+        --calculator-height: 735px;
 
-        --display-top: 100px;
-        --utility-top: 190px;
+        --display-top: 98px;
+        --utility-top: 185px;
         --number-top: 365px;
     }
 
     body {
         padding:
-            40px
-            9px;
+            38px
+            8px;
 
         align-items: flex-start;
     }
@@ -1177,9 +1090,14 @@ button {
             calc(100% + 15px);
     }
 
+    .frame-center {
+        left: 49px;
+        right: 49px;
+    }
+
     .frame-end {
         width: 98px;
-        height: 46px;
+        height: 44px;
     }
 
     .display-area {
@@ -1206,7 +1124,7 @@ button {
     .number-cluster {
         transform:
             translateX(-50%)
-            scale(0.78);
+            scale(0.76);
 
         transform-origin:
             top center;
@@ -1235,22 +1153,22 @@ button {
 
 @media (max-width: 370px) {
     :root {
-        --calculator-height: 655px;
+        --calculator-height: 670px;
 
-        --display-top: 92px;
-        --utility-top: 173px;
-        --number-top: 335px;
+        --display-top: 90px;
+        --utility-top: 168px;
+        --number-top: 328px;
     }
 
     .number-cluster {
         transform:
             translateX(-50%)
-            scale(0.69);
+            scale(0.67);
     }
 
     .operator-cluster {
         transform:
-            scale(0.76);
+            scale(0.75);
 
         transform-origin:
             bottom right;
@@ -1320,13 +1238,11 @@ button {
 
 @keyframes background-sweep {
     from {
-        transform:
-            translateX(-125%);
+        transform: translateX(-125%);
     }
 
     to {
-        transform:
-            translateX(125%);
+        transform: translateX(125%);
     }
 }
 
@@ -1334,13 +1250,8 @@ button {
     *,
     *::before,
     *::after {
-        animation-duration:
-            0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
