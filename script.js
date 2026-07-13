@@ -7,9 +7,13 @@
 const display = document.getElementById("display");
 const calculator = document.querySelector(".calculator");
 const buttons = document.querySelectorAll(".calculator button");
-
 const canvas = document.getElementById("particles");
-const context = canvas.getContext("2d");
+
+if (!display || !calculator) {
+    throw new Error("電卓のHTML要素が見つかりません。");
+}
+
+const context = canvas?.getContext("2d") ?? null;
 
 /* =========================================================
    電卓の状態
@@ -24,7 +28,7 @@ let lastOperator = null;
 let lastOperand = null;
 
 /* =========================================================
-   パーティクル
+   パーティクルの状態
 ========================================================= */
 
 let particles = [];
@@ -35,6 +39,10 @@ let particleAnimationId = null;
 ========================================================= */
 
 function resizeCanvas() {
+    if (!canvas || !context) {
+        return;
+    }
+
     const pixelRatio = Math.min(
         window.devicePixelRatio || 1,
         2
@@ -94,24 +102,26 @@ function formatForDisplay(value) {
 function updateDisplay() {
     display.textContent = formatForDisplay(currentValue);
 
-    if (typeof display.animate === "function") {
-        display.animate(
-            [
-                {
-                    transform: "translateY(2px) scale(1.025)",
-                    filter: "brightness(1.45)"
-                },
-                {
-                    transform: "translateY(0) scale(1)",
-                    filter: "brightness(1)"
-                }
-            ],
-            {
-                duration: 160,
-                easing: "ease-out"
-            }
-        );
+    if (typeof display.animate !== "function") {
+        return;
     }
+
+    display.animate(
+        [
+            {
+                transform: "translateY(2px) scale(1.025)",
+                filter: "brightness(1.45)"
+            },
+            {
+                transform: "translateY(0) scale(1)",
+                filter: "brightness(1)"
+            }
+        ],
+        {
+            duration: 160,
+            easing: "ease-out"
+        }
+    );
 }
 
 /* =========================================================
@@ -179,7 +189,11 @@ function normalizeResult(number) {
     return String(rounded);
 }
 
-function performOperation(first, second, operator) {
+function performOperation(
+    first,
+    second,
+    operator
+) {
     switch (operator) {
         case "+":
             return first + second;
@@ -191,11 +205,9 @@ function performOperation(first, second, operator) {
             return first * second;
 
         case "/":
-            if (second === 0) {
-                return null;
-            }
-
-            return first / second;
+            return second === 0
+                ? null
+                : first / second;
 
         default:
             return second;
@@ -208,11 +220,33 @@ function chooseOperator(operator) {
         return;
     }
 
+    /*
+       演算子を連続で押した場合は、
+       最後に押した演算子へ差し替える。
+    */
     if (
         currentOperator !== null &&
+        shouldOverwrite
+    ) {
+        currentOperator = operator;
+        return;
+    }
+
+    /*
+       すでに計算途中なら、その時点までを先に計算。
+       例：2 + 3 × → 5 ×
+    */
+    if (
+        currentOperator !== null &&
+        previousValue !== null &&
         !shouldOverwrite
     ) {
-        calculate();
+        calculate(false);
+
+        if (currentValue === "ERROR") {
+            updateDisplay();
+            return;
+        }
     }
 
     previousValue = currentValue;
@@ -223,7 +257,11 @@ function chooseOperator(operator) {
     lastOperand = null;
 }
 
-function calculate() {
+/* =========================================================
+   イコール・連続計算
+========================================================= */
+
+function calculate(showFlash = true) {
     if (currentValue === "ERROR") {
         return;
     }
@@ -236,18 +274,34 @@ function calculate() {
         operatorToUse !== null &&
         previousValue !== null
     ) {
-        firstNumber = Number.parseFloat(previousValue);
-        secondNumber = Number.parseFloat(currentValue);
+        firstNumber =
+            Number.parseFloat(previousValue);
+
+        /*
+           2 + = のように、数値入力前に＝を押した場合は
+           2 + 2 として扱う。
+        */
+        const secondValue =
+            shouldOverwrite
+                ? previousValue
+                : currentValue;
+
+        secondNumber =
+            Number.parseFloat(secondValue);
 
         lastOperator = operatorToUse;
-        lastOperand = currentValue;
+        lastOperand = secondValue;
     } else if (
         lastOperator !== null &&
         lastOperand !== null
     ) {
         operatorToUse = lastOperator;
-        firstNumber = Number.parseFloat(currentValue);
-        secondNumber = Number.parseFloat(lastOperand);
+
+        firstNumber =
+            Number.parseFloat(currentValue);
+
+        secondNumber =
+            Number.parseFloat(lastOperand);
     } else {
         return;
     }
@@ -256,12 +310,12 @@ function calculate() {
         !Number.isFinite(firstNumber) ||
         !Number.isFinite(secondNumber)
     ) {
-        currentValue = "ERROR";
-        previousValue = null;
-        currentOperator = null;
-        shouldOverwrite = true;
+        setError();
 
-        triggerResultFlash(false);
+        if (showFlash) {
+            triggerResultFlash(false);
+        }
+
         return;
     }
 
@@ -271,18 +325,33 @@ function calculate() {
         operatorToUse
     );
 
-    currentValue =
-        result === null
-            ? "ERROR"
-            : normalizeResult(result);
+    if (result === null) {
+        setError();
 
+        if (showFlash) {
+            triggerResultFlash(false);
+        }
+
+        return;
+    }
+
+    currentValue = normalizeResult(result);
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = true;
 
-    triggerResultFlash(
-        currentValue !== "ERROR"
-    );
+    if (showFlash) {
+        triggerResultFlash(true);
+    }
+}
+
+function setError() {
+    currentValue = "ERROR";
+    previousValue = null;
+    currentOperator = null;
+    shouldOverwrite = true;
+    lastOperator = null;
+    lastOperand = null;
 }
 
 /* =========================================================
@@ -294,7 +363,6 @@ function clearCalculator() {
     previousValue = null;
     currentOperator = null;
     shouldOverwrite = false;
-
     lastOperator = null;
     lastOperand = null;
 }
@@ -335,21 +403,26 @@ function convertToPercent() {
         return;
     }
 
-    const number = Number.parseFloat(currentValue);
+    const number =
+        Number.parseFloat(currentValue);
 
     if (!Number.isFinite(number)) {
         return;
     }
 
-    currentValue = normalizeResult(number / 100);
+    currentValue =
+        normalizeResult(number / 100);
+
     shouldOverwrite = true;
 }
 
 function toggleSign() {
-    if (
-        currentValue === "ERROR" ||
-        currentValue === "0"
-    ) {
+    if (currentValue === "ERROR") {
+        return;
+    }
+
+    if (currentValue === "0") {
+        currentValue = "-0";
         return;
     }
 
@@ -360,7 +433,7 @@ function toggleSign() {
 }
 
 /* =========================================================
-   ボタン演出
+   ボタン押下演出
 ========================================================= */
 
 function animateButton(button) {
@@ -376,7 +449,10 @@ function animateButton(button) {
 }
 
 function triggerResultFlash(success) {
-    if (typeof calculator.animate !== "function") {
+    if (
+        typeof calculator.animate !==
+        "function"
+    ) {
         return;
     }
 
@@ -385,14 +461,14 @@ function triggerResultFlash(success) {
             {
                 filter:
                     success
-                        ? "brightness(1.08)"
-                        : "brightness(1)"
+                        ? "brightness(1.06)"
+                        : "brightness(0.96)"
             },
             {
                 filter:
                     success
-                        ? "brightness(1.2)"
-                        : "brightness(0.76)"
+                        ? "brightness(1.18)"
+                        : "brightness(0.72)"
             },
             {
                 filter: "brightness(1)"
@@ -406,28 +482,46 @@ function triggerResultFlash(success) {
 }
 
 /* =========================================================
-   パーティクル生成
+   パーティクル
 ========================================================= */
 
 function createParticles(button) {
+    if (!canvas || !context) {
+        return;
+    }
+
+    /*
+       数字と演算ボタンで発生。
+       銀ボタンと0ボタンでは発生させない。
+    */
     if (
-        button.classList.contains("zero-key") ||
-        button.classList.contains("utility-key")
+        button.classList.contains("utility-key") ||
+        button.classList.contains("zero-key")
     ) {
         return;
     }
 
-    const rect = button.getBoundingClientRect();
+    const rect =
+        button.getBoundingClientRect();
 
-    const originX = rect.left + rect.width / 2;
-    const originY = rect.top + rect.height / 2;
+    const originX =
+        rect.left + rect.width / 2;
+
+    const originY =
+        rect.top + rect.height / 2;
 
     let count = 8;
 
-    if (button.classList.contains("equal")) {
-        count = 18;
+    if (
+        button.classList.contains(
+            "operator-equal"
+        )
+    ) {
+        count = 16;
     } else if (
-        button.classList.contains("operator-key")
+        button.classList.contains(
+            "operator-key"
+        )
     ) {
         count = 10;
     }
@@ -443,9 +537,9 @@ function createParticles(button) {
             2;
 
         const speed =
-            1.1 +
+            1.05 +
             Math.random() *
-            2.6;
+            2.5;
 
         particles.push({
             x: originX,
@@ -458,19 +552,19 @@ function createParticles(button) {
             vy:
                 Math.sin(angle) *
                 speed -
-                0.65,
+                0.55,
 
             radius:
-                1.2 +
+                1.1 +
                 Math.random() *
-                2.3,
+                2.2,
 
             life: 1,
 
             decay:
                 0.026 +
                 Math.random() *
-                0.025
+                0.024
         });
     }
 
@@ -478,11 +572,14 @@ function createParticles(button) {
 }
 
 function startParticleAnimation() {
-    if (particleAnimationId !== null) {
+    if (
+        !context ||
+        particleAnimationId !== null
+    ) {
         return;
     }
 
-    function renderParticles() {
+    const renderParticles = () => {
         context.clearRect(
             0,
             0,
@@ -491,16 +588,16 @@ function startParticleAnimation() {
         );
 
         particles = particles.filter(
-            (particle) => particle.life > 0
+            (particle) =>
+                particle.life > 0
         );
 
-        particles.forEach((particle) => {
+        for (const particle of particles) {
             particle.x += particle.vx;
             particle.y += particle.vy;
 
             particle.vx *= 0.99;
             particle.vy += 0.028;
-
             particle.life -= particle.decay;
 
             context.beginPath();
@@ -514,18 +611,18 @@ function startParticleAnimation() {
             );
 
             context.fillStyle =
-                `rgba(0, 135, 255, ${Math.max(
+                `rgba(42, 215, 255, ${Math.max(
                     particle.life,
                     0
                 )})`;
 
             context.shadowColor =
-                "rgba(34, 184, 255, 0.95)";
+                "rgba(0, 151, 255, 0.96)";
 
             context.shadowBlur = 12;
 
             context.fill();
-        });
+        }
 
         context.shadowBlur = 0;
 
@@ -544,7 +641,7 @@ function startParticleAnimation() {
 
             particleAnimationId = null;
         }
-    }
+    };
 
     particleAnimationId =
         window.requestAnimationFrame(
@@ -605,9 +702,12 @@ function handleButton(button) {
 }
 
 buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-        handleButton(button);
-    });
+    button.addEventListener(
+        "click",
+        () => {
+            handleButton(button);
+        }
+    );
 });
 
 /* =========================================================
