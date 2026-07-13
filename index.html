@@ -33,7 +33,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=20260713-layout01"
+        href="style.css?v=20260713-layout02"
     >
 </head>
 
@@ -56,9 +56,14 @@
             class="silver-frame silver-frame-top"
             aria-hidden="true"
         >
+            <div class="silver-frame-shadow"></div>
             <div class="silver-frame-body"></div>
-            <div class="silver-frame-highlight"></div>
-            <div class="frame-light frame-light-top"></div>
+            <div class="silver-frame-face"></div>
+            <div class="silver-frame-edge"></div>
+
+            <div
+                class="frame-light frame-light-top"
+            ></div>
         </div>
 
         <!-- 電卓本体 -->
@@ -75,6 +80,7 @@
                 class="cyan-module"
                 aria-hidden="true"
             >
+                <div class="cyan-module-face"></div>
                 <div class="cyan-module-highlight"></div>
             </div>
 
@@ -115,6 +121,11 @@
                 >
                     <span>⌫</span>
                 </button>
+
+                <div
+                    class="utility-center-gap"
+                    aria-hidden="true"
+                ></div>
 
                 <button
                     class="utility-key utility-percent"
@@ -225,8 +236,7 @@
 
             </div>
 
-            <!-- 演算ボタン
-                 配置はCSS側で、手描き図どおりに固定 -->
+            <!-- 演算ボタン -->
             <div
                 class="operator-cluster"
                 aria-label="演算操作"
@@ -263,6 +273,15 @@
                 </button>
 
                 <button
+                    class="operator-key operator-equal"
+                    type="button"
+                    data-action="equal"
+                    aria-label="計算結果"
+                >
+                    <span>=</span>
+                </button>
+
+                <button
                     class="operator-key operator-divide"
                     type="button"
                     data-action="operator"
@@ -270,15 +289,6 @@
                     aria-label="割り算"
                 >
                     <span>÷</span>
-                </button>
-
-                <button
-                    class="operator-key operator-equal"
-                    type="button"
-                    data-action="equal"
-                    aria-label="計算結果"
-                >
-                    <span>=</span>
                 </button>
 
                 <button
@@ -309,9 +319,14 @@
             class="silver-frame silver-frame-bottom"
             aria-hidden="true"
         >
+            <div class="silver-frame-shadow"></div>
             <div class="silver-frame-body"></div>
-            <div class="silver-frame-highlight"></div>
-            <div class="frame-light frame-light-bottom"></div>
+            <div class="silver-frame-face"></div>
+            <div class="silver-frame-edge"></div>
+
+            <div
+                class="frame-light frame-light-bottom"
+            ></div>
         </div>
 
     </main>
@@ -322,7 +337,7 @@
         aria-hidden="true"
     ></canvas>
 
-    <script src="script.js?v=20260713-layout01"></script>
+    <script src="script.js?v=20260713-layout02"></script>
 
 </body>
 </html>
