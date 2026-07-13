@@ -1,1144 +1,1129 @@
-/* =========================================================
-   YUUKA CALCULATOR
-   style.css 前半
+/*=========================================================
+    style.css 前半
+=========================================================*/
 
-   基本設定
-   背景
-   本体
-   上下の銀フレーム
-   水色パーツ
-   表示画面
-   上部の銀ボタン
+:root{
 
-   この後ろに「CSS後半」を続けて貼り付けてください。
-========================================================= */
+    --calculator-width:430px;
+    --calculator-height:820px;
 
-/* =========================================================
-   共通変数
-========================================================= */
+    --panel-top:#1b3553;
+    --panel-mid:#0d2036;
+    --panel-bottom:#06111d;
 
-:root {
-    /* 電卓本体の比率はここで固定 */
-    --calculator-width: 430px;
-    --calculator-height: 820px;
+    --blue:#0a8fff;
+    --cyan:#4de3ff;
+    --cyan-light:#b7ffff;
 
-    /* 本体色 */
-    --panel-top: #182f4b;
-    --panel-middle: #0c1d31;
-    --panel-bottom: #030b15;
-
-    /* 背景色 */
-    --background-light: #102b45;
-    --background-middle: #071827;
-    --background-dark: #02070e;
-
-    /* 青・水色 */
-    --line-blue: #008cff;
-    --bright-blue: #38caff;
-    --cyan-light: #8ff8ff;
-    --cyan-main: #4bd8e8;
-    --cyan-dark: #147f98;
-
-    /* 銀色 */
-    --silver-white: #ffffff;
-    --silver-light: #e6eef3;
-    --silver-middle: #b5c4cc;
-    --silver-shadow: #708691;
-    --silver-dark: #4f6570;
-
-    /* 確定した主要位置 */
-    --display-top: 175px;
-    --utility-top: 276px;
-    --numbers-top: 420px;
 }
 
-/* =========================================================
-   リセット
-========================================================= */
+/*=========================================================
+    Reset
+=========================================================*/
 
-* {
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
 html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
+body{
 
-body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 28px 16px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow-x: hidden;
+    width:100%;
+    height:100%;
+    overflow:hidden;
 
     font-family:
         "Orbitron",
-        "Segoe UI",
         sans-serif;
 
-    color: #e6f7ff;
-
     background:
-        radial-gradient(
-            circle at 50% 4%,
-            rgba(14, 116, 188, 0.28),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 13% 68%,
-            rgba(16, 83, 146, 0.2),
-            transparent 42%
-        ),
-        linear-gradient(
-            145deg,
-            var(--background-light),
-            var(--background-middle) 48%,
-            var(--background-dark)
-        );
+        radial-gradient(circle at top,#15375a 0%,#071826 55%,#02070d 100%);
 }
 
-button {
-    margin: 0;
-    padding: 0;
+.background-grid{
 
-    border: 0;
-
-    font: inherit;
-
-    -webkit-tap-highlight-color: transparent;
-}
-
-button:focus-visible {
-    outline: 2px solid #7fe8ff;
-    outline-offset: 4px;
-}
-
-/* =========================================================
-   背景グリッド
-========================================================= */
-
-.background-grid {
-    position: fixed;
-    inset: 0;
-
-    z-index: -10;
-    pointer-events: none;
+    position:fixed;
+    inset:0;
 
     background-image:
+
         linear-gradient(
-            rgba(70, 167, 221, 0.055) 1px,
+            rgba(110,180,255,.05) 1px,
             transparent 1px
         ),
+
         linear-gradient(
             90deg,
-            rgba(70, 167, 221, 0.055) 1px,
+            rgba(110,180,255,.05) 1px,
             transparent 1px
         );
 
-    background-size: 46px 46px;
+    background-size:48px 48px;
+
 }
 
-.background-grid::before {
-    content: "";
+/*=========================================================
+    Calculator
+=========================================================*/
 
-    position: absolute;
-    inset: 0;
+.calculator{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    width:var(--calculator-width);
+    height:var(--calculator-height);
+
+    transform:
+        translate(-50%,-50%);
+}
+
+/*=========================================================
+    Body
+=========================================================*/
+
+.calculator-panel{
+
+    position:absolute;
+    inset:0;
+
+    overflow:visible;
+
+    border-radius:18px;
+
+    border:1px solid rgba(180,220,255,.18);
 
     background:
+
         linear-gradient(
-            112deg,
-            transparent 0%,
-            rgba(93, 190, 240, 0.07) 48%,
-            transparent 59%
-        );
-
-    transform: translateX(-125%);
-
-    animation:
-        background-sweep
-        13s
-        linear
-        infinite;
-}
-
-.background-grid::after {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(
-            circle at center,
-            transparent 42%,
-            rgba(0, 0, 0, 0.38)
-        );
-}
-
-/* =========================================================
-   電卓全体
-========================================================= */
-
-.calculator {
-    position: relative;
-
-    width: min(
-        var(--calculator-width),
-        94vw
-    );
-
-    height: var(--calculator-height);
-
-    isolation: isolate;
-
-    animation:
-        calculator-enter
-        650ms
-        cubic-bezier(0.16, 1, 0.3, 1)
-        both;
-}
-
-/* =========================================================
-   本体パネル
-========================================================= */
-
-.calculator-panel {
-    position: absolute;
-    inset: 0;
-
-    overflow: visible;
-
-    border:
-        1px solid
-        rgba(169, 221, 252, 0.22);
-
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            155deg,
-            var(--panel-top) 0%,
-            var(--panel-middle) 44%,
-            var(--panel-bottom) 100%
+            180deg,
+            var(--panel-top),
+            var(--panel-mid) 42%,
+            var(--panel-bottom)
         );
 
     box-shadow:
-        0 44px 100px
-        rgba(0, 0, 0, 0.7),
 
-        0 0 0 4px
-        rgba(164, 220, 255, 0.028),
+        inset 0 2px 0 rgba(255,255,255,.08),
 
-        inset 0 1px 0
-        rgba(255, 255, 255, 0.1),
+        inset 0 -25px 40px rgba(0,0,0,.35),
 
-        inset 0 -46px 58px
-        rgba(0, 0, 0, 0.33),
+        0 35px 70px rgba(0,0,0,.55);
 
-        0 0 31px
-        rgba(0, 122, 255, 0.07);
 }
 
-.calculator-panel::before {
-    content: "";
+/*=========================================================
+    Silver Frame
+=========================================================*/
 
-    position: absolute;
-    inset: 0;
+.silver-frame{
 
-    z-index: -1;
-    pointer-events: none;
+    position:absolute;
 
-    border-radius: inherit;
+    left:50%;
 
-    background:
-        linear-gradient(
-            118deg,
-            rgba(255, 255, 255, 0.055),
-            transparent 25%,
-            transparent 72%,
-            rgba(0, 134, 255, 0.025)
-        );
+    width:470px;
+    height:84px;
+
+    transform:translateX(-50%);
+
+    pointer-events:none;
+
+    z-index:50;
+
 }
 
-.calculator-panel::after {
-    content: "";
+.silver-frame-top{
 
-    position: absolute;
+    top:-30px;
 
-    left: 8%;
-    right: 8%;
-    bottom: -29px;
-
-    height: 36px;
-
-    z-index: -3;
-    pointer-events: none;
-
-    border-radius: 50%;
-
-    background:
-        rgba(0, 0, 0, 0.52);
-
-    filter: blur(18px);
 }
 
-/* =========================================================
-   上下の銀フレーム
-   形状固定
-========================================================= */
+.silver-frame-bottom{
 
-.silver-frame {
-    position: absolute;
-
-    left: 50%;
-
-    width: calc(100% + 30px);
-    height: 72px;
-
-    transform: translateX(-50%);
-
-    z-index: 50;
-    pointer-events: none;
-}
-
-.silver-frame-top {
-    top: -26px;
-}
-
-.silver-frame-bottom {
-    bottom: -26px;
+    bottom:-30px;
 
     transform:
         translateX(-50%)
         rotate(180deg);
+
 }
 
-/* 銀フレーム本体 */
+/*=========================================================
+    Frame shadow
+=========================================================*/
 
-.silver-frame-body {
-    position: absolute;
-    inset: 0;
+.silver-frame-shadow{
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.94);
+    position:absolute;
+    inset:0;
 
-    border-radius:
-        27px
-        27px
-        18px
-        18px;
+    filter:blur(8px);
+
+    opacity:.28;
+
+    border-radius:34px;
+
+    background:black;
+
+}
+
+/*=========================================================
+    Main Frame
+=========================================================*/
+
+.silver-frame-body{
+
+    position:absolute;
+    inset:0;
+
+    border-radius:30px;
 
     background:
+
         linear-gradient(
+
             180deg,
+
             #ffffff 0%,
-            #f1f6f8 20%,
-            #dce7eb 42%,
-            #b1c0c8 70%,
-            #718792 100%
+
+            #edf3f6 14%,
+
+            #d9e3e9 38%,
+
+            #b6c4cb 63%,
+
+            #8798a3 100%
+
         );
 
     /*
-       中央の切り欠きは左右に大きく広げた確定形状。
-       左右の端は丸く、中央は幅広く残す。
+        切り欠き
+
+        ・左右へかなり広げる
+        ・白丸ボタン付近まで広げる
+        ・中央の橋は太いまま
     */
+
     clip-path:
+
         polygon(
+
             0 0,
+
             100% 0,
+
             100% 100%,
 
-            76% 100%,
-            71% 79%,
-            67% 60%,
+            84% 100%,
 
-            33% 60%,
-            29% 79%,
-            24% 100%,
+            73% 58%,
+
+            65% 58%,
+
+            35% 58%,
+
+            27% 58%,
+
+            16% 100%,
 
             0 100%
+
         );
 
     box-shadow:
-        inset 0 5px 6px
-        rgba(255, 255, 255, 0.97),
 
-        inset 0 -9px 12px
-        rgba(43, 66, 78, 0.31),
+        inset 0 4px 5px rgba(255,255,255,.95),
 
-        inset 0 -2px 2px
-        rgba(255, 255, 255, 0.25),
+        inset 0 -10px 12px rgba(60,75,90,.35),
 
-        0 7px 11px
-        rgba(0, 0, 0, 0.44),
+        inset 0 -2px 0 rgba(255,255,255,.3),
 
-        0 15px 24px
-        rgba(0, 0, 0, 0.2);
+        0 5px 10px rgba(0,0,0,.35),
+
+        0 12px 20px rgba(0,0,0,.25);
+
 }
 
-/* 正面から見える銀面 */
+/*=========================================================
+    Front Face
 
-.silver-frame-highlight {
-    position: absolute;
+    正面から見える銀部分
+=========================================================*/
 
-    top: 5px;
-    left: 6px;
-    right: 6px;
+.silver-frame-face{
 
-    height: 48px;
+    position:absolute;
 
-    border-radius:
-        23px
-        23px
-        14px
-        14px;
+    left:8px;
+    right:8px;
+
+    top:8px;
+
+    height:58px;
+
+    border-radius:24px;
 
     background:
+
         linear-gradient(
+
             180deg,
-            rgba(255, 255, 255, 0.97) 0%,
-            rgba(246, 251, 252, 0.93) 32%,
-            rgba(205, 220, 226, 0.88) 70%,
-            rgba(139, 159, 169, 0.82) 100%
+
+            rgba(255,255,255,.95),
+
+            rgba(240,246,248,.96),
+
+            rgba(203,214,221,.95),
+
+            rgba(144,158,169,.94)
+
         );
 
     clip-path:
+
         polygon(
+
             0 0,
+
             100% 0,
+
             100% 100%,
 
-            75% 100%,
-            70% 76%,
-            66% 55%,
+            83% 100%,
 
-            34% 55%,
-            30% 76%,
-            25% 100%,
+            72% 60%,
+
+            64% 60%,
+
+            36% 60%,
+
+            28% 60%,
+
+            17% 100%,
 
             0 100%
+
         );
 
     box-shadow:
-        inset 0 4px 4px
-        rgba(255, 255, 255, 0.98),
 
-        inset 0 -6px 8px
-        rgba(55, 77, 88, 0.19);
+        inset 0 3px 3px rgba(255,255,255,.95),
+
+        inset 0 -5px 8px rgba(60,75,90,.25);
+
 }
 
-/* =========================================================
-   上下の水色ライティング
-   銀フレームの上面ラインと面を合わせる
-========================================================= */
+/*=========================================================
+    Edge
+=========================================================*/
 
-.frame-light {
-    position: absolute;
+.silver-frame-edge{
 
-    top: 3px;
-    left: 50%;
+    position:absolute;
 
-    width: 52%;
-    height: 7px;
+    inset:0;
 
-    transform: translateX(-50%);
-
-    z-index: 8;
+    border-radius:30px;
 
     border:
-        1px solid
-        rgba(184, 255, 255, 0.82);
 
-    border-radius: 999px;
+        2px solid
+
+        rgba(255,255,255,.72);
+
+}
+
+/*=========================================================
+    Cyan Light
+
+    ・銀フレームとは境目を作る
+    ・端まで伸ばす
+=========================================================*/
+
+.frame-light{
+
+    position:absolute;
+
+    left:34px;
+    right:34px;
+
+    top:2px;
+
+    height:10px;
+
+    border-radius:999px;
 
     background:
+
         linear-gradient(
+
             90deg,
-            rgba(52, 207, 255, 0),
-            #2cdcff 12%,
-            #8cffff 50%,
-            #2cdcff 88%,
-            rgba(52, 207, 255, 0)
+
+            rgba(0,0,0,0),
+
+            #1bd7ff 8%,
+
+            #95ffff 50%,
+
+            #1bd7ff 92%,
+
+            rgba(0,0,0,0)
+
         );
 
     box-shadow:
-        inset 0 1px 2px
-        rgba(255, 255, 255, 0.9),
 
-        0 0 8px
-        rgba(42, 223, 255, 0.95),
+        0 0 8px #32e8ff,
 
-        0 0 18px
-        rgba(31, 190, 255, 0.72),
+        0 0 18px rgba(55,210,255,.9),
 
-        0 0 31px
-        rgba(18, 128, 255, 0.35);
+        0 0 34px rgba(0,130,255,.45);
 
-    animation:
-        frame-light-pulse
-        3s
-        ease-in-out
-        infinite;
 }
 
-/* =========================================================
-   左上の白丸
-========================================================= */
+/*=========================================================
+    White Buttons
+=========================================================*/
 
-.white-circle {
-    position: absolute;
+.white-circle{
 
-    width: 34px;
-    height: 34px;
+    position:absolute;
+
+    width:34px;
+    height:34px;
+
+    border-radius:50%;
 
     border:
+
         1px solid
-        rgba(245, 254, 255, 0.94);
 
-    border-radius: 50%;
-
-    pointer-events: none;
+        rgba(255,255,255,.9);
 
     background:
+
         radial-gradient(
-            circle at 35% 28%,
-            #ffffff 0%,
-            #eaf3f6 42%,
-            #abbcc4 76%,
-            #6b7f89 100%
+
+            circle at 35% 30%,
+
+            #fff,
+
+            #dfe8ec,
+
+            #8fa0aa
+
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
 
-        inset 0 -4px 6px
-        rgba(45, 70, 82, 0.26),
+        inset 0 2px 3px rgba(255,255,255,.9),
 
-        0 4px 0
-        #5f747f,
+        inset 0 -4px 5px rgba(50,60,70,.25),
 
-        0 7px 9px
-        rgba(0, 0, 0, 0.42);
+        0 4px 0 #667680,
+
+        0 8px 10px rgba(0,0,0,.35);
+
 }
 
-.white-circle-top {
-    top: 69px;
-    left: 22px;
+.white-circle-top{
+
+    left:20px;
+    top:70px;
+
 }
 
-/* =========================================================
-   右上の水色パーツ
-========================================================= */
+/*=========================================================
+    Cyan Module
+=========================================================*/
 
-.cyan-module {
-    position: absolute;
+.cyan-module{
 
-    top: 58px;
-    right: -18px;
+    position:absolute;
 
-    width: 78px;
-    height: 42px;
+    top:58px;
+    right:-18px;
 
-    z-index: 40;
-    pointer-events: none;
+    width:76px;
+    height:42px;
 
-    border:
-        1px solid
-        rgba(210, 255, 255, 0.82);
-
-    border-radius: 11px;
+    border-radius:10px;
 
     background:
+
         linear-gradient(
+
             180deg,
-            #baffff 0%,
-            #69eaf2 28%,
-            var(--cyan-main) 60%,
-            var(--cyan-dark) 100%
+
+            #bfffff,
+
+            #6fe8f8,
+
+            #35c9ea
+
         );
 
     box-shadow:
-        inset 0 4px 5px
-        rgba(255, 255, 255, 0.76),
 
-        inset 0 -7px 9px
-        rgba(5, 87, 109, 0.36),
+        inset 0 3px 4px rgba(255,255,255,.75),
 
-        0 6px 0
-        #126c80,
+        inset 0 -6px 8px rgba(0,90,110,.28),
 
-        0 11px 15px
-        rgba(0, 0, 0, 0.4),
+        0 6px 0 #1c8ca8,
 
-        0 0 17px
-        rgba(57, 231, 255, 0.42);
+        0 10px 12px rgba(0,0,0,.35),
+
+        0 0 18px rgba(70,240,255,.45);
+
 }
 
-.cyan-module-highlight {
-    position: absolute;
-    inset: 4px;
+.cyan-module-face{
 
-    border-radius: 8px;
+    position:absolute;
+    inset:4px;
+
+    border-radius:7px;
 
     background:
+
         linear-gradient(
+
             180deg,
-            rgba(255, 255, 255, 0.48),
-            rgba(255, 255, 255, 0.04) 54%,
+
+            rgba(255,255,255,.35),
+
             transparent
-        );
-}
 
-/* =========================================================
-   計算表示
-========================================================= */
-
-.display-area {
-    position: absolute;
-
-    top: var(--display-top);
-    left: 50%;
-
-    width: 270px;
-    height: 78px;
-
-    transform: translateX(-50%);
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-
-    pointer-events: none;
-}
-
-.display-value {
-    width: 100%;
-
-    overflow: hidden;
-
-    color: #ccefff;
-
-    font-size:
-        clamp(
-            2rem,
-            5vw,
-            2.55rem
         );
 
-    font-weight: 600;
-    line-height: 1;
+}
 
-    letter-spacing: 2px;
+.cyan-module-highlight{
 
-    text-align: center;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    position:absolute;
+
+    left:10px;
+    right:10px;
+
+    top:6px;
+
+    height:5px;
+
+    border-radius:999px;
+
+    background:
+
+        rgba(255,255,255,.45);
+
+}
+
+/*=========================================================
+    Display
+=========================================================*/
+
+.display-area{
+
+    position:absolute;
+
+    top:176px;
+
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+
+}
+
+.display-value{
+
+    font-size:44px;
+
+    color:#bff5ff;
+
+    letter-spacing:2px;
 
     text-shadow:
-        0 0 4px
-        rgba(214, 248, 255, 0.92),
 
-        0 0 12px
-        rgba(55, 202, 255, 0.76),
+        0 0 5px white,
 
-        0 0 27px
-        rgba(0, 133, 255, 0.4);
+        0 0 16px #3ad4ff;
+
 }
 
-/* =========================================================
-   上部の銀ボタン
-========================================================= */
+/*=========================================================
+    Utility Buttons
+=========================================================*/
 
-.utility-buttons {
-    position: absolute;
+.utility-buttons{
 
-    top: var(--utility-top);
-    left: 50%;
+    position:absolute;
 
-    width: 326px;
+    top:276px;
 
-    transform: translateX(-50%);
+    left:50%;
 
-    display: grid;
+    width:320px;
 
-    grid-template-columns:
-        42px
-        42px
-        84px
-        42px
-        42px;
+    transform:translateX(-50%);
 
-    grid-template-areas:
-        "clear back gap percent sign";
+    display:flex;
 
-    column-gap: 18px;
+    justify-content:space-between;
 
-    align-items: center;
-    justify-content: center;
+    align-items:center;
 
-    z-index: 30;
 }
 
-.utility-clear {
-    grid-area: clear;
+.utility-center-gap{
+
+    width:56px;
+
+}
+/*=========================================================
+    CSS 後半
+    前半の直後にそのまま貼り付け
+=========================================================*/
+
+/*=========================================================
+    Utility Button Position
+=========================================================*/
+
+.utility-clear{
+    margin-right:10px;
 }
 
-.utility-backspace {
-    grid-area: back;
+.utility-backspace{
+    margin-right:24px;
 }
 
-.utility-percent {
-    grid-area: percent;
+.utility-percent{
+    margin-left:24px;
 }
 
-.utility-sign {
-    grid-area: sign;
+.utility-sign{
+    margin-left:10px;
 }
 
-.utility-key {
-    position: relative;
+/*=========================================================
+    Utility Button Design
+=========================================================*/
 
-    width: 42px;
-    height: 86px;
+.utility-key{
 
-    overflow: hidden;
+    position:relative;
+
+    width:42px;
+    height:86px;
+
+    flex:0 0 auto;
+
+    overflow:hidden;
 
     border:
+
         1px solid
-        rgba(244, 254, 255, 0.9);
 
-    border-radius: 21px;
+        rgba(245,253,255,.92);
 
-    cursor: pointer;
+    border-radius:21px;
+
+    cursor:pointer;
 
     color:
-        rgba(32, 53, 66, 0.76);
 
-    font-size: 0.72rem;
-    font-weight: 700;
+        rgba(35,56,68,.72);
+
+    font-size:12px;
+    font-weight:700;
 
     background:
+
         linear-gradient(
+
             90deg,
-            #637985 0%,
-            #c6d5db 14%,
-            #f8ffff 32%,
-            #d7e4e9 51%,
+
+            #647984 0%,
+
+            #b7c8cf 13%,
+
+            #f9ffff 31%,
+
+            #d4e0e5 50%,
+
             #ffffff 72%,
-            #a8bac2 87%,
-            #617681 100%
+
+            #a7b9c1 87%,
+
+            #607681 100%
+
         );
 
     box-shadow:
+
         inset 0 4px 4px
-        rgba(255, 255, 255, 0.94),
+        rgba(255,255,255,.95),
 
         inset 0 -10px 12px
-        rgba(29, 52, 65, 0.27),
+        rgba(31,52,64,.28),
 
-        0 6px 0
-        #506975,
+        0 5px 0
+        #526a75,
 
-        0 11px 14px
-        rgba(0, 0, 0, 0.42);
+        0 10px 13px
+        rgba(0,0,0,.42);
 
     transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        color 120ms ease,
-        box-shadow 120ms ease;
+
+        transform .12s ease,
+
+        filter .12s ease,
+
+        color .12s ease,
+
+        box-shadow .12s ease;
+
 }
 
-/* 上部の黒い穴 */
+/* 銀ボタン上部の穴 */
 
-.utility-key::before {
-    content: "";
+.utility-key::before{
 
-    position: absolute;
+    content:"";
 
-    top: 7px;
-    left: 50%;
+    position:absolute;
 
-    width: 18px;
-    height: 18px;
+    top:6px;
+    left:50%;
 
-    transform: translateX(-50%);
+    width:18px;
+    height:18px;
 
-    border-radius: 50%;
+    transform:
+        translateX(-50%);
+
+    border-radius:50%;
 
     background:
+
         radial-gradient(
-            circle at 36% 28%,
-            #4c4c4c 0%,
+
+            circle at 35% 28%,
+
+            #474747 0%,
+
             #151515 43%,
-            #050505 72%,
-            #000000 100%
+
+            #030303 75%,
+
+            #000 100%
+
         );
 
     box-shadow:
+
         inset 0 3px 5px
-        rgba(0, 0, 0, 1),
+        rgba(0,0,0,1),
 
         0 1px 1px
-        rgba(255, 255, 255, 0.38);
+        rgba(255,255,255,.4);
+
 }
 
-.utility-key span {
-    position: relative;
-    z-index: 2;
+.utility-key span{
 
-    display: block;
+    position:relative;
 
-    margin-top: 29px;
+    z-index:2;
+
+    display:block;
+
+    margin-top:29px;
+
 }
 
-.utility-key:hover {
-    filter: brightness(1.06);
+.utility-key:hover{
+
+    filter:
+        brightness(1.08);
+
 }
 
 .utility-key:active,
-.utility-key.is-pressed {
-    transform:
-        translateY(6px)
-        scaleY(0.95);
+.utility-key.is-pressed{
 
-    color: #ffffff;
+    transform:
+
+        translateY(5px)
+
+        scaleY(.95);
+
+    color:#fff;
 
     box-shadow:
-        inset 0 9px 13px
-        rgba(28, 51, 63, 0.43),
+
+        inset 0 8px 13px
+        rgba(27,50,62,.43),
 
         0 1px 0
-        #506975,
+        #526a75,
 
-        0 4px 7px
-        rgba(0, 0, 0, 0.34);
+        0 4px 6px
+        rgba(0,0,0,.34);
+
 }
 
 .utility-key:active span,
-.utility-key.is-pressed span {
-    text-shadow:
-        0 0 5px #ffffff,
-        0 0 10px rgba(55, 190, 255, 0.84);
-}
-/* =========================================================
-   YUUKA CALCULATOR
-   style.css 後半
-
-   数字ボタン
-   演算ボタン
-   0ボタン
-   パーティクル
-   レスポンシブ
-   アニメーション
-
-   前半コードの直後に、そのまま貼り付けてください。
-========================================================= */
-
-/* =========================================================
-   数字ボタン全体
-
-   配置はこの形で固定：
-
-               1
-
-          2         3
-
-     4         5         6
-
-          7         8
-
-               9
-========================================================= */
-
-.number-cluster {
-    position: absolute;
-
-    top: var(--numbers-top);
-    left: 50%;
-
-    width: 370px;
-    height: 370px;
-
-    transform: translateX(-50%);
-
-    z-index: 20;
-}
-
-/* =========================================================
-   数字ボタン
-
-   ・形状は円形
-   ・外周ラインは常時発光
-   ・通常時は数字を発光させない
-   ・押したときだけ数字が発光
-========================================================= */
-
-.number-key {
-    position: absolute;
-
-    width: 84px;
-    height: 84px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border:
-        7px solid
-        #078cff;
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    color:
-        rgba(
-            190,
-            222,
-            242,
-            0.58
-        );
-
-    font-size: 1.08rem;
-    font-weight: 600;
-
-    background:
-        radial-gradient(
-            circle at 50% 42%,
-            #142b43 0%,
-            #091827 58%,
-            #020812 100%
-        );
-
-    box-shadow:
-        inset 0 1px 2px
-        rgba(255, 255, 255, 0.06),
-
-        inset 0 -9px 14px
-        rgba(0, 0, 0, 0.5),
-
-        0 4px 0
-        #00477f,
-
-        0 8px 13px
-        rgba(0, 0, 0, 0.48),
-
-        0 0 9px
-        rgba(0, 139, 255, 0.88),
-
-        0 0 20px
-        rgba(0, 112, 255, 0.42);
-
-    transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 120ms ease;
-}
-
-.number-key span {
-    position: relative;
-    z-index: 2;
-
-    text-shadow: none;
-}
-
-.number-key:hover {
-    filter: brightness(1.08);
-}
-
-/* 押下時のみ文字を発光 */
-
-.number-key:active,
-.number-key.is-pressed {
-    transform:
-        translateY(5px)
-        scale(0.94);
-
-    color: #ffffff;
+.utility-key.is-pressed span{
 
     text-shadow:
-        0 0 5px
-        #ffffff,
 
-        0 0 12px
-        #4bd9ff,
-
-        0 0 24px
-        #008cff;
-
-    box-shadow:
-        inset 0 8px 14px
-        rgba(0, 0, 0, 0.68),
-
-        inset 0 0 15px
-        rgba(0, 139, 255, 0.2),
-
-        0 1px 0
-        #00477f,
-
-        0 4px 7px
-        rgba(0, 0, 0, 0.4),
+        0 0 5px #fff,
 
         0 0 10px
-        rgba(0, 139, 255, 0.96),
+        rgba(56,201,255,.86);
 
-        0 0 24px
-        rgba(0, 112, 255, 0.52);
 }
 
-/* =========================================================
-   数字ボタン配置
-   手描き配置図どおりの中央ひし形
-========================================================= */
+/*=========================================================
+    Number Cluster
+=========================================================*/
 
-.number-1 {
-    top: 0;
-    left: 143px;
+.number-cluster{
+
+    position:absolute;
+
+    top:420px;
+    left:50%;
+
+    width:370px;
+    height:370px;
+
+    transform:
+        translateX(-50%);
+
+    z-index:20;
+
 }
 
-.number-2 {
-    top: 72px;
-    left: 71px;
-}
+/*=========================================================
+    Number Buttons
+=========================================================*/
 
-.number-3 {
-    top: 72px;
-    left: 215px;
-}
+.number-key{
 
-.number-4 {
-    top: 144px;
-    left: -1px;
-}
+    position:absolute;
 
-.number-5 {
-    top: 144px;
-    left: 143px;
-}
+    width:84px;
+    height:84px;
 
-.number-6 {
-    top: 144px;
-    left: 287px;
-}
-
-.number-7 {
-    top: 216px;
-    left: 71px;
-}
-
-.number-8 {
-    top: 216px;
-    left: 215px;
-}
-
-.number-9 {
-    top: 288px;
-    left: 143px;
-}
-
-/* =========================================================
-   左下の白い0ボタン
-
-   上側の白丸と同じ大きさ。
-   本体の横中央線で上下反転させた位置。
-========================================================= */
-
-.zero-key {
-    position: absolute;
-
-    left: 22px;
-    bottom: 69px;
-
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     border:
-        1px solid
-        rgba(245, 254, 255, 0.94);
 
-    border-radius: 50%;
+        7px solid
 
-    cursor: pointer;
+        #078cff;
+
+    border-radius:50%;
+
+    cursor:pointer;
 
     color:
-        rgba(
-            38,
-            57,
-            68,
-            0.66
-        );
 
-    font-size: 0.56rem;
-    font-weight: 700;
+        rgba(178,211,232,.34);
+
+    font-size:17px;
+    font-weight:600;
 
     background:
+
         radial-gradient(
-            circle at 35% 28%,
-            #ffffff 0%,
-            #eaf3f6 42%,
-            #abbcc4 76%,
-            #6b7f89 100%
+
+            circle at 48% 38%,
+
+            #17314a 0%,
+
+            #0a1b2d 58%,
+
+            #020812 100%
+
         );
 
     box-shadow:
-        inset 0 2px 3px
-        rgba(255, 255, 255, 0.94),
 
-        inset 0 -4px 6px
-        rgba(45, 70, 82, 0.26),
+        inset 0 2px 3px
+        rgba(255,255,255,.05),
+
+        inset 0 -10px 15px
+        rgba(0,0,0,.52),
 
         0 4px 0
-        #5f747f,
+        #004578,
 
-        0 7px 9px
-        rgba(0, 0, 0, 0.42);
+        0 8px 12px
+        rgba(0,0,0,.46),
+
+        0 0 8px
+        rgba(0,143,255,.9),
+
+        0 0 18px
+        rgba(0,112,255,.38);
 
     transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        box-shadow 120ms ease;
+
+        transform .12s ease,
+
+        filter .12s ease,
+
+        color .12s ease,
+
+        text-shadow .12s ease,
+
+        box-shadow .12s ease;
+
 }
 
-.zero-key:hover {
-    filter: brightness(1.08);
+.number-key span{
+
+    position:relative;
+
+    z-index:2;
+
+    text-shadow:none;
+
+}
+
+.number-key:hover{
+
+    filter:
+        brightness(1.07);
+
+}
+
+/* 押した時だけ文字を発光 */
+
+.number-key:active,
+.number-key.is-pressed{
+
+    transform:
+
+        translateY(5px)
+
+        scale(.94);
+
+    color:#fff;
+
+    text-shadow:
+
+        0 0 5px #fff,
+
+        0 0 12px #4be0ff,
+
+        0 0 23px #008cff;
+
+    box-shadow:
+
+        inset 0 8px 14px
+        rgba(0,0,0,.7),
+
+        inset 0 0 15px
+        rgba(0,139,255,.2),
+
+        0 1px 0
+        #004578,
+
+        0 4px 7px
+        rgba(0,0,0,.4),
+
+        0 0 10px
+        rgba(0,139,255,.98),
+
+        0 0 23px
+        rgba(0,112,255,.5);
+
+}
+
+/*=========================================================
+    Number Button Positions
+    中央のひし形配置
+=========================================================*/
+
+.number-1{
+
+    top:0;
+    left:143px;
+
+}
+
+.number-2{
+
+    top:72px;
+    left:71px;
+
+}
+
+.number-3{
+
+    top:72px;
+    left:215px;
+
+}
+
+.number-4{
+
+    top:144px;
+    left:-1px;
+
+}
+
+.number-5{
+
+    top:144px;
+    left:143px;
+
+}
+
+.number-6{
+
+    top:144px;
+    left:287px;
+
+}
+
+.number-7{
+
+    top:216px;
+    left:71px;
+
+}
+
+.number-8{
+
+    top:216px;
+    left:215px;
+
+}
+
+.number-9{
+
+    top:288px;
+    left:143px;
+
+}
+
+/*=========================================================
+    Zero Button
+=========================================================*/
+
+.zero-key{
+
+    position:absolute;
+
+    left:20px;
+    bottom:70px;
+
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:
+
+        1px solid
+
+        rgba(255,255,255,.9);
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    color:
+
+        rgba(36,56,67,.66);
+
+    font-size:9px;
+    font-weight:700;
+
+    background:
+
+        radial-gradient(
+
+            circle at 35% 30%,
+
+            #fff,
+
+            #dfe8ec,
+
+            #8fa0aa
+
+        );
+
+    box-shadow:
+
+        inset 0 2px 3px
+        rgba(255,255,255,.9),
+
+        inset 0 -4px 5px
+        rgba(50,60,70,.25),
+
+        0 4px 0
+        #667680,
+
+        0 8px 10px
+        rgba(0,0,0,.35);
+
+    transition:
+
+        transform .12s ease,
+
+        filter .12s ease,
+
+        box-shadow .12s ease;
+
+}
+
+.zero-key:hover{
+
+    filter:
+        brightness(1.08);
+
 }
 
 .zero-key:active,
-.zero-key.is-pressed {
+.zero-key.is-pressed{
+
     transform:
+
         translateY(4px)
-        scale(0.95);
+
+        scale(.95);
 
     box-shadow:
+
         inset 0 5px 8px
-        rgba(45, 69, 80, 0.36),
+        rgba(45,68,79,.36),
 
         0 1px 0
-        #5f747f,
+        #667680,
 
         0 3px 5px
-        rgba(0, 0, 0, 0.34);
+        rgba(0,0,0,.33);
+
 }
 
-/* =========================================================
-   演算ボタン全体
+/*=========================================================
+    Operator Cluster
 
-   手描き配置図どおり：
+    手描き図どおりの配置：
 
                          ＋
 
@@ -1147,437 +1132,525 @@ button:focus-visible {
                ×              ＝
 
           ÷              ・
+=========================================================*/
 
-   数字ボタン右斜め下へ配置。
-========================================================= */
+.operator-cluster{
 
-.operator-cluster {
-    position: absolute;
+    position:absolute;
 
-    right: -22px;
-    bottom: 34px;
+    right:-11px;
+    bottom:43px;
 
-    width: 182px;
-    height: 224px;
+    width:166px;
+    height:190px;
 
-    z-index: 28;
+    z-index:28;
+
 }
 
-/* =========================================================
-   演算ボタン
+/*=========================================================
+    Operator Buttons
+=========================================================*/
 
-   ・丸形
-   ・数字ボタンより小さい
-   ・外周ラインは常時発光
-   ・文字は押したときだけ発光
-========================================================= */
+.operator-key{
 
-.operator-key {
-    position: absolute;
+    position:absolute;
 
-    width: 43px;
-    height: 43px;
+    width:42px;
+    height:42px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     border:
+
         4px solid
+
         #078cff;
 
-    border-radius: 50%;
+    border-radius:50%;
 
-    cursor: pointer;
+    cursor:pointer;
 
     color:
-        rgba(
-            208,
-            238,
-            252,
-            0.78
-        );
 
-    font-size: 0.88rem;
-    font-weight: 600;
+        rgba(201,231,247,.7);
+
+    font-size:14px;
+    font-weight:600;
 
     background:
+
         radial-gradient(
-            circle at 50% 42%,
-            #15334f 0%,
+
+            circle at 48% 38%,
+
+            #15334e 0%,
+
             #081827 62%,
+
             #020812 100%
+
         );
 
     box-shadow:
+
         inset 0 1px 2px
-        rgba(255, 255, 255, 0.07),
+        rgba(255,255,255,.06),
 
         inset 0 -6px 10px
-        rgba(0, 0, 0, 0.46),
+        rgba(0,0,0,.46),
 
         0 3px 0
-        #00477f,
+        #004578,
 
-        0 6px 9px
-        rgba(0, 0, 0, 0.42),
+        0 6px 8px
+        rgba(0,0,0,.42),
 
         0 0 7px
-        rgba(0, 139, 255, 0.82),
+        rgba(0,139,255,.84),
 
         0 0 14px
-        rgba(0, 112, 255, 0.35);
+        rgba(0,112,255,.34);
 
     transition:
-        transform 120ms ease,
-        filter 120ms ease,
-        color 120ms ease,
-        text-shadow 120ms ease,
-        box-shadow 120ms ease;
+
+        transform .12s ease,
+
+        filter .12s ease,
+
+        color .12s ease,
+
+        text-shadow .12s ease,
+
+        box-shadow .12s ease;
+
 }
 
-.operator-key span {
-    position: relative;
-    z-index: 2;
+.operator-key span{
 
-    text-shadow: none;
+    position:relative;
+
+    z-index:2;
+
+    text-shadow:none;
+
 }
 
-.operator-key:hover {
-    filter: brightness(1.1);
+.operator-key:hover{
+
+    filter:
+        brightness(1.1);
+
 }
+
+/* 押した時だけ文字を発光 */
 
 .operator-key:active,
-.operator-key.is-pressed {
-    transform:
-        translateY(3px)
-        scale(0.92);
+.operator-key.is-pressed{
 
-    color: #ffffff;
+    transform:
+
+        translateY(3px)
+
+        scale(.92);
+
+    color:#fff;
 
     text-shadow:
-        0 0 5px
-        #ffffff,
 
-        0 0 11px
-        #4bd9ff,
+        0 0 5px #fff,
 
-        0 0 21px
-        #008cff;
+        0 0 11px #4be0ff,
+
+        0 0 21px #008cff;
 
     box-shadow:
+
         inset 0 6px 10px
-        rgba(0, 0, 0, 0.62),
+        rgba(0,0,0,.62),
 
         0 1px 0
-        #00477f,
+        #004578,
 
         0 3px 5px
-        rgba(0, 0, 0, 0.34),
+        rgba(0,0,0,.34),
 
         0 0 8px
-        rgba(0, 139, 255, 0.92),
+        rgba(0,139,255,.95),
 
         0 0 17px
-        rgba(0, 112, 255, 0.42);
+        rgba(0,112,255,.42);
+
 }
 
-/* =========================================================
-   演算ボタン配置
-========================================================= */
+/*=========================================================
+    Operator Button Positions
+    間隔を少し狭めた配置
+=========================================================*/
 
-/* 右上 */
-.operator-plus {
-    top: 0;
-    left: 129px;
+/* 最上段・右 */
+
+.operator-plus{
+
+    top:0;
+    left:118px;
+
 }
 
-/* ＋の左斜め下 */
-.operator-minus {
-    top: 48px;
-    left: 86px;
+/* 2段目 */
+
+.operator-minus{
+
+    top:40px;
+    left:79px;
+
 }
 
-/* 左側 */
-.operator-multiply {
-    top: 96px;
-    left: 43px;
+/* 3段目左 */
+
+.operator-multiply{
+
+    top:80px;
+    left:40px;
+
 }
 
-/* ×の右側 */
-.operator-equal {
-    top: 96px;
-    left: 129px;
+/* 3段目右 */
+
+.operator-equal{
+
+    top:80px;
+    left:118px;
+
 }
 
-/* 左下 */
-.operator-divide {
-    top: 144px;
-    left: 0;
+/* 最下段左 */
+
+.operator-divide{
+
+    top:120px;
+    left:0;
+
 }
 
-/* 右下 */
-.operator-decimal {
-    top: 144px;
-    left: 86px;
+/* 最下段右 */
+
+.operator-decimal{
+
+    top:120px;
+    left:79px;
+
 }
 
-/* ＝ボタンも他と同じデザイン */
+/* ＝も他の演算ボタンと同じ見た目 */
 
-.operator-equal {
-    background:
-        radial-gradient(
-            circle at 50% 42%,
-            #15334f 0%,
-            #081827 62%,
-            #020812 100%
-        );
+.operator-equal{
 
     color:
-        rgba(
-            208,
-            238,
-            252,
-            0.78
+
+        rgba(201,231,247,.7);
+
+    background:
+
+        radial-gradient(
+
+            circle at 48% 38%,
+
+            #15334e 0%,
+
+            #081827 62%,
+
+            #020812 100%
+
         );
+
 }
 
-/* =========================================================
-   パーティクルCanvas
-========================================================= */
+/*=========================================================
+    Particle Canvas
+=========================================================*/
 
-#particles {
-    position: fixed;
-    inset: 0;
+#particles{
 
-    width: 100%;
-    height: 100%;
+    position:fixed;
 
-    z-index: 1000;
+    inset:0;
 
-    pointer-events: none;
+    width:100%;
+    height:100%;
+
+    z-index:1000;
+
+    pointer-events:none;
+
 }
 
-/* =========================================================
-   タブレット・スマホ対応
-========================================================= */
+/*=========================================================
+    Animations
+=========================================================*/
 
-@media (max-width: 520px) {
-    :root {
-        --calculator-width: 100%;
-        --calculator-height: 740px;
+@keyframes background-sweep{
 
-        --display-top: 145px;
-        --utility-top: 235px;
-        --numbers-top: 350px;
-    }
+    from{
 
-    body {
-        padding:
-            40px
-            8px;
-
-        align-items: flex-start;
-
-        overflow-y: auto;
-    }
-
-    .calculator {
-        width: min(100%, 410px);
-    }
-
-    .silver-frame {
-        width:
-            calc(100% + 14px);
-    }
-
-    .cyan-module {
-        right: -8px;
-
-        width: 65px;
-        height: 37px;
-    }
-
-    .display-area {
-        width: 235px;
-    }
-
-    .display-value {
-        font-size:
-            clamp(
-                1.7rem,
-                8vw,
-                2.15rem
-            );
-    }
-
-    .utility-buttons {
-        transform:
-            translateX(-50%)
-            scale(0.88);
-
-        transform-origin:
-            top center;
-    }
-
-    .number-cluster {
-        transform:
-            translateX(-50%)
-            scale(0.78);
-
-        transform-origin:
-            top center;
-    }
-
-    .operator-cluster {
-        right: -10px;
-        bottom: 20px;
-
-        transform:
-            scale(0.8);
-
-        transform-origin:
-            bottom right;
-    }
-
-    .zero-key {
-        left: 17px;
-        bottom: 62px;
-    }
-}
-
-/* =========================================================
-   小型スマホ対応
-========================================================= */
-
-@media (max-width: 370px) {
-    :root {
-        --calculator-height: 675px;
-
-        --display-top: 126px;
-        --utility-top: 205px;
-        --numbers-top: 310px;
-    }
-
-    .utility-buttons {
-        transform:
-            translateX(-50%)
-            scale(0.77);
-    }
-
-    .number-cluster {
-        transform:
-            translateX(-50%)
-            scale(0.67);
-    }
-
-    .operator-cluster {
-        right: -7px;
-        bottom: 12px;
-
-        transform:
-            scale(0.69);
-
-        transform-origin:
-            bottom right;
-    }
-
-    .zero-key {
-        width: 31px;
-        height: 31px;
-
-        left: 14px;
-        bottom: 55px;
-    }
-
-    .white-circle {
-        width: 31px;
-        height: 31px;
-    }
-
-    .white-circle-top {
-        left: 14px;
-        top: 55px;
-    }
-}
-
-/* =========================================================
-   アニメーション
-========================================================= */
-
-@keyframes background-sweep {
-    from {
         transform:
             translateX(-125%);
+
     }
 
-    to {
+    to{
+
         transform:
             translateX(125%);
+
     }
+
 }
 
-@keyframes frame-light-pulse {
+@keyframes frame-light-pulse{
+
     0%,
-    100% {
-        opacity: 0.72;
+    100%{
+
+        opacity:.73;
 
         transform:
-            translateX(-50%)
-            scaleX(0.96);
+            scaleX(.98);
+
     }
 
-    50% {
-        opacity: 1;
+    50%{
+
+        opacity:1;
 
         transform:
-            translateX(-50%)
-            scaleX(1.025);
+            scaleX(1.015);
+
     }
+
 }
 
-@keyframes calculator-enter {
-    from {
-        opacity: 0;
+@keyframes calculator-enter{
+
+    from{
+
+        opacity:0;
 
         transform:
-            translateY(24px)
-            scale(0.97);
+
+            translate(-50%,calc(-50% + 24px))
+
+            scale(.97);
 
         filter:
             blur(5px);
+
     }
 
-    to {
-        opacity: 1;
+    to{
+
+        opacity:1;
 
         transform:
-            translateY(0)
+
+            translate(-50%,-50%)
+
             scale(1);
 
         filter:
             blur(0);
+
     }
+
 }
 
-/* =========================================================
-   動きを減らす設定
-========================================================= */
+.background-grid::before{
 
-@media (prefers-reduced-motion: reduce) {
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        linear-gradient(
+
+            112deg,
+
+            transparent 0%,
+
+            rgba(82,190,245,.065) 48%,
+
+            transparent 59%
+
+        );
+
+    animation:
+
+        background-sweep
+
+        13s
+
+        linear
+
+        infinite;
+
+}
+
+.frame-light{
+
+    animation:
+
+        frame-light-pulse
+
+        3s
+
+        ease-in-out
+
+        infinite;
+
+}
+
+.calculator{
+
+    animation:
+
+        calculator-enter
+
+        .65s
+
+        cubic-bezier(.16,1,.3,1)
+
+        both;
+
+}
+
+/*=========================================================
+    Mobile
+=========================================================*/
+
+@media(max-width:520px){
+
+    body{
+
+        overflow-y:auto;
+
+        padding:
+            38px 8px;
+
+    }
+
+    .calculator{
+
+        position:relative;
+
+        top:auto;
+        left:auto;
+
+        width:min(430px,95vw);
+        height:740px;
+
+        margin:0 auto;
+
+        transform:none;
+
+        animation:none;
+
+    }
+
+    .silver-frame{
+
+        width:
+            calc(100% + 20px);
+
+    }
+
+    .display-area{
+
+        top:145px;
+
+    }
+
+    .display-value{
+
+        font-size:34px;
+
+    }
+
+    .utility-buttons{
+
+        top:232px;
+
+        transform:
+
+            translateX(-50%)
+
+            scale(.87);
+
+        transform-origin:
+            top center;
+
+    }
+
+    .number-cluster{
+
+        top:345px;
+
+        transform:
+
+            translateX(-50%)
+
+            scale(.77);
+
+        transform-origin:
+            top center;
+
+    }
+
+    .operator-cluster{
+
+        right:-4px;
+        bottom:25px;
+
+        transform:
+            scale(.8);
+
+        transform-origin:
+            bottom right;
+
+    }
+
+    .zero-key{
+
+        left:16px;
+        bottom:60px;
+
+    }
+
+}
+
+/*=========================================================
+    Reduced Motion
+=========================================================*/
+
+@media(prefers-reduced-motion:reduce){
+
     *,
     *::before,
-    *::after {
+    *::after{
+
         animation-duration:
-            0.01ms !important;
+            .01ms !important;
 
         animation-iteration-count:
             1 !important;
 
         transition-duration:
-            0.01ms !important;
+            .01ms !important;
 
-        scroll-behavior:
-            auto !important;
     }
+
 }
